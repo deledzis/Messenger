@@ -21,7 +21,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:text="@string/login" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
         android:layout_marginTop="60dp"
-        android:text="@string/Enter" />
+        android:text="@string/enter" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/to_registration_button"
@@ -71,7 +71,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
         android:layout_marginTop="10dp"
-        android:text="@string/registration"
-        />
+        android:text="@string/registration" />
 
 </LinearLayout>
