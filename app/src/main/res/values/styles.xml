@@ -9,12 +9,12 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
     </style>
     <style name="SecondaryButton" parent="PrimaryButton">
-        <item name="android:textColor">@color/light_blue</item>
-        <item name="backgroundTint">@color/light_grey</item>
+        <item name="android:textColor">@color/alt_button_text</item>
+        <item name="backgroundTint">@color/alt_button_background</item>
     </style>
 
-    <style name="InputTextStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxBackgroundColor">@color/light_grey</item>
+    <style name="InputText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/edit_text_background</item>
         <item name="boxCornerRadiusBottomStart">@dimen/corner_radius</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius</item>
         <item name="boxCornerRadiusTopEnd">@dimen/corner_radius</item>
