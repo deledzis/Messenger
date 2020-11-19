@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Messenger</string>
+
+    <string name="default_notification_channel_id">general</string>
+    <string name="default_notification_channel_name">Общий</string>
+    <string name="default_notification_channel_description">Канал для подписки на уведомления</string>
 </resources>
