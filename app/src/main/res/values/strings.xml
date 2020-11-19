@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Messenger</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="enter">Войти</string>
+    <string name="registration">Регистрация</string>
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="registration_title">Регистрация</string>
+    <string name="name">Имя</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="to_enter">Вход</string>
 </resources>
