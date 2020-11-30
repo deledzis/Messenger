@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <color name="primary">@color/blue</color>
 
     <!--  Button colors  -->
-    <color name="alt_button_text">@color/light_blue</color>
-    <color name="alt_button_background">@color/light_grey</color>
+    <color name="primary_button_active_bg">@color/blue</color>
+    <color name="primary_button_inactive_bg">@color/light_grey</color>
+    <color name="primary_button_active_text">@color/white</color>
+    <color name="primary_button_inactive_text">@color/grey</color>
+    <color name="secondary_button_active_bg">@color/light_grey</color>
+    <color name="secondary_button_inactive_bg">@color/light_grey</color>
+    <color name="secondary_button_active_text">@color/light_blue</color>
+    <color name="secondary_button_inactive_text">@color/grey</color>
 
     <!--  EditText colors  -->
     <color name="edit_text_background">@color/light_grey</color>
@@ -18,6 +23,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey">#D5D6D8</color>
     <color name="light_grey">#F2F3F5</color>
     <color name="blue">#4986CC</color>
     <color name="light_blue">#3F8AE0</color>

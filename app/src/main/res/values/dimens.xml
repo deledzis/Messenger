@@ -4,7 +4,7 @@
     <dimen name="corner_radius">7dp</dimen>
     <dimen name="button_height">60dp</dimen>
     <dimen name="layout_side_padding">30dp</dimen>
-
+    <dimen name="stroke_width">0.5dp</dimen>
 
     <!-- sp dimens -->
     <dimen name="title_text_size">28sp</dimen>

@@ -2,8 +2,6 @@ package com.deledzis.messenger.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
@@ -19,12 +17,9 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleOwner,
     Loggable {
     private val queueDeferredFragmentTransactions = ArrayDeque<DeferredFragmentTransaction>()
 
-    var isActivityVisible = false
+    private var isActivityVisible = false
 
-    protected lateinit var toolbar: Toolbar
-    protected lateinit var drawer: DrawerLayout
-
-    protected lateinit var fm: FragmentManager
+    private lateinit var fm: FragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
