@@ -18,6 +18,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:fillViewport="true">
 
         <LinearLayout
@@ -30,7 +31,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="72dp"
                 android:gravity="center_horizontal"
                 android:text="@string/registration_title"
                 android:textColor="@color/black"
@@ -106,9 +107,9 @@
                 style="@style/PrimaryButton"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginTop="60dp"
-                android:clickable="@{!viewModel.loading &amp;&amp; !viewModel.username.empty &amp;&amp; !viewModel.password.empty}"
-                android:enabled="@{!viewModel.loading &amp;&amp; !viewModel.username.empty &amp;&amp; !viewModel.password.empty}"
+                android:layout_marginTop="64dp"
+                android:clickable="@{!viewModel.loading &amp;&amp; !viewModel.username.empty &amp;&amp; !viewModel.password.empty &amp;&amp; viewModel.username.length() >= 3 &amp;&amp; viewModel.password.length() >= 8}"
+                android:enabled="@{!viewModel.loading &amp;&amp; !viewModel.username.empty &amp;&amp; !viewModel.password.empty &amp;&amp; viewModel.username.length() >= 3 &amp;&amp; viewModel.password.length() >= 8}"
                 android:onClick="@{() -> viewModel.register()}"
                 android:text="@string/register" />
 
@@ -117,7 +118,8 @@
                 style="@style/SecondaryButton"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="72dp"
                 android:clickable="@{!viewModel.loading}"
                 android:enabled="@{!viewModel.loading}"
                 android:onClick="@{() -> controller.onLoginClicked()}"
@@ -126,4 +128,5 @@
         </LinearLayout>
 
     </ScrollView>
+
 </layout>

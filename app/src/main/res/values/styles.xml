@@ -25,4 +25,45 @@
         <item name="boxCornerRadiusTopEnd">@dimen/corner_radius</item>
         <item name="boxCornerRadiusTopStart">@dimen/corner_radius</item>
     </style>
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bgr_top_corners_shape</item>
+    </style>
+
+    <style name="AlertDialogTheme.Light" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <!-- Title -->
+        <item name="materialAlertDialogTitleTextStyle">
+            @style/MyTitle_MaterialAlertDialog.MaterialComponents.Title.Text
+        </item>
+        <!-- Body -->
+        <item name="materialAlertDialogBodyTextStyle">
+            @style/BodyTextAppearance.MaterialComponents.Body2
+        </item>
+        <!-- Buttons -->
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButtonStyle</item>
+        <!-- Text Color for title and message -->
+        <item name="colorOnSurface">@color/text</item>
+        <!-- Text Color for buttons -->
+        <item name="colorPrimary">@color/primary</item>
+    </style>
+
+    <style name="DialogButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+
+    </style>
+
+    <style name="MyTitle_MaterialAlertDialog.MaterialComponents.Title.Text" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textAppearance">
+            @style/MyTitle_TextAppearance.MaterialComponents.Subtitle1
+        </item>
+    </style>
 </resources>

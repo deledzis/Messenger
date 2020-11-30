@@ -15,6 +15,9 @@
     <!--  EditText colors  -->
     <color name="edit_text_background">@color/light_grey</color>
 
+    <!-- Text colors -->
+    <color name="text">@color/black</color>
+
     <!--  colors  -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

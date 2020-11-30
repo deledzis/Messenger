@@ -22,8 +22,24 @@ class RegisterViewModel : BaseViewModel() {
     fun register() {
         startLoading()
         scope.launch {
-            if (username.value.isNullOrBlank() || password.value.isNullOrBlank()) {
-                _error.postValue("Нужно ввести имя пользователя и пароль и пароль")
+            if (username.value.isNullOrBlank()) {
+                _error.postValue("Нужно ввести логин")
+                return@launch
+            }
+            if (username.value?.length !in (3 .. 32)) {
+                _error.postValue("Логин не может содержать более 32 символов")
+                return@launch
+            }
+            if (nickname.value?.length !in (3 .. 32)) {
+                _error.postValue("Имя не может содержать более 32 символов")
+                return@launch
+            }
+            if (password.value.isNullOrBlank()) {
+                _error.postValue("Нужно ввести пароль")
+                return@launch
+            }
+            if (password.value?.length !in (8 .. 32)) {
+                _error.postValue("Пароль не может содержать более 32 символов")
                 return@launch
             }
             val userData = repository.register(
