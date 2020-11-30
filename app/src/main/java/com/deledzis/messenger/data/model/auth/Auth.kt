@@ -9,9 +9,8 @@ data class Auth(
     val token: String?,
     @SerializedName("user_id")
     val userId: Int,
-    @SerializedName("user_photo")
-    val userPhoto: String,
-    val permissions: List<String>?
+    val username: String,
+    val nickname: String
 ) {
     fun save(preferences: SharedPreferences) {
         val store = UserStore(preferences)
@@ -21,7 +20,7 @@ data class Auth(
     companion object {
         fun restore(preferences: SharedPreferences): Auth? {
             val store = UserStore(preferences)
-            return Gson().fromJson<Auth>(store.userData, Auth::class.java)
+            return Gson().fromJson(store.userData, Auth::class.java)
         }
 
         fun clear(preferences: SharedPreferences) {

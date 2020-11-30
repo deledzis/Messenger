@@ -10,6 +10,7 @@ import com.deledzis.messenger.di.module.ContextModule
 import com.deledzis.messenger.di.module.RetrofitModule
 import com.deledzis.messenger.di.qualifier.ApplicationContext
 import com.deledzis.messenger.di.scopes.ApplicationScope
+import com.deledzis.messenger.ui.login.LoginFragment
 import com.deledzis.messenger.ui.main.MainActivity
 import dagger.Component
 
@@ -26,6 +27,8 @@ interface ApplicationComponent {
     fun inject(application: App)
 
     fun inject(activity: MainActivity)
+
+    fun inject(loginFragment: LoginFragment)
 
     fun api(): ApiInterface
 

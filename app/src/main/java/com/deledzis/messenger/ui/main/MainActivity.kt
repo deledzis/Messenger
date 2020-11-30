@@ -16,7 +16,9 @@ import com.deledzis.messenger.base.BaseActivity
 import com.deledzis.messenger.databinding.ActivityMainBinding
 import com.deledzis.messenger.di.model.TokenInterceptor
 import com.deledzis.messenger.di.model.UserData
+import com.deledzis.messenger.ui.login.LoginFragment
 import com.deledzis.messenger.ui.main.viewmodel.MainViewModel
+import com.deledzis.messenger.util.LOGIN_FRAGMENT_TAG
 import com.deledzis.messenger.util.extensions.viewModelFactory
 import javax.inject.Inject
 
@@ -33,9 +35,7 @@ class MainActivity : BaseActivity() {
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(
             this,
-            viewModelFactory {
-                MainViewModel(userData)
-            }
+            viewModelFactory { MainViewModel(userData) }
         )[MainViewModel::class.java]
     }
 
@@ -59,7 +59,7 @@ class MainActivity : BaseActivity() {
                 start()
                 bindObservers()
             } else {
-                navigateToSignIn()
+                navigateToLogin()
             }
         }
     }
@@ -72,8 +72,11 @@ class MainActivity : BaseActivity() {
 
     }
 
-    private fun navigateToSignIn() {
-
+    private fun navigateToLogin() {
+        setFragment(
+            fragment = LoginFragment.newInstance(),
+            tag = LOGIN_FRAGMENT_TAG
+        )
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {

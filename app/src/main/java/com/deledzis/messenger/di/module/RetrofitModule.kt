@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 @Module
-class RetrofitModule(val baseUrl: String) {
+class RetrofitModule(private val baseUrl: String) {
     @Provides
     @ApplicationScope
     fun provideGson(): Gson {
