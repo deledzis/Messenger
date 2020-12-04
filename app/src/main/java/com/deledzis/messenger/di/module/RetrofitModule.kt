@@ -11,7 +11,6 @@ import dagger.Provides
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -54,13 +53,11 @@ class RetrofitModule(private val baseUrl: String) {
 
     @Provides
     @ApplicationScope
-    fun requestHeadersInterceptor(): Interceptor = object : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val original: Request = chain.request()
-            val request: Request = original.newBuilder()
-                .build()
-            return chain.proceed(request)
-        }
+    fun requestHeadersInterceptor(): Interceptor = Interceptor { chain ->
+        val original: Request = chain.request()
+        val request: Request = original.newBuilder()
+            .build()
+        chain.proceed(request)
     }
 
     @Provides
