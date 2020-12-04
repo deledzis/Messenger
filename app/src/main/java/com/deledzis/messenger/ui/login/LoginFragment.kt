@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.deledzis.messenger.App
 import com.deledzis.messenger.R
@@ -60,7 +59,7 @@ class LoginFragment : BaseFragment(), LoginActionsHandler {
     }
 
     override fun bindObservers() {
-        viewModel.userData.observe(this, Observer {
+        viewModel.userData.observe(viewLifecycleOwner, {
             val inputManager = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputManager.hideSoftInputFromWindow(
                 activity.currentFocus?.windowToken,
@@ -74,7 +73,7 @@ class LoginFragment : BaseFragment(), LoginActionsHandler {
                 }
             }
         })
-        viewModel.error.observe(this, Observer {
+        viewModel.error.observe(viewLifecycleOwner, {
             val inputManager = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputManager.hideSoftInputFromWindow(
                 activity.currentFocus?.windowToken,

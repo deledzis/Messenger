@@ -3,7 +3,8 @@ package com.deledzis.messenger.ui.chats
 import androidx.lifecycle.MutableLiveData
 import com.deledzis.messenger.App
 import com.deledzis.messenger.base.BaseViewModel
-import com.deledzis.messenger.data.model.chats.Chat
+import com.deledzis.messenger.data.model.chats.ChatReduced
+import com.deledzis.messenger.util.fromJson
 import kotlinx.coroutines.launch
 
 class ChatsViewModel : BaseViewModel() {
@@ -11,10 +12,10 @@ class ChatsViewModel : BaseViewModel() {
 
     val error = MutableLiveData<String>()
 
-    val chats = MutableLiveData<List<Chat>>()
+    val chats = MutableLiveData<List<ChatReduced>>()
 
-    fun getChats() {
-        startLoading()
+    fun getChats(refresh: Boolean = true) {
+        if (refresh || chats.value.isNullOrEmpty()) startLoading()
         scope.launch {
             val response = repository.getChats()
             if (response == null) {
@@ -22,7 +23,13 @@ class ChatsViewModel : BaseViewModel() {
             } else {
                 chats.postValue(response.chats)
             }
-            stopLoading()
+            if (refresh || chats.value.isNullOrEmpty()) stopLoading()
         }
+    }
+
+    fun handleBackgroundChatsResult(chatsJson: String?) {
+        chatsJson ?: return
+        val list = fromJson<List<ChatReduced>>(chatsJson)
+        chats.postValue(list)
     }
 }
