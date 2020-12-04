@@ -59,7 +59,7 @@ class LoginFragment : BaseFragment(), LoginActionsHandler {
     }
 
     override fun bindObservers() {
-        viewModel.userData.observe(this, {
+        viewModel.userData.observe(viewLifecycleOwner, {
             val inputManager = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputManager.hideSoftInputFromWindow(
                 activity.currentFocus?.windowToken,
@@ -73,7 +73,7 @@ class LoginFragment : BaseFragment(), LoginActionsHandler {
                 }
             }
         })
-        viewModel.error.observe(this, {
+        viewModel.error.observe(viewLifecycleOwner, {
             val inputManager = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputManager.hideSoftInputFromWindow(
                 activity.currentFocus?.windowToken,

@@ -1,7 +1,7 @@
 buildscript {
     ext {
         build_version = '4.1.1'
-        kotlin_version = '1.4.10'
+        kotlin_version = '1.4.20'
         google_services_version = '4.3.3'
     }
 
