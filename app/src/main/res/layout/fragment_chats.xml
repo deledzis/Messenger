@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.deledzis.messenger.ui.chats.ChatsViewModel" />
+
+        <variable
+            name="controller"
+            type="com.deledzis.messenger.ui.chats.ChatsActionsHandler" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</layout>
