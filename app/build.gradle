@@ -27,7 +27,7 @@ android {
         if (runTasks.contains('assembleRelease') || runTasks.contains('aR')) {
             value = 1
         }
-        def versionMajor = 1
+        def versionMajor = 0
         def versionMinor = 1
         def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
         def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
@@ -45,7 +45,7 @@ android {
             targetSdkVersion 30
             versionCode versionNumber
             versionName "${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}"
-            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         }
     } else {
         throw new GradleException("Could not read version.properties!")
