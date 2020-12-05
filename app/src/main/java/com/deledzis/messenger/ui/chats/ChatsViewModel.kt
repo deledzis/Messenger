@@ -12,10 +12,10 @@ class ChatsViewModel : BaseViewModel() {
     override val repository: ChatsRepository = ChatsRepository(App.injector.api())
 
     val error = MutableLiveData<String>()
-
     val chats = MutableLiveData<List<ChatReduced>>()
 
     fun getChats(refresh: Boolean = true) {
+        error.postValue(null)
         if (refresh || chats.value.isNullOrEmpty()) startLoading()
         scope.launch {
             val response = repository.getChats()
@@ -34,5 +34,8 @@ class ChatsViewModel : BaseViewModel() {
         chatsJson ?: return
         val list = fromJson<List<ChatReduced>>(chatsJson)
         chats.postValue(list)
+        if (list.isNotEmpty()) {
+            error.postValue(null)
+        }
     }
 }

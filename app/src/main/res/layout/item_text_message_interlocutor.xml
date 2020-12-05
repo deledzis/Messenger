@@ -38,7 +38,7 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gray"
+                android:background="@color/gray_100"
                 android:foreground="?selectableItemBackground"
                 android:minWidth="160dp"
                 android:minHeight="48dp"

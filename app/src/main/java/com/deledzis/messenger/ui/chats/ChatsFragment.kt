@@ -78,6 +78,9 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
         viewModel.error.observe(viewLifecycleOwner, {
             Log.e("TAG", "Error: $it")
             srl.isRefreshing = false
+            it?.let {
+                startSnackbar(it) { viewModel.getChats(refresh = true) }
+            } ?: run { stopSnackbar() }
 
             // TODO to be removed, temporary for mock purposes
             adapter.chats = listOf(
@@ -94,12 +97,6 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
                     )
                 )
             )
-            if (snackbar == null) {
-                snackbar = Snackbar.make(dataBinding.root, it, Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Повторить") { viewModel.getChats(refresh = true) }
-                    .setActionTextColor(requireContext().colorStateListFrom(R.color.light_blue))
-                    .also { it.show() }
-            }
         })
 
         startPeriodicWorker()
@@ -115,8 +112,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
 
     override fun onSelected(chat: ChatReduced) {
         stopPeriodicWorker()
-        snackbar?.dismiss()
-        snackbar = null
+        stopSnackbar()
         activity.addFragment(
             fragment = ChatFragment(chat.id),
             tag = CHAT_FRAGMENT_TAG
@@ -130,9 +126,22 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
 
     override fun onStop() {
         stopPeriodicWorker()
+        stopSnackbar()
+        super.onStop()
+    }
+
+    private fun startSnackbar(text: String, retryAction: () -> Unit) {
+        if (snackbar == null) {
+            snackbar = Snackbar.make(dataBinding.root, text, Snackbar.LENGTH_LONG)
+                .setAction("Повторить") { retryAction() }
+                .setActionTextColor(requireContext().colorStateListFrom(R.color.blue_600))
+                .also { it.show() }
+        }
+    }
+
+    private fun stopSnackbar() {
         snackbar?.dismiss()
         snackbar = null
-        super.onStop()
     }
 
     private fun startPeriodicWorker() {
@@ -171,7 +180,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
                 TimeUnit.MILLISECONDS
             )
             .build()
-        
+
         WorkManager
             .getInstance(requireContext())
             .enqueue(workRequest) // run work request

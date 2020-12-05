@@ -34,7 +34,7 @@
                 android:layout_marginTop="72dp"
                 android:gravity="center_horizontal"
                 android:text="@string/welcome"
-                android:textColor="@color/black"
+                android:textColor="@color/text"
                 android:textSize="@dimen/title_text_size"
                 android:textStyle="bold" />
 
@@ -43,7 +43,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/login" />
+                android:text="@string/login"
+                android:textColor="@color/text_hint" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/login_text_input"
@@ -64,7 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="@string/password" />
+                android:text="@string/password"
+                android:textColor="@color/text_hint" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/password_text_input"

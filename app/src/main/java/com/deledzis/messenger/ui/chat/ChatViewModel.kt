@@ -8,7 +8,7 @@ import com.deledzis.messenger.util.fromJson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ChatViewModel(private val chatId: Int, private val userId: Int) : BaseViewModel() {
+class ChatViewModel(private val chatId: Int) : BaseViewModel() {
     override val repository: ChatRepository = ChatRepository(App.injector.api())
 
     val text = MutableLiveData<String>()
@@ -39,7 +39,7 @@ class ChatViewModel(private val chatId: Int, private val userId: Int) : BaseView
         scope.launch {
             val response = repository.sendTextMessage(
                 chatId = chatId,
-                authorId = userId,
+                authorId = App.injector.userData().auth?.userId ?: 0,
                 type = type.value ?: false,
                 content = text.value!!
             )

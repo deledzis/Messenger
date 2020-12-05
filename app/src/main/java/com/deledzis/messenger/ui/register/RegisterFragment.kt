@@ -15,8 +15,8 @@ import com.deledzis.messenger.base.BaseFragment
 import com.deledzis.messenger.databinding.FragmentRegisterBinding
 import com.deledzis.messenger.di.model.TokenInterceptor
 import com.deledzis.messenger.di.model.UserData
-import com.deledzis.messenger.ui.login.LoginFragment
-import com.deledzis.messenger.util.LOGIN_FRAGMENT_TAG
+import com.deledzis.messenger.ui.chats.ChatsFragment
+import com.deledzis.messenger.util.CHATS_FRAGMENT_TAG
 import com.deledzis.messenger.util.extensions.viewModelFactory
 import javax.inject.Inject
 
@@ -81,8 +81,10 @@ class RegisterFragment : BaseFragment(), RegisterActionsHandler {
 
     override fun onLoginClicked() {
         activity.setFragment(
-            fragment = LoginFragment.newInstance(),
-            tag = LOGIN_FRAGMENT_TAG
+            fragment = ChatsFragment.newInstance(),
+            tag = CHATS_FRAGMENT_TAG
+//            fragment = LoginFragment.newInstance(),
+//            tag = LOGIN_FRAGMENT_TAG
         )
     }
 

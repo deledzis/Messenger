@@ -1,33 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">@color/blue</color>
-
-    <!--  Button colors  -->
-    <color name="primary_button_active_bg">@color/blue</color>
-    <color name="primary_button_inactive_bg">@color/light_gray</color>
-    <color name="primary_button_active_text">@color/white</color>
-    <color name="primary_button_inactive_text">@color/gray</color>
-    <color name="secondary_button_active_bg">@color/light_gray</color>
-    <color name="secondary_button_inactive_bg">@color/light_gray</color>
-    <color name="secondary_button_active_text">@color/light_blue</color>
-    <color name="secondary_button_inactive_text">@color/gray</color>
-
-    <!--  EditText colors  -->
-    <color name="edit_text_background">@color/light_gray</color>
-
-    <!-- Text colors -->
-    <color name="text">@color/black</color>
-
-    <!--  colors  -->
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="gray">#D5D6D8</color>
-    <color name="light_gray">#F2F2F2</color>
-    <color name="blue">#4986CC</color>
-    <color name="light_blue">#3F8AE0</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="gray_100">#F2F2F2</color>
+    <color name="gray_200">#E2E2E2</color>
+    <color name="gray_300">#D5D6D8</color>
+    <color name="blue_600">#3F8AE0</color>
+    <color name="blue_700">#4986CC</color>
+    <color name="dark_100">#6D7885</color>
+    <color name="dark_500">#444B53</color>
+    <color name="dark_600">#343940</color>
 </resources>
