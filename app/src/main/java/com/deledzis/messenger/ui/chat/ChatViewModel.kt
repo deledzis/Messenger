@@ -17,6 +17,7 @@ class ChatViewModel(private val chatId: Int) : BaseViewModel() {
     val messages = MutableLiveData<List<Message>>()
 
     fun getChat() {
+        error.postValue(null)
         if (messages.value.isNullOrEmpty()) startLoading()
         scope.launch {
             val response = repository.getChat(chatId)
@@ -58,5 +59,8 @@ class ChatViewModel(private val chatId: Int) : BaseViewModel() {
         messagesJson ?: return
         val list = fromJson<List<Message>>(messagesJson)
         messages.postValue(list)
+        if (list.isNotEmpty()) {
+            error.postValue(null)
+        }
     }
 }
