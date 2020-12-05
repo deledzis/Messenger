@@ -40,7 +40,7 @@ class RegisterFragment : BaseFragment(), RegisterActionsHandler {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         dataBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_register,

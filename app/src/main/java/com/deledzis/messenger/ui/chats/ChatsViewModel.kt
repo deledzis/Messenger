@@ -26,7 +26,7 @@ class ChatsViewModel : BaseViewModel() {
             } else {
                 chats.postValue(response.chats)
             }
-            if (refresh || chats.value.isNullOrEmpty()) stopLoading()
+            stopLoading()
         }
     }
 

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-fun Date.formatDate(format: SimpleDateFormat = DateUtils.RU_DATE_FORMAT, timeZone: String? = null): String {
+fun Date.formatDate(format: SimpleDateFormat = DateUtils.ISO_24H_FORMAT, timeZone: String? = null): String {
     val dt = format
     dt.timeZone = if (timeZone != null) TimeZone.getTimeZone("Europe/Moscow") else TimeZone.getDefault()
     return dt.format(this)
@@ -34,6 +34,11 @@ fun Date.compareIgnoreTime(other: Date): Int {
 fun Date.isToday(): Boolean {
     val today = Calendar.getInstance().time.ignoreTime()
     return this.compareIgnoreTime(today) == 0
+}
+
+fun Date.isYesterday(): Boolean {
+    val today = Calendar.getInstance().time.ignoreTime()
+    return today.after(this) && this.daysBetween(today) == 1L
 }
 
 fun Date.month(): String {

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="message"
+            type="com.deledzis.messenger.data.model.chats.Message" />
+
+        <variable
+            name="controller"
+            type="com.deledzis.messenger.ui.chat.MessageItemActionsHandler" />
+
+        <variable
+            name="date"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="32dp"
+            app:reverse_visibility="@{date == null || date.empty}" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="72dp">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@color/light_blue"
+                android:foreground="?selectableItemBackground"
+                android:minWidth="160dp"
+                android:minHeight="48dp"
+                android:onClick="@{() -> controller.onSelected(message)}" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</layout>

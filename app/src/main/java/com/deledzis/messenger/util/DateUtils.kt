@@ -25,7 +25,7 @@ object DateUtils {
         return if (ignoreTime) date.ignoreTime() else date
     }
 
-    fun getDate(date: String, format: SimpleDateFormat): Date? =
+    fun getDate(date: String, format: SimpleDateFormat = ISO_24H_FORMAT): Date =
         format.parse(date)
 
     fun getCurrentDate(ignoreTime: Boolean = true): Date = if (ignoreTime) {
