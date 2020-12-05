@@ -13,18 +13,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.*
 import com.deledzis.messenger.R
 import com.deledzis.messenger.base.RefreshableFragment
+import com.deledzis.messenger.data.model.chats.ChatReduced
+import com.deledzis.messenger.data.model.chats.Message
+import com.deledzis.messenger.data.model.user.User
 import com.deledzis.messenger.databinding.FragmentChatsBinding
-import com.deledzis.messenger.util.PERIODIC_DELAY
+import com.deledzis.messenger.ui.chat.ChatFragment
+import com.deledzis.messenger.util.CHATS_PERIODIC_DELAY
+import com.deledzis.messenger.util.CHAT_FRAGMENT_TAG
+import com.deledzis.messenger.util.extensions.colorStateListFrom
 import com.deledzis.messenger.util.extensions.viewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
-class ChatsFragment : RefreshableFragment(), ChatsActionsHandler {
+class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemActionsHandler {
     private lateinit var dataBinding: FragmentChatsBinding
     private lateinit var adapter: ChatsAdapter
     private var scheduledFuture: ScheduledFuture<*>? = null
+    private var snackbar: Snackbar? = null
 
     private val viewModel: ChatsViewModel by lazy {
         ViewModelProvider(
@@ -37,7 +44,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         dataBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_chats,
@@ -52,7 +59,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = ChatsAdapter()
+        adapter = ChatsAdapter(this)
         dataBinding.rvChats.layoutManager = LinearLayoutManager(activity)
         dataBinding.rvChats.adapter = adapter
 
@@ -71,18 +78,49 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler {
         viewModel.error.observe(viewLifecycleOwner, {
             Log.e("TAG", "Error: $it")
             srl.isRefreshing = false
-            Snackbar.make(dataBinding.root, it, Snackbar.LENGTH_INDEFINITE)
+
+            // TODO to be removed, temporary for mock purposes
+            adapter.chats = listOf(
+                ChatReduced(
+                    id = 0,
+                    interlocutor = User(id = 0, username = "", nickname = ""),
+                    lastMessage = Message(
+                        id = 0,
+                        type = true,
+                        content = "",
+                        date = "2020-12-05T12:25:32",
+                        chatId = 0,
+                        author = User(id = 0, username = "", nickname = "")
+                    )
+                )
+            )
+            if (snackbar == null) {
+                snackbar = Snackbar.make(dataBinding.root, it, Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Повторить") { viewModel.getChats(refresh = true) }
+                    .setActionTextColor(requireContext().colorStateListFrom(R.color.light_blue))
+                    .also { it.show() }
+            }
         })
 
         startPeriodicWorker()
     }
 
     override fun onAddChatClicked(view: View) {
-
+        // TODO add fragment create chat
     }
 
     override fun onSettingsClicked(view: View) {
+        // TODO add fragment search
+    }
 
+    override fun onSelected(chat: ChatReduced) {
+        stopPeriodicWorker()
+        snackbar?.dismiss()
+        snackbar = null
+        activity.addFragment(
+            fragment = ChatFragment(chat.id),
+            tag = CHAT_FRAGMENT_TAG
+        )
     }
 
     override fun onRefresh() {
@@ -90,9 +128,11 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler {
         super.onRefresh()
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
         stopPeriodicWorker()
-        super.onDestroy()
+        snackbar?.dismiss()
+        snackbar = null
+        super.onStop()
     }
 
     private fun startPeriodicWorker() {
@@ -107,7 +147,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler {
         scheduledFuture = exec.scheduleWithFixedDelay(
             runnableCode,
             0L, // first task runs immediately
-            PERIODIC_DELAY, // each next task runs after terminating of previous one with delay
+            CHATS_PERIODIC_DELAY, // each next task runs after terminating of previous one with delay
             TimeUnit.MILLISECONDS
         )
     }

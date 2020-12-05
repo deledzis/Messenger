@@ -7,10 +7,16 @@
             name="chat"
             type="com.deledzis.messenger.data.model.chats.ChatReduced" />
 
+        <variable
+            name="controller"
+            type="com.deledzis.messenger.ui.chats.ChatItemActionsHandler" />
+
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp" />
+        android:layout_height="80dp"
+        android:foreground="?selectableItemBackground"
+        android:onClick="@{() -> controller.onSelected(chat)}" />
 
 </layout>
