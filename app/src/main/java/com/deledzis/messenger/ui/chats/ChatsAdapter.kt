@@ -10,7 +10,7 @@ import com.deledzis.messenger.databinding.ItemChatBinding
 import com.deledzis.messenger.util.extensions.autoNotify
 import kotlin.properties.Delegates
 
-class ChatsAdapter(private val controller: ChatItemActionsHandler) :
+class ChatsAdapter(private val controller: ChatItemActionsHandler, private val userId: Int) :
     RecyclerView.Adapter<ChatsAdapter.ViewHolder>() {
 
     var chats: List<ChatReduced> by Delegates.observable(emptyList()) { _, old, new ->
@@ -31,17 +31,16 @@ class ChatsAdapter(private val controller: ChatItemActionsHandler) :
     override fun getItemCount() = chats.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(chats[position], first = position == 0, last = position == chats.size - 1)
+        holder.bind(chats[position], first = position == 0)
     }
 
     inner class ViewHolder(private val binding: ItemChatBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ChatReduced, first: Boolean = false, last: Boolean = false) = with(binding) {
+        fun bind(item: ChatReduced, first: Boolean = false) = with(binding) {
             chat = item
             controller = this@ChatsAdapter.controller
             this.first = first
-            this.last = last
         }
     }
 }

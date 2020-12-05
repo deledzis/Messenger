@@ -19,6 +19,7 @@
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialogTheme</item>
         <item name="android:alertDialogTheme">@style/AlertDialogTheme.Light</item>
         <item name="materialAlertDialogTheme">@style/AlertDialogTheme.Light</item>
+        <item name="snackbarStyle">@style/ErrorSnackbar</item>
     </style>
 
     <style name="Theme.Messenger.Launcher">

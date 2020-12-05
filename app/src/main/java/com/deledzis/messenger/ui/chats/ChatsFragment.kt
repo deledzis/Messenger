@@ -14,15 +14,12 @@ import androidx.work.*
 import com.deledzis.messenger.R
 import com.deledzis.messenger.base.RefreshableFragment
 import com.deledzis.messenger.data.model.chats.ChatReduced
-import com.deledzis.messenger.data.model.chats.Message
-import com.deledzis.messenger.data.model.user.User
 import com.deledzis.messenger.databinding.FragmentChatsBinding
 import com.deledzis.messenger.ui.chat.ChatFragment
 import com.deledzis.messenger.util.CHATS_PERIODIC_DELAY
 import com.deledzis.messenger.util.CHAT_FRAGMENT_TAG
-import com.deledzis.messenger.util.extensions.colorStateListFrom
+import com.deledzis.messenger.util.ErrorSnackbar
 import com.deledzis.messenger.util.extensions.viewModelFactory
-import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -31,7 +28,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     private lateinit var dataBinding: FragmentChatsBinding
     private lateinit var adapter: ChatsAdapter
     private var scheduledFuture: ScheduledFuture<*>? = null
-    private var snackbar: Snackbar? = null
+    private var snackbar: ErrorSnackbar? = null
 
     private val viewModel: ChatsViewModel by lazy {
         ViewModelProvider(
@@ -59,7 +56,9 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = ChatsAdapter(this)
+//        adapter = ChatsAdapter(this, App.injector.userData().auth?.userId!!)
+        // TODO to be removed, mock purposes
+        adapter = ChatsAdapter(this, 0)
         dataBinding.rvChats.layoutManager = LinearLayoutManager(activity)
         dataBinding.rvChats.adapter = adapter
 
@@ -79,24 +78,8 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
             Log.e("TAG", "Error: $it")
             srl.isRefreshing = false
             it?.let {
-                startSnackbar(it) { viewModel.getChats(refresh = true) }
+                startSnackbar(getString(R.string.error_get_chats)) { viewModel.getChats(refresh = true) }
             } ?: run { stopSnackbar() }
-
-            // TODO to be removed, temporary for mock purposes
-            adapter.chats = listOf(
-                ChatReduced(
-                    id = 0,
-                    interlocutor = User(id = 0, username = "", nickname = ""),
-                    lastMessage = Message(
-                        id = 0,
-                        type = true,
-                        content = "",
-                        date = "2020-12-05T12:25:32",
-                        chatId = 0,
-                        author = User(id = 0, username = "", nickname = "")
-                    )
-                )
-            )
         })
 
         startPeriodicWorker()
@@ -132,10 +115,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
 
     private fun startSnackbar(text: String, retryAction: () -> Unit) {
         if (snackbar == null) {
-            snackbar = Snackbar.make(dataBinding.root, text, Snackbar.LENGTH_LONG)
-                .setAction("Повторить") { retryAction() }
-                .setActionTextColor(requireContext().colorStateListFrom(R.color.blue_600))
-                .also { it.show() }
+            snackbar = ErrorSnackbar.make(dataBinding.root, text, retryAction).also { it.show() }
         }
     }
 

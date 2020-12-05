@@ -74,7 +74,9 @@ class ChatFragment(private val chatId: Int) : BaseFragment(),
         })
         viewModel.error.observe(viewLifecycleOwner, {
             Log.e("TAG", "Error: $it")
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            if (!it.isNullOrBlank()) {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
             // TODO mock data, to be removed
             adapter.messages = listOf(
                 Message(

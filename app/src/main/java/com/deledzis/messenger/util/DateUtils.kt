@@ -13,6 +13,7 @@ object DateUtils {
     val RU_DATE_FORMAT = SimpleDateFormat("dd.MM.yyyy", Locale("ru"))
     val SIMPLE_FORMAT = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
     val OUTPUT_SIMPLE_FORMAT = SimpleDateFormat("dd MMMM", Locale("ru"))
+    val TIME_FORMAT = SimpleDateFormat("HH:mm", Locale("ru"))
     val MONTH_FORMAT = SimpleDateFormat("LLLL yyyy", Locale("ru"))
     val DAY_FORMAT = SimpleDateFormat("dd", Locale("ru"))
 
