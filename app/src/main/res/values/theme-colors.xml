@@ -21,6 +21,7 @@
     <!-- Text colors -->
     <color name="text">@color/black</color>
     <color name="text_hint">@color/dark_100</color>
+    <color name="text_outlined">@color/blue_400</color>
 
     <!-- Others -->
     <color name="divider">@color/gray_300</color>

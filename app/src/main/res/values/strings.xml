@@ -15,4 +15,13 @@
     <string name="name">Имя</string>
     <string name="register">Зарегистрироваться</string>
     <string name="to_enter">Вход</string>
+
+    <string name="dialogs">Диалоги</string>
+    <string name="dialogs_empty_title">У вас пока нет диалогов 😔</string>
+    <string name="dialogs_empty_message">Нажмите кнопку ниже, чтобы добавить новый диалог</string>
+    <string name="dialogs_empty_button">Начать общаться</string>
+
+    <string name="action_retry">Повторить</string>
+
+    <string name="error_get_chats">Не удалось обновить сообщения</string>
 </resources>
