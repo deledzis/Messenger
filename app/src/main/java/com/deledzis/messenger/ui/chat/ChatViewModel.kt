@@ -82,6 +82,32 @@ class ChatViewModel(private val chatId: Int) : BaseViewModel() {
                 )
             ),
             Message(
+                id = 0,
+                type = true,
+                content = "",
+                fileName = "some file name.docx",
+                date = "2020-12-05T12:25:32",
+                chatId = 0,
+                author = User(
+                    id = 0,
+                    username = "",
+                    nickname = ""
+                )
+            ),
+            Message(
+                id = 0,
+                type = true,
+                content = "",
+                fileName = "some file name.docx",
+                date = "2020-12-05T12:25:32",
+                chatId = 0,
+                author = User(
+                    id = 0,
+                    username = "",
+                    nickname = ""
+                )
+            ),
+            Message(
                 id = 1,
                 type = false,
                 content = "very very very very very very very very very very very very very very very very very very very very very very very very very very long text",
