@@ -93,10 +93,12 @@ class MessagesAdapter(private val userId: Int, private val controller: MessageIt
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = messages[position]
         val previousMessage = if (position < messages.size - 1) messages[position + 1] else null
-        val date = previousMessage?.let {
+        val date = if (previousMessage == null) {
+            DateUtils.getDate(message.date).formatDate(format = DF_ONLY_DAY)
+        } else {
             val messageDate = DateUtils.getDate(message.date)
-            val previousMessageDate = DateUtils.getDate(it.date)
-            if (messageDate.daysBetween(previousMessageDate) >= 0L) {
+            val previousMessageDate = DateUtils.getDate(previousMessage.date)
+            if (messageDate.daysBetween(previousMessageDate) > 0L) {
                 when {
                     messageDate.isToday() -> "Сегодня"
                     messageDate.isYesterday() -> "Вчера"
@@ -105,7 +107,7 @@ class MessagesAdapter(private val userId: Int, private val controller: MessageIt
             } else {
                 null
             }
-        } ?: DateUtils.getDate(message.date).formatDate(format = DF_ONLY_DAY)
+        }
         if (message.author.id == userId) {
             when (message.type) {
                 true -> (holder as FileMessageFromUserViewHolder).bind(message, date)
