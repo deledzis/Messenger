@@ -6,9 +6,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-fun Date.formatDate(format: SimpleDateFormat = DateUtils.ISO_24H_FORMAT, timeZone: String? = null): String {
+fun Date.formatDate(
+    format: SimpleDateFormat = DateUtils.ISO_24H_FORMAT,
+    timeZone: String? = null
+): String {
     val dt = format
-    dt.timeZone = if (timeZone != null) TimeZone.getTimeZone("Europe/Moscow") else TimeZone.getDefault()
+    dt.timeZone =
+        if (timeZone != null) TimeZone.getTimeZone("Europe/Moscow") else TimeZone.getDefault()
     return dt.format(this)
 }
 
@@ -38,7 +42,7 @@ fun Date.isToday(): Boolean {
 
 fun Date.isYesterday(): Boolean {
     val today = Calendar.getInstance().time.ignoreTime()
-    return today.after(this) && this.daysBetween(today) == 1L
+    return today.after(this) && this.ignoreTime().daysBetween(today) == 1L
 }
 
 fun Date.month(): String {
@@ -49,8 +53,14 @@ fun Date.month(): String {
 
 fun Date.daysBetween(other: Date): Long {
     return when {
-        this.compareIgnoreTime(other) < 0 -> TimeUnit.DAYS.convert(other.time - this.time, TimeUnit.MILLISECONDS)
-        this.compareIgnoreTime(other) > 0 -> TimeUnit.DAYS.convert(this.time - other.time, TimeUnit.MILLISECONDS)
+        this.compareIgnoreTime(other) < 0 -> TimeUnit.DAYS.convert(
+            other.time - this.time,
+            TimeUnit.MILLISECONDS
+        )
+        this.compareIgnoreTime(other) > 0 -> TimeUnit.DAYS.convert(
+            this.time - other.time,
+            TimeUnit.MILLISECONDS
+        )
         else -> 0L
     }
 }

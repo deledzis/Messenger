@@ -77,7 +77,7 @@ fun setChatPreviewContent(view: TextView, value: Boolean?) {
 }
 
 @BindingAdapter("app:message_date_preview")
-fun setMessagePrevDate(view: TextView, value: String?) {
+fun setMessagePreviewDate(view: TextView, value: String?) {
     value ?: return
     val date = DateUtils.getDate(value)
     view.text = when {
@@ -85,6 +85,13 @@ fun setMessagePrevDate(view: TextView, value: String?) {
         date.isYesterday() -> "вчера"
         else -> date.formatDate(format = DateUtils.RU_DATE_FORMAT)
     }
+}
+
+@BindingAdapter("app:message_date")
+fun setMessageDate(view: TextView, value: String?) {
+    value ?: return
+    val date = DateUtils.getDate(value)
+    view.text = date.formatDate(format = DateUtils.TIME_FORMAT)
 }
 
 @BindingAdapter("app:message_text_preview", "app:user_id")

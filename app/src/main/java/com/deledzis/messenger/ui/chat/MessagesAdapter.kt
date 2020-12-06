@@ -96,7 +96,7 @@ class MessagesAdapter(private val userId: Int, private val controller: MessageIt
         val date = previousMessage?.let {
             val messageDate = DateUtils.getDate(message.date)
             val previousMessageDate = DateUtils.getDate(it.date)
-            if (messageDate.daysBetween(previousMessageDate) > 0L) {
+            if (messageDate.daysBetween(previousMessageDate) >= 0L) {
                 when {
                     messageDate.isToday() -> "Сегодня"
                     messageDate.isYesterday() -> "Вчера"
@@ -105,7 +105,7 @@ class MessagesAdapter(private val userId: Int, private val controller: MessageIt
             } else {
                 null
             }
-        }
+        } ?: DateUtils.getDate(message.date).formatDate(format = DF_ONLY_DAY)
         if (message.author.id == userId) {
             when (message.type) {
                 true -> (holder as FileMessageFromUserViewHolder).bind(message, date)

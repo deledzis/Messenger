@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.*
 import com.deledzis.messenger.R
 import com.deledzis.messenger.base.BaseFragment
+import com.deledzis.messenger.data.model.chats.ChatReduced
 import com.deledzis.messenger.data.model.chats.Message
-import com.deledzis.messenger.data.model.user.User
 import com.deledzis.messenger.databinding.FragmentChatBinding
 import com.deledzis.messenger.util.MESSAGES_PERIODIC_DELAY
 import com.deledzis.messenger.util.extensions.viewModelFactory
@@ -23,7 +23,7 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
-class ChatFragment(private val chatId: Int) : BaseFragment(),
+class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
     ChatActionsHandler,
     MessageItemActionsHandler {
 
@@ -34,7 +34,7 @@ class ChatFragment(private val chatId: Int) : BaseFragment(),
     private val viewModel: ChatViewModel by lazy {
         ViewModelProvider(
             this,
-            viewModelFactory { ChatViewModel(chatId) }
+            viewModelFactory { ChatViewModel(chat.id) }
         )[ChatViewModel::class.java]
     }
 
@@ -51,6 +51,7 @@ class ChatFragment(private val chatId: Int) : BaseFragment(),
         )
         dataBinding.lifecycleOwner = viewLifecycleOwner
         dataBinding.viewModel = viewModel
+        dataBinding.chat = chat
         dataBinding.controller = this
 
         return dataBinding.root
@@ -62,8 +63,9 @@ class ChatFragment(private val chatId: Int) : BaseFragment(),
 //        adapter = MessagesAdapter(App.injector.userData().auth?.userId!!, this)
         // TODO remove when backend work, mock
         adapter = MessagesAdapter(0, this)
-        dataBinding.rvChats.layoutManager = LinearLayoutManager(activity)
-        dataBinding.rvChats.adapter = adapter
+        dataBinding.rvMessages.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, true)
+        dataBinding.rvMessages.adapter = adapter
     }
 
     override fun bindObservers() {
@@ -77,57 +79,6 @@ class ChatFragment(private val chatId: Int) : BaseFragment(),
             if (!it.isNullOrBlank()) {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
-            // TODO mock data, to be removed
-            adapter.messages = listOf(
-                Message(
-                    id = 0,
-                    type = false,
-                    content = "",
-                    date = "2020-12-05T12:25:32",
-                    chatId = 0,
-                    author = User(
-                        id = 0,
-                        username = "",
-                        nickname = ""
-                    )
-                ),
-                Message(
-                    id = 1,
-                    type = true,
-                    content = "",
-                    date = "2020-12-05T12:25:32",
-                    chatId = 0,
-                    author = User(
-                        id = 0,
-                        username = "",
-                        nickname = ""
-                    )
-                ),
-                Message(
-                    id = 2,
-                    type = false,
-                    content = "",
-                    date = "2020-12-05T12:25:32",
-                    chatId = 0,
-                    author = User(
-                        id = 1,
-                        username = "",
-                        nickname = ""
-                    )
-                ),
-                Message(
-                    id = 3,
-                    type = true,
-                    content = "",
-                    date = "2020-12-05T12:25:32",
-                    chatId = 0,
-                    author = User(
-                        id = 1,
-                        username = "",
-                        nickname = ""
-                    )
-                ),
-            )
         })
 
         startPeriodicWorker()
@@ -180,7 +131,7 @@ class ChatFragment(private val chatId: Int) : BaseFragment(),
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
-        val inputData: Data = workDataOf("CHAT_ID" to chatId)
+        val inputData: Data = workDataOf("CHAT_ID" to chat.id)
         val workRequest: WorkRequest = OneTimeWorkRequestBuilder<SilentRefreshChatWorker>()
             .setConstraints(constraints)
             .setInputData(inputData)
