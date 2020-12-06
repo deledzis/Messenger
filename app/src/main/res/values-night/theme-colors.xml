@@ -4,6 +4,7 @@
     <color name="primary_dark">@color/blue_700</color>
     <color name="accent">@color/dark_600</color>
     <color name="background">@color/dark_600</color>
+    <color name="background_dark">@color/dark_700</color>
 
     <!--  Button colors  -->
     <color name="primary_button_active_bg">@color/white</color>
@@ -20,7 +21,9 @@
 
     <!-- Text colors -->
     <color name="text">@color/white</color>
-    <color name="text_hint">@color/gray_300</color>
+    <color name="text_contrast">@color/dark_600</color>
+    <color name="text_hint">@color/gray_400</color>
+    <color name="text_label">@color/gray_300</color>
     <color name="text_outlined">@color/gray_300</color>
 
     <!-- Others -->

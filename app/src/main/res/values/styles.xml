@@ -21,7 +21,7 @@
         <item name="android:textColor">@color/color_secondary_button_text</item>
     </style>
 
-    <style name="InputText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="InputText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxBackgroundColor">@color/edit_text_background</item>
         <item name="boxStrokeColor">@color/color_box_stroke</item>
         <item name="boxStrokeWidth">@dimen/stroke_width</item>
@@ -30,6 +30,12 @@
         <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius</item>
         <item name="boxCornerRadiusTopEnd">@dimen/corner_radius</item>
         <item name="boxCornerRadiusTopStart">@dimen/corner_radius</item>
+    </style>
+
+    <style name="SendMessage.InputText" parent="InputText">
+        <item name="boxBackgroundColor">@color/edit_text_background</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
     </style>
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
@@ -70,6 +76,11 @@
         <item name="android:textAppearance">
             @style/MyTitle_TextAppearance.MaterialComponents.Subtitle1
         </item>
+    </style>
+
+    <style name="HintTextAppearance" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/text_hint</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="ErrorSnackbar" parent="@style/Widget.MaterialComponents.Snackbar.FullWidth">

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,7 +15,8 @@
 
         <variable
             name="date"
-            type="java.lang.String" />
+            type="String" />
+
     </data>
 
     <LinearLayout
@@ -25,25 +27,88 @@
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="32dp"
-            app:reverse_visibility="@{date == null || date.empty}" />
+            android:background="@drawable/bgr_new_chat_date"
+            app:reverse_visibility="@{date == null || date.empty}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="@{date}"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="сегодня" />
+
+        </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="72dp">
+            android:paddingStart="72dp"
+            android:paddingEnd="0dp">
 
-            <FrameLayout
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@color/blue_600"
-                android:foreground="?selectableItemBackground"
-                android:minWidth="160dp"
+                android:background="@drawable/bgr_user_message_ripple"
                 android:minHeight="48dp"
-                android:onClick="@{() -> controller.onSelected(message)}" />
+                android:onClick="@{() -> controller.onSelected(message)}">
+
+                <ImageView
+                    android:id="@+id/ic_file"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/ic_file"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_file_name"
+                    app:layout_constraintStart_toStartOf="@+id/tv_file_name"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_file_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="16dp"
+                    android:ellipsize="end"
+                    android:maxWidth="100dp"
+                    android:maxLines="2"
+                    android:text="@{message.fileName}"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_time"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ic_file"
+                    tools:text="text text text text text text text text text text " />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:message_date="@{message.date}"
+                    tools:text="11:30" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
 

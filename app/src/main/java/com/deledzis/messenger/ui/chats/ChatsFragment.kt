@@ -97,7 +97,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
         stopPeriodicWorker()
         stopSnackbar()
         activity.addFragment(
-            fragment = ChatFragment(chat.id),
+            fragment = ChatFragment(chat),
             tag = CHAT_FRAGMENT_TAG
         )
     }
