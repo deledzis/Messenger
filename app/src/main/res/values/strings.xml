@@ -44,4 +44,7 @@
 
     <string name="placeholder_send_message">Введите сообщение…</string>
     <string name="placeholder_search">Поиск</string>
+    <string name="settings">Настройки</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="exit">Выйти</string>
 </resources>
