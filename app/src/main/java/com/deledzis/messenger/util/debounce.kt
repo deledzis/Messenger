@@ -1,30 +1,40 @@
-package com.deledzis.messenger.util;
+package com.deledzis.messenger.util
 
-import android.os.Handler;
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.selects.whileSelect
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class Debouncer {
-
-    private final Handler handler;
-    private final Map<Object, Runnable> tags = new HashMap<>();
-
-    public Debouncer(Handler handler) {
-        this.handler = handler;
-    }
-
-    public void bounce(Object tag, long delay, Runnable runnable) {
-        tags.put(tag, runnable);
-        handler.postDelayed(() -> {
-            if (tags.get(tag) == runnable) {
-                runnable.run();
-                tags.remove(tag);
+fun EditText.onTextChangedDebounced(): ReceiveChannel<String> =
+    Channel<String>(capacity = Channel.UNLIMITED).also { channel ->
+        addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(editable: Editable?) {
+                editable?.toString().orEmpty().let(channel::offer)
             }
-        }, delay);
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        })
     }
 
-    public void cancel(Object tag) {
-        tags.remove(tag);
+fun <T> ReceiveChannel<T>.debounce(time: Long): ReceiveChannel<T> =
+    Channel<T>(capacity = Channel.CONFLATED).also { channel ->
+        GlobalScope.launch {
+            var value = receive()
+            whileSelect {
+                onTimeout(time) {
+                    channel.offer(value)
+                    value = receive()
+                    true
+                }
+                onReceive {
+                    value = it
+                    true
+                }
+            }
+        }
     }
-}

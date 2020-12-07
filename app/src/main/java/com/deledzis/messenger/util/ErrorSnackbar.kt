@@ -16,16 +16,21 @@ class ErrorSnackbar(parent: ViewGroup, content: ErrorSnackbarView) :
         getView().setBackgroundColor(
             ContextCompat.getColor(
                 view.context,
-                R.color.background
+                R.color.transparent
             )
         )
         getView().elevation = 0.0f
         getView().setPadding(16, 16, 16, 16)
-        this.duration = Snackbar.LENGTH_INDEFINITE
     }
 
     companion object {
-        fun make(view: View, text: String, onRetryClick: () -> Unit): ErrorSnackbar {
+        fun make(
+            view: View,
+            text: String,
+            indefinite: Boolean = false,
+            onCloseClick: (() -> Unit)?,
+            onRetryClick: (() -> Unit)?
+        ): ErrorSnackbar {
 
             // First we find a suitable parent for our custom view
             val parent = view.findSuitableParent() ?: throw IllegalArgumentException(
@@ -39,13 +44,12 @@ class ErrorSnackbar(parent: ViewGroup, content: ErrorSnackbarView) :
                 false
             ) as ErrorSnackbarView
             customView.setErrorText(text)
+            customView.setOnCloseClickListener(onCloseClick)
             customView.setOnRetryClickListener(onRetryClick)
 
             // We create and return our Snackbar
             val snackbar = ErrorSnackbar(parent, customView)
-            customView.setOnCloseClickListener {
-                snackbar.dismiss()
-            }
+            snackbar.duration = if (indefinite) Snackbar.LENGTH_INDEFINITE else Snackbar.LENGTH_SHORT
 
             return snackbar
         }
