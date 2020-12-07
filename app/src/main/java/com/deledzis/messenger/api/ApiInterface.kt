@@ -3,15 +3,11 @@ package com.deledzis.messenger.api
 import com.deledzis.messenger.data.model.auth.Auth
 import com.deledzis.messenger.data.model.auth.AuthUserRequest
 import com.deledzis.messenger.data.model.auth.RegisterUserRequest
-import com.deledzis.messenger.data.model.chats.Chat
-import com.deledzis.messenger.data.model.chats.Chats
-import com.deledzis.messenger.data.model.chats.SendMessageRequest
-import com.deledzis.messenger.data.model.user.User
+import com.deledzis.messenger.data.model.chats.*
+import com.deledzis.messenger.data.model.users.User
+import com.deledzis.messenger.data.model.users.Users
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ApiInterface {
     /**
@@ -35,9 +31,21 @@ interface ApiInterface {
         @Path("id") id: Int
     ): Response<User>
 
+    // Доступные для создания чата пользователи
+    @GET("users/available")
+    suspend fun getUsersAvailable(
+        @Query("search") search: String? = null
+    ): Response<Users>
+
     // Чаты
     @GET("chats")
     suspend fun getChats(): Response<Chats>
+
+    // Добавить чат
+    @POST("chats")
+    suspend fun addChat(
+        @Body request: AddChatRequest
+    ): Response<ChatReduced>
 
     // Чат
     @GET("chat/{id}")

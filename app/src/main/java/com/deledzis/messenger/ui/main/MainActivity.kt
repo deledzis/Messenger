@@ -16,7 +16,9 @@ import com.deledzis.messenger.base.BaseActivity
 import com.deledzis.messenger.databinding.ActivityMainBinding
 import com.deledzis.messenger.di.model.TokenInterceptor
 import com.deledzis.messenger.di.model.UserData
+import com.deledzis.messenger.ui.chats.ChatsFragment
 import com.deledzis.messenger.ui.login.LoginFragment
+import com.deledzis.messenger.util.CHATS_FRAGMENT_TAG
 import com.deledzis.messenger.util.LOGIN_FRAGMENT_TAG
 import com.deledzis.messenger.util.extensions.viewModelFactory
 import javax.inject.Inject
@@ -53,18 +55,23 @@ class MainActivity : BaseActivity() {
         databinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         databinding.lifecycleOwner = this
 
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             if (userData.auth != null) {
                 start()
                 bindObservers()
             } else {
                 navigateToLogin()
             }
-        }
+        }*/
+        start()
     }
 
     private fun start() {
         // TODO init vm
+        setFragment(
+            fragment = ChatsFragment.newInstance(),
+            tag = CHATS_FRAGMENT_TAG
+        )
     }
 
     private fun bindObservers() {

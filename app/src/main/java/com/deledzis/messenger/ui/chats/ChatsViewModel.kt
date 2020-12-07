@@ -5,7 +5,7 @@ import com.deledzis.messenger.App
 import com.deledzis.messenger.base.BaseViewModel
 import com.deledzis.messenger.data.model.chats.ChatReduced
 import com.deledzis.messenger.data.model.chats.Message
-import com.deledzis.messenger.data.model.user.User
+import com.deledzis.messenger.data.model.users.User
 import com.deledzis.messenger.util.fromJson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

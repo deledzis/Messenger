@@ -7,6 +7,8 @@ import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import com.deledzis.messenger.R
 import com.deledzis.messenger.databinding.ViewErrorSnackbarBinding
+import com.deledzis.messenger.util.extensions.hide
+import com.deledzis.messenger.util.extensions.show
 import com.google.android.material.snackbar.ContentViewCallback
 
 class ErrorSnackbarView @JvmOverloads constructor(
@@ -32,12 +34,22 @@ class ErrorSnackbarView @JvmOverloads constructor(
         binding.message.text = text
     }
 
-    fun setOnCloseClickListener(onClick: () -> Unit) = binding.icClose.setOnClickListener {
-        onClick()
+    fun setOnCloseClickListener(onClick: (() -> Unit)?) {
+        if (onClick != null) {
+            binding.icClose.show()
+            binding.icClose.setOnClickListener { onClick() }
+        } else {
+            binding.icClose.hide()
+        }
     }
 
-    fun setOnRetryClickListener(onClick: () -> Unit) = binding.btnRetry.setOnClickListener {
-        onClick()
+    fun setOnRetryClickListener(onClick: (() -> Unit)?) {
+        if (onClick != null) {
+            binding.btnRetry.show()
+            binding.btnRetry.setOnClickListener { onClick() }
+        } else {
+            binding.btnRetry.hide()
+        }
     }
 
     override fun animateContentIn(delay: Int, duration: Int) {

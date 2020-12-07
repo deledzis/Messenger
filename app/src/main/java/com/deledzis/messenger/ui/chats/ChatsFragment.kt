@@ -15,10 +15,11 @@ import com.deledzis.messenger.R
 import com.deledzis.messenger.base.RefreshableFragment
 import com.deledzis.messenger.data.model.chats.ChatReduced
 import com.deledzis.messenger.databinding.FragmentChatsBinding
+import com.deledzis.messenger.ui.addchat.AddChatFragment
 import com.deledzis.messenger.ui.chat.ChatFragment
+import com.deledzis.messenger.util.ADD_CHAT_FRAGMENT_TAG
 import com.deledzis.messenger.util.CHATS_PERIODIC_DELAY
 import com.deledzis.messenger.util.CHAT_FRAGMENT_TAG
-import com.deledzis.messenger.util.ErrorSnackbar
 import com.deledzis.messenger.util.extensions.viewModelFactory
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
@@ -28,7 +29,6 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     private lateinit var dataBinding: FragmentChatsBinding
     private lateinit var adapter: ChatsAdapter
     private var scheduledFuture: ScheduledFuture<*>? = null
-    private var snackbar: ErrorSnackbar? = null
 
     private val viewModel: ChatsViewModel by lazy {
         ViewModelProvider(
@@ -78,7 +78,10 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
             Log.e("TAG", "Error: $it")
             srl.isRefreshing = false
             it?.let {
-                startSnackbar(getString(R.string.error_get_chats)) { viewModel.getChats(refresh = true) }
+                startSnackbar(
+                    text = getString(R.string.error_get_chats),
+                    indefinite = true
+                ) { viewModel.getChats(refresh = true) }
             } ?: run { stopSnackbar() }
         })
 
@@ -86,7 +89,10 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     }
 
     override fun onAddChatClicked(view: View) {
-        // TODO add fragment create chat
+        activity.addFragment(
+            fragment = AddChatFragment(),
+            tag = ADD_CHAT_FRAGMENT_TAG
+        )
     }
 
     override fun onSettingsClicked(view: View) {
@@ -111,17 +117,6 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
         stopPeriodicWorker()
         stopSnackbar()
         super.onStop()
-    }
-
-    private fun startSnackbar(text: String, retryAction: () -> Unit) {
-        if (snackbar == null) {
-            snackbar = ErrorSnackbar.make(dataBinding.root, text, retryAction).also { it.show() }
-        }
-    }
-
-    private fun stopSnackbar() {
-        snackbar?.dismiss()
-        snackbar = null
     }
 
     private fun startPeriodicWorker() {

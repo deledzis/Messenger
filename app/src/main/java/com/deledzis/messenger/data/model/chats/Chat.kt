@@ -1,6 +1,6 @@
 package com.deledzis.messenger.data.model.chats
 
-import com.deledzis.messenger.data.model.user.User
+import com.deledzis.messenger.data.model.users.User
 
 data class Chat(
     val id: Int,
@@ -11,5 +11,5 @@ data class Chat(
 data class ChatReduced(
     val id: Int,
     val interlocutor: User,
-    val lastMessage: Message
+    val lastMessage: Message?
 )

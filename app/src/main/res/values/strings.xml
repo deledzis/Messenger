@@ -24,8 +24,17 @@
     <string name="chat_empty_title">Здесь пока ничего нет 😔</string>
     <string name="chat_empty_message">Начните общение, отправив сообщение 💬</string>
 
+    <string name="add_chat">Выберите собеседника</string>
+    <string name="add_chat_init_title">Начните вводить имя</string>
+    <string name="add_chat_init_message">чтобы произвести поиск по доступным собеседникам</string>
+    <string name="add_chat_empty_title">Ничего не найдено 😔</string>
+    <string name="add_chat_empty_message">Попробуйте изменить запрос</string>
+
     <string name="action_retry">Повторить</string>
 
     <string name="error_get_chats">Не удалось обновить сообщения</string>
+    <string name="error_add_chat">Не удалось создать диалог</string>
+
     <string name="placeholder_send_message">Введите сообщение…</string>
+    <string name="placeholder_search">Поиск</string>
 </resources>
