@@ -1,9 +1,11 @@
 package com.deledzis.messenger.ui.chat
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +19,12 @@ import com.deledzis.messenger.base.BaseFragment
 import com.deledzis.messenger.data.model.chats.ChatReduced
 import com.deledzis.messenger.data.model.chats.Message
 import com.deledzis.messenger.databinding.FragmentChatBinding
-import com.deledzis.messenger.util.MESSAGES_PERIODIC_DELAY
+import com.deledzis.messenger.ui.search.SearchFragment
+import com.deledzis.messenger.util.*
 import com.deledzis.messenger.util.extensions.viewModelFactory
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -30,6 +36,7 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
     private lateinit var dataBinding: FragmentChatBinding
     private lateinit var adapter: MessagesAdapter
     private var scheduledFuture: ScheduledFuture<*>? = null
+    private var selectedImageUri: Uri? = null
 
     private val viewModel: ChatViewModel by lazy {
         ViewModelProvider(
@@ -71,11 +78,11 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
     override fun bindObservers() {
         viewModel.getChat()
         viewModel.messages.observe(viewLifecycleOwner, {
-            Log.e("TAG", "Messages: $it")
+            logi { "Messages: $it" }
             adapter.messages = it ?: return@observe
         })
         viewModel.error.observe(viewLifecycleOwner, {
-            Log.e("TAG", "Error: $it")
+            loge { "Error: $it" }
             if (!it.isNullOrBlank()) {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
@@ -89,21 +96,66 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
     }
 
     override fun onSearchClicked(view: View) {
-        // TODO add search fragment
+        activity.addFragment(
+            fragment = SearchFragment(),
+            tag = SEARCH_FRAGMENT_TAG
+        )
     }
 
     override fun onAttachmentClicked(view: View) {
-        // TODO start file picker intent and handle result
+        if (isStoragePermissionGranted()) {
+            startFilePicker()
+        }
     }
 
     override fun onSelected(message: Message) {
-        // TODO show dialog
+        // TODO
     }
 
     override fun onDestroy() {
         stopPeriodicWorker()
         super.onDestroy()
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            logv { "Permission: ${permissions[0]}, was ${grantResults[0]}" }
+            startFilePicker()
+        } else {
+            startSnackbar(
+                getString(R.string.error_storage_permissions),
+                indefinite = true,
+                retryAction = { startFilePicker() }
+            )
+        }
+    }
+
+    private fun startFilePicker() {
+        Intent(Intent.ACTION_PICK).also {
+            it.type = "image/*"
+            val mimeTypes = arrayOf("image/jpeg", "image/png")
+            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+            startActivityForResult(it, FILE_REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data ?: return
+        when (requestCode) {
+            FILE_REQUEST_CODE -> {
+                selectedImageUri = data.data
+                loge { "selected image uri: $selectedImageUri" }
+                uploadImage()
+            }
+        }
+    }
+
 
     private fun startPeriodicWorker() {
         if (scheduledFuture != null) return
@@ -153,11 +205,28 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
                 .getWorkInfoByIdLiveData(workRequest.id)
                 .observe(this, { info ->
                     if (info != null && info.state.isFinished) {
-                        Log.e("TAG", "Observed info: $info")
+                        logi { "Observed info: $info" }
                         val result = info.outputData.getString("MESSAGES")
                         viewModel.handleBackgroundMessagesResult(result)
                     }
                 })
         }
+    }
+
+    private fun uploadImage() {
+        selectedImageUri ?: return
+        val parcelFileDescriptor = activity.contentResolver
+            .openFileDescriptor(selectedImageUri!!, "r", null) ?: return
+
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+        val file = File(activity.cacheDir, activity.contentResolver.getFileName(selectedImageUri!!))
+        val outputStream = FileOutputStream(file)
+        inputStream.copyTo(outputStream)
+
+        viewModel.uploadFile(file)
+    }
+
+    companion object {
+        const val FILE_REQUEST_CODE = 1234
     }
 }

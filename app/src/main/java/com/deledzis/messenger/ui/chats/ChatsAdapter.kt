@@ -39,6 +39,7 @@ class ChatsAdapter(private val controller: ChatItemActionsHandler, private val u
 
         fun bind(item: ChatReduced, first: Boolean = false) = with(binding) {
             chat = item
+            userId = this@ChatsAdapter.userId
             controller = this@ChatsAdapter.controller
             this.first = first
         }

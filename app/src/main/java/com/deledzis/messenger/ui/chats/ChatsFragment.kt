@@ -3,7 +3,6 @@ package com.deledzis.messenger.ui.chats
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +16,8 @@ import com.deledzis.messenger.data.model.chats.ChatReduced
 import com.deledzis.messenger.databinding.FragmentChatsBinding
 import com.deledzis.messenger.ui.addchat.AddChatFragment
 import com.deledzis.messenger.ui.chat.ChatFragment
-import com.deledzis.messenger.util.ADD_CHAT_FRAGMENT_TAG
-import com.deledzis.messenger.util.CHATS_PERIODIC_DELAY
-import com.deledzis.messenger.util.CHAT_FRAGMENT_TAG
+import com.deledzis.messenger.ui.chats.SilentRefreshChatsWorker.Companion.CHATS_KEY
+import com.deledzis.messenger.util.*
 import com.deledzis.messenger.util.extensions.viewModelFactory
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
@@ -70,12 +68,12 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     override fun bindObservers() {
         viewModel.getChats(refresh = srl.isRefreshing)
         viewModel.chats.observe(viewLifecycleOwner, {
-            Log.e("TAG", "Chats: $it")
+            logi { "Chats: $it" }
             srl.isRefreshing = false
             adapter.chats = it ?: return@observe
         })
         viewModel.error.observe(viewLifecycleOwner, {
-            Log.e("TAG", "Error: $it")
+            loge { "Error: $it" }
             srl.isRefreshing = false
             it?.let {
                 startSnackbar(
@@ -167,8 +165,8 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
                 .getWorkInfoByIdLiveData(workRequest.id)
                 .observe(this, { info ->
                     if (info != null && info.state.isFinished) {
-                        Log.e("TAG", "Observed info: $info")
-                        val result = info.outputData.getString("CHATS")
+                        logi { "Observed info: $info" }
+                        val result = info.outputData.getString(CHATS_KEY)
                         viewModel.handleBackgroundChatsResult(result)
                     }
                 })

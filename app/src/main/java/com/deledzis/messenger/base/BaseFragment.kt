@@ -1,13 +1,19 @@
 package com.deledzis.messenger.base
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.deledzis.messenger.ui.main.MainActivity
 import com.deledzis.messenger.util.ErrorSnackbar
 import com.deledzis.messenger.util.Loggable
+import com.deledzis.messenger.util.logv
 
 abstract class BaseFragment : Fragment(), Loggable {
     protected lateinit var activity: MainActivity
@@ -32,7 +38,7 @@ abstract class BaseFragment : Fragment(), Loggable {
 
     protected fun startSnackbar(
         text: String,
-        indefinite: Boolean = false,
+        indefinite: Boolean = true,
         retryAction: (() -> Unit)?
     ) {
         if (snackbar == null) {
@@ -49,5 +55,29 @@ abstract class BaseFragment : Fragment(), Loggable {
     protected fun stopSnackbar() {
         snackbar?.dismiss()
         snackbar = null
+    }
+
+    protected fun isStoragePermissionGranted(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                logv { "Permission is granted" }
+                true
+            } else {
+                logv { "Permission is revoked" }
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    1
+                )
+                false
+            }
+        } else { // permission is automatically granted on sdk < 23 upon installation
+            logv { "Permission is granted" }
+            true
+        }
     }
 }

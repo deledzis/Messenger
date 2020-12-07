@@ -1,7 +1,6 @@
 package com.deledzis.messenger.ui.addchat
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import com.deledzis.messenger.databinding.FragmentAddChatBinding
 import com.deledzis.messenger.ui.chat.ChatFragment
 import com.deledzis.messenger.util.CHAT_FRAGMENT_TAG
 import com.deledzis.messenger.util.extensions.viewModelFactory
+import com.deledzis.messenger.util.logi
 
 class AddChatFragment : BaseFragment(),
     AddChatActionsHandler,
@@ -63,11 +63,11 @@ class AddChatFragment : BaseFragment(),
 
     override fun bindObservers() {
         viewModel.users.observe(viewLifecycleOwner, {
-            Log.e("TAG", "Users: $it")
+            logi { "Users: $it" }
             adapter.users = it ?: return@observe
         })
         viewModel.addedChat.observe(viewLifecycleOwner, {
-            Log.e("TAG", "Added chat: $it")
+            logi { "Added chat: $it" }
             if (it != null) {
                 activity.replaceTopFragment(
                     fragment = ChatFragment(it),
