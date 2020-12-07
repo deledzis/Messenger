@@ -6,6 +6,8 @@ import com.deledzis.messenger.data.model.auth.RegisterUserRequest
 import com.deledzis.messenger.data.model.chats.*
 import com.deledzis.messenger.data.model.users.User
 import com.deledzis.messenger.data.model.users.Users
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -56,6 +58,22 @@ interface ApiInterface {
     // Отправить сообщение в чат
     @POST("/chat/{id}")
     suspend fun sendMessageToChat(
+        @Path("id") id: Int,
         @Body request: SendMessageRequest
-    ): Response<Any>
+    ): Response<Boolean>
+
+    @Multipart
+    @POST("/chat/{id}")
+    suspend fun sendPhotoToChat(
+        @Path("id") id: Int,
+        @Part image: MultipartBody.Part,
+        @Part("authorId") authorId: RequestBody
+    ): Response<Boolean>
+
+    // Поиск по сообщениям в чате
+    @GET("/chat/{id}")
+    suspend fun getMessagesByQuery(
+        @Path("id") id: Int,
+        @Query("search") search: String? = null
+    ): Response<Messages>
 }
