@@ -12,7 +12,8 @@ const val SETTINGS_FRAGMENT_TAG = "Settings Fragment"
 
 const val APP_PREFERENCES = "prefs"
 
-const val API_BASE_URL = "http://www.test.com"
+const val API_VERSION = "v1"
+const val API_BASE_URL = "localhost:8080/$API_VERSION"
 
 const val CHATS_PERIODIC_DELAY = 2000L
 const val MESSAGES_PERIODIC_DELAY = 500L
