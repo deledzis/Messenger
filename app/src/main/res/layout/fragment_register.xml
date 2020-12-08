@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="72dp"
                 android:gravity="center_horizontal"
-                android:text="@string/registration_title"
+                android:text="@string/register"
                 android:textColor="@color/text"
                 android:textSize="@dimen/title_text_size"
                 android:textStyle="bold" />
@@ -114,7 +114,7 @@
                 android:clickable="@{!viewModel.loading &amp;&amp; !viewModel.username.empty &amp;&amp; !viewModel.password.empty &amp;&amp; viewModel.username.length() >= 3 &amp;&amp; viewModel.password.length() >= 8}"
                 android:enabled="@{!viewModel.loading &amp;&amp; !viewModel.username.empty &amp;&amp; !viewModel.password.empty &amp;&amp; viewModel.username.length() >= 3 &amp;&amp; viewModel.password.length() >= 8}"
                 android:onClick="@{() -> viewModel.register()}"
-                android:text="@string/register" />
+                android:text="@string/action_register" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/to_login_button"
@@ -126,7 +126,7 @@
                 android:clickable="@{!viewModel.loading}"
                 android:enabled="@{!viewModel.loading}"
                 android:onClick="@{() -> controller.onLoginClicked()}"
-                android:text="@string/to_enter" />
+                android:text="@string/action_to_login" />
 
         </LinearLayout>
 

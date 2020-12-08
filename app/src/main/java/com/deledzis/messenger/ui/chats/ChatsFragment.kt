@@ -17,6 +17,7 @@ import com.deledzis.messenger.databinding.FragmentChatsBinding
 import com.deledzis.messenger.ui.addchat.AddChatFragment
 import com.deledzis.messenger.ui.chat.ChatFragment
 import com.deledzis.messenger.ui.chats.SilentRefreshChatsWorker.Companion.CHATS_KEY
+import com.deledzis.messenger.ui.settings.SettingsFragment
 import com.deledzis.messenger.util.*
 import com.deledzis.messenger.util.extensions.viewModelFactory
 import java.util.concurrent.ScheduledFuture
@@ -87,6 +88,8 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     }
 
     override fun onAddChatClicked(view: View) {
+        stopPeriodicWorker()
+        stopSnackbar()
         activity.addFragment(
             fragment = AddChatFragment(),
             tag = ADD_CHAT_FRAGMENT_TAG
@@ -94,7 +97,12 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     }
 
     override fun onSettingsClicked(view: View) {
-        // TODO add fragment search
+        stopPeriodicWorker()
+        stopSnackbar()
+        activity.addFragment(
+            fragment = SettingsFragment(),
+            tag = SETTINGS_FRAGMENT_TAG
+        )
     }
 
     override fun onSelected(chat: ChatReduced) {
@@ -108,6 +116,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
 
     override fun onRefresh() {
         stopPeriodicWorker()
+        stopSnackbar()
         super.onRefresh()
     }
 
