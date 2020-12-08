@@ -15,4 +15,5 @@
     <color name="dark_500">#444B53</color>
     <color name="dark_600">#343940</color>
     <color name="dark_700">#1F2225</color>
+    <color name="red">#E64646</color>
 </resources>

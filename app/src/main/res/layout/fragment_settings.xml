@@ -5,27 +5,19 @@
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="viewModel"-->
-        <!--            type="com.deledzis.messenger.ui.search.SearchViewModel" />-->
-
-        <!--        <variable-->
-        <!--            name="controller"-->
-        <!--            type="com.deledzis.messenger.ui.search.SearchActionsHandler" />-->
-
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:background="@color/background">
 
         <com.google.android.material.appbar.AppBarLayout
             style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:liftOnScroll="false"
-            app:elevation="0dp">
+            app:liftOnScroll="true">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
@@ -35,8 +27,7 @@
                 android:backgroundTint="@color/background"
                 android:minHeight="64dp"
                 app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
-                app:elevation="12dp">
+                app:contentInsetStart="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -46,7 +37,8 @@
                         android:id="@+id/close_settings_button"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-
+                        android:clickable="true"
+                        android:focusable="true"
                         app:cardBackgroundColor="@color/background"
                         app:cardCornerRadius="24dp"
                         app:cardElevation="0dp"
@@ -76,12 +68,12 @@
                         app:layout_constraintStart_toEndOf="@+id/close_settings_button"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/ic_add"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-
+                        android:clickable="true"
+                        android:focusable="true"
                         app:cardBackgroundColor="@color/background"
                         app:cardCornerRadius="24dp"
                         app:cardElevation="0dp"
@@ -103,15 +95,13 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:animateLayoutChanges="true"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
-                android:layout_marginTop="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -121,7 +111,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="64dp"
                     android:text="@string/login"
                     android:textColor="@color/text_label" />
 
@@ -136,14 +126,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:text=""
                         tools:text="Anvil" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="24dp"
                     android:text="@string/name"
                     android:textColor="@color/text_label" />
 
@@ -158,14 +147,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:text=""
                         tools:text="Anvil" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="24dp"
                     android:text="@string/password"
                     android:textColor="@color/text_label" />
 
@@ -181,14 +169,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:text=""
                         tools:text="Anvil" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="24dp"
                     android:text="@string/new_password"
                     android:textColor="@color/text_label" />
 
@@ -204,19 +191,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:text=""
                         tools:text="Anvil" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_logout"
+                    style="@style/TextButton.Red"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:text="@string/exit"
-                    android:textColor="#E64646" />
+                    android:layout_marginTop="24dp"
+                    android:text="@string/action_logout"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="@color/red" />
 
             </LinearLayout>
-        </ScrollView>
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

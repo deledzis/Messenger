@@ -15,6 +15,8 @@
     <color name="secondary_button_inactive_bg">@color/transparent</color>
     <color name="secondary_button_active_text">@color/white</color>
     <color name="secondary_button_inactive_text">@color/gray_300</color>
+    <color name="red_text_button_active_text">@color/red</color>
+    <color name="red_text_button_inactive_text">@color/gray_300</color>
 
     <!--  EditText colors  -->
     <color name="edit_text_background">@color/dark_500</color>
