@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.deledzis.messenger.ui.settings.SettingsViewModel" />
 
-        <!--        <variable-->
-        <!--            name="viewModel"-->
-        <!--            type="com.deledzis.messenger.ui.search.SearchViewModel" />-->
-
-        <!--        <variable-->
-        <!--            name="controller"-->
-        <!--            type="com.deledzis.messenger.ui.search.SearchActionsHandler" />-->
+        <variable
+            name="controller"
+            type="com.deledzis.messenger.ui.settings.SettingsActionsHandler" />
 
     </data>
 
@@ -136,7 +135,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:text=""
+                        android:text="@={viewModel.username}"
                         tools:text="Anvil" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -158,7 +157,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:text=""
+                        android:text="@={viewModel.nickname}"
                         tools:text="Anvil" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -181,7 +180,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:text=""
+                        android:text="@={viewModel.password}"
                         tools:text="Anvil" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -204,7 +203,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:text=""
+                        android:text="@={viewModel.new_password}"
                         tools:text="Anvil" />
                 </com.google.android.material.textfield.TextInputLayout>
 
