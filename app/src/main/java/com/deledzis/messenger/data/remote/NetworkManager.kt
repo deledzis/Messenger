@@ -1,4 +1,4 @@
-package com.deledzis.messenger.api
+package com.deledzis.messenger.data.remote
 
 import android.content.Context
 import android.net.ConnectivityManager

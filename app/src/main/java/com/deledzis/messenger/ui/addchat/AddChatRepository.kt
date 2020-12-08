@@ -1,6 +1,6 @@
 package com.deledzis.messenger.ui.addchat
 
-import com.deledzis.messenger.api.ApiInterface
+import com.deledzis.messenger.data.remote.ApiInterface
 import com.deledzis.messenger.base.BaseRepository
 import com.deledzis.messenger.data.model.chats.ChatReduced
 import com.deledzis.messenger.data.model.users.Users

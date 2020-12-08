@@ -1,4 +1,4 @@
-package com.deledzis.messenger.api
+package com.deledzis.messenger.data.remote
 
 import com.deledzis.messenger.data.model.auth.Auth
 import com.deledzis.messenger.data.model.auth.AuthUserRequest

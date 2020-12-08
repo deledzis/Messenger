@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.deledzis.messenger.R
-import com.deledzis.messenger.util.DeferredFragmentTransaction
 import com.deledzis.messenger.util.Loggable
 import java.util.*
 

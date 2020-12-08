@@ -3,7 +3,7 @@ package com.deledzis.messenger.di.component
 import android.content.Context
 import android.content.SharedPreferences
 import com.deledzis.messenger.App
-import com.deledzis.messenger.api.ApiInterface
+import com.deledzis.messenger.data.remote.ApiInterface
 import com.deledzis.messenger.di.model.UserData
 import com.deledzis.messenger.di.module.ApplicationModule
 import com.deledzis.messenger.di.module.ContextModule

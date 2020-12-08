@@ -1,6 +1,6 @@
 package com.deledzis.messenger.di.module
 
-import com.deledzis.messenger.api.ApiInterface
+import com.deledzis.messenger.data.remote.ApiInterface
 import com.deledzis.messenger.di.model.TokenInterceptor
 import com.deledzis.messenger.di.scopes.ApplicationScope
 import com.google.gson.FieldNamingPolicy

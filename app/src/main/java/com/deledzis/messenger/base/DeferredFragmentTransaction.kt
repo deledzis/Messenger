@@ -1,4 +1,4 @@
-package com.deledzis.messenger.util
+package com.deledzis.messenger.base
 
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment

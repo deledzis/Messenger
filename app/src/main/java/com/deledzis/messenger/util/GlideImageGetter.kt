@@ -30,7 +30,8 @@ class GlideImageGetter(
         return drawable
     }
 
-    private inner class BitmapDrawablePlaceholder : BitmapDrawable(context.resources, Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)),
+    private inner class BitmapDrawablePlaceholder :
+        BitmapDrawable(context.resources, Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)),
         Target<Bitmap?> {
         private var drawable: Drawable? = null
 
@@ -83,6 +84,7 @@ class GlideImageGetter(
 
         override fun removeCallback(@NonNull cb: SizeReadyCallback) {}
         override fun setRequest(@Nullable request: Request?) {}
+
         @Nullable
         override fun getRequest(): Request? {
             return null

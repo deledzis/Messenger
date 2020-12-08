@@ -1,7 +1,7 @@
 package com.deledzis.messenger.base
 
 import com.deledzis.messenger.App
-import com.deledzis.messenger.api.NetworkManager
+import com.deledzis.messenger.data.remote.NetworkManager
 import com.deledzis.messenger.util.extensions.tag
 import com.deledzis.messenger.util.logd
 import com.deledzis.messenger.util.loge
