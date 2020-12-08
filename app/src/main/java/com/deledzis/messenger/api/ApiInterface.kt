@@ -3,6 +3,7 @@ package com.deledzis.messenger.api
 import com.deledzis.messenger.data.model.auth.Auth
 import com.deledzis.messenger.data.model.auth.AuthUserRequest
 import com.deledzis.messenger.data.model.auth.RegisterUserRequest
+import com.deledzis.messenger.data.model.auth.UpdateUserRequest
 import com.deledzis.messenger.data.model.chats.*
 import com.deledzis.messenger.data.model.users.User
 import com.deledzis.messenger.data.model.users.Users
@@ -76,4 +77,10 @@ interface ApiInterface {
         @Path("id") id: Int,
         @Query("search") search: String? = null
     ): Response<Messages>
+
+    //Изменение данных пользователя
+    @POST("user")
+    suspend fun updateUserData(
+        @Body newData: UpdateUserRequest
+    ): Response<Auth>
 }
