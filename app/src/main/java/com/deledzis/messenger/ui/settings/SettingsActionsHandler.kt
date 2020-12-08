@@ -1,7 +1,7 @@
 package com.deledzis.messenger.ui.settings
 
-interface SettingsActionsHandler {
-    fun onCancelClicked()
+import android.view.View
 
-    fun onApproveClicked()
+interface SettingsActionsHandler {
+    fun onCancelClicked(view: View)
 }

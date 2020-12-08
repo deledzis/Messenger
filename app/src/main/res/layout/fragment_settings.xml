@@ -45,7 +45,7 @@
                         android:id="@+id/close_settings_button"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-
+                        android:onClick="@{() -> controller.onCancelClicked()}"
                         app:cardBackgroundColor="@color/background"
                         app:cardCornerRadius="24dp"
                         app:cardElevation="0dp"
@@ -77,10 +77,10 @@
 
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/ic_add"
+                        android:id="@+id/apply_settings_button"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-
+                        android:onClick="@{() ->viewModel.updateUserData()}"
                         app:cardBackgroundColor="@color/background"
                         app:cardCornerRadius="24dp"
                         app:cardElevation="0dp"

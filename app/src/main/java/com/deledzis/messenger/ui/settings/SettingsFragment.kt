@@ -85,15 +85,9 @@ class SettingsFragment : BaseFragment(), SettingsActionsHandler {
         })
     }
 
-    override fun onCancelClicked() {
+    override fun onCancelClicked(view: View) {
         activity.removeFragment()
     }
-
-    override fun onApproveClicked() {
-        TODO("Not yet implemented")
-//        viewModel.changeUserData()
-    }
-
 
     companion object {
         @JvmStatic
