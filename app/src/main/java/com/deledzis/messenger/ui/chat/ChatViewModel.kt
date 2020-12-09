@@ -49,7 +49,7 @@ class ChatViewModel(private val chatId: Int) : BaseViewModel(),
         scope.launch {
             val response = repository.sendTextMessage(
                 chatId = chatId,
-                authorId = App.injector.userData().auth?.userId ?: 0,
+                authorId = App.injector.userData().authorizedUser?.id ?: 0,
                 type = type.value ?: false,
                 content = text.value!!
             )
@@ -74,7 +74,7 @@ class ChatViewModel(private val chatId: Int) : BaseViewModel(),
             )
             val response = repository.sendImageMessage(
                 chatId = chatId,
-                authorId = (App.injector.userData().auth?.userId ?: 0).toString()
+                authorId = (App.injector.userData().authorizedUser?.id ?: 0).toString()
                     .toRequestBody("multipart/form-data".toMediaTypeOrNull()),
                 image = image
             )

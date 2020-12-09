@@ -48,8 +48,7 @@ class SearchFragment : BaseFragment(), SearchActionsHandler {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO remove when backend work, mock
-        adapter = MessagesAdapter(App.injector.userData().auth?.userId ?: 0)
+        adapter = MessagesAdapter(App.injector.userData().authorizedUser?.id ?: 0)
         dataBinding.rvMessages.layoutManager = LinearLayoutManager(activity)
         dataBinding.rvMessages.adapter = adapter
 

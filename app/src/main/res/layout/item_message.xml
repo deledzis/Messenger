@@ -77,8 +77,7 @@
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:maxLines="10"
-            android:text='@{message.type == true ? "Вложение" : message.content}'
-            app:chat_preview_content="@{message.type}"
+            app:chat_preview_content="@{message}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

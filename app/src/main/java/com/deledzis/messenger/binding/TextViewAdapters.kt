@@ -65,14 +65,13 @@ fun setTextFromHtml(view: TextView, value: String?) {
 }
 
 @BindingAdapter("app:chat_preview_content")
-fun setChatPreviewContent(view: TextView, value: Boolean?) {
-    value ?: return
-    if (value) {
-        view.setTypeface(null, Typeface.ITALIC)
-        view.setTextColor(view.context.colorStateListFrom(R.color.text_outlined))
-    } else {
+fun setChatPreviewContent(view: TextView, value: Message?) {
+    if (value?.type == false) {
         view.setTypeface(null, Typeface.NORMAL)
         view.setTextColor(view.context.colorStateListFrom(R.color.text))
+    } else {
+        view.setTypeface(null, Typeface.ITALIC)
+        view.setTextColor(view.context.colorStateListFrom(R.color.text_outlined))
     }
 }
 
@@ -96,9 +95,9 @@ fun setMessageDate(view: TextView, value: String?) {
 
 @BindingAdapter("app:message_text_preview", "app:user_id")
 fun setMessagePreviewText(view: TextView, value: Message?, userId: Int) {
-    value ?: return
-    view.text = when (value.type) {
+    view.text = when (value?.type) {
         true -> "Вложение"
         false -> if (value.author.id == userId) "Вы: ${value.content}" else value.content
+        else -> "Диалог не начат"
     }
 }

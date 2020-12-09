@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.deledzis.messenger.ui.settings.SettingsViewModel" />
@@ -203,9 +204,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:text="@={viewModel.new_password}"
+                        android:text="@={viewModel.newPassword}"
                         tools:text="Anvil" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/settings_need_password_disclaimer"
+                    android:textColor="@color/text_outlined" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_logout"
@@ -213,6 +221,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:onClick="@{controller::onLogoutClicked}"
                     android:text="@string/action_logout"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

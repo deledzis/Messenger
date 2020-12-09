@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.*
+import com.deledzis.messenger.App
 import com.deledzis.messenger.R
 import com.deledzis.messenger.base.RefreshableFragment
 import com.deledzis.messenger.data.model.chats.ChatReduced
@@ -55,9 +56,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        adapter = ChatsAdapter(this, App.injector.userData().auth?.userId!!)
-        // TODO to be removed, mock purposes
-        adapter = ChatsAdapter(this, 0)
+        adapter = ChatsAdapter(this, App.injector.userData().authorizedUser?.id!!)
         dataBinding.rvChats.layoutManager = LinearLayoutManager(activity)
         dataBinding.rvChats.adapter = adapter
 
@@ -88,7 +87,6 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     }
 
     override fun onAddChatClicked(view: View) {
-        stopPeriodicWorker()
         stopSnackbar()
         activity.addFragment(
             fragment = AddChatFragment(),
@@ -97,16 +95,14 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     }
 
     override fun onSettingsClicked(view: View) {
-        stopPeriodicWorker()
         stopSnackbar()
         activity.addFragment(
-            fragment = SettingsFragment(),
+            fragment = SettingsFragment.newInstance(),
             tag = SETTINGS_FRAGMENT_TAG
         )
     }
 
     override fun onSelected(chat: ChatReduced) {
-        stopPeriodicWorker()
         stopSnackbar()
         activity.addFragment(
             fragment = ChatFragment(chat),
@@ -120,10 +116,10 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
         super.onRefresh()
     }
 
-    override fun onStop() {
+    override fun onDestroy() {
         stopPeriodicWorker()
         stopSnackbar()
-        super.onStop()
+        super.onDestroy()
     }
 
     private fun startPeriodicWorker() {

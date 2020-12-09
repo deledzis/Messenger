@@ -53,7 +53,7 @@ class LoginFragment : BaseFragment(), LoginActionsHandler {
         dataBinding.controller = this
 
         App.injector.inject(this)
-        userData.auth = null
+        userData.authorizedUser = null
 
         return dataBinding.root
     }
@@ -66,11 +66,9 @@ class LoginFragment : BaseFragment(), LoginActionsHandler {
                 HIDE_NOT_ALWAYS
             )
             if (it != null) {
-                userData.auth = it
-                tokenInterceptor.token = it.token ?: ""
-                activity.apply {
-                    // TODO toHome()
-                }
+                userData.authorizedUser = it
+                tokenInterceptor.token = it.accessToken ?: ""
+                activity.navigateToHome()
             }
         })
         viewModel.error.observe(viewLifecycleOwner, {

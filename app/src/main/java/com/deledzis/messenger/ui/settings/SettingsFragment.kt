@@ -63,11 +63,9 @@ class SettingsFragment : BaseFragment(), SettingsActionsHandler {
                 InputMethodManager.HIDE_NOT_ALWAYS
             )
             if (it != null) {
-                userData.auth = it
-                tokenInterceptor.token = it.token ?: ""
-                activity.apply {
-                    // TODO toHome()
-                }
+                userData.authorizedUser = it
+                tokenInterceptor.token = it.accessToken ?: ""
+                activity.navigateToHome()
             }
         })
 
@@ -84,6 +82,10 @@ class SettingsFragment : BaseFragment(), SettingsActionsHandler {
 
     override fun onCancelClicked(view: View) {
         activity.removeFragment()
+    }
+
+    override fun onLogoutClicked(view: View) {
+        activity.logout()
     }
 
     companion object {

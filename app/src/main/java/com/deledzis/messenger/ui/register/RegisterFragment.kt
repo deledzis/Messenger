@@ -62,11 +62,9 @@ class RegisterFragment : BaseFragment(), RegisterActionsHandler {
                 HIDE_NOT_ALWAYS
             )
             if (it != null) {
-                userData.auth = it
-                tokenInterceptor.token = it.token ?: ""
-                activity.apply {
-                    // TODO toHome()
-                }
+                userData.authorizedUser = it
+                tokenInterceptor.token = it.accessToken ?: ""
+                activity.navigateToHome()
             }
         })
         viewModel.error.observe(viewLifecycleOwner, {

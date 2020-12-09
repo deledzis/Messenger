@@ -14,15 +14,17 @@ class TokenInterceptor @Inject constructor() : Interceptor {
         val original = chain.request()
 
         // for auth
-        if (original.url.encodedPath.contains("/auth") &&
-            original.method.toUpperCase(Locale.getDefault()) == "POST"
+        if (
+            (original.url.encodedPath.contains("/users/login")
+                    || original.url.encodedPath.contains("/users/register"))
+            && original.method.toUpperCase(Locale.getDefault()) == "POST"
         ) {
             return chain.proceed(original)
         }
 
         val originalHttpUrl = original.url
         val requestBuilder = original.newBuilder()
-            .addHeader("Authorization", "JWT $token")
+            .addHeader("Authorization", "Bearer $token")
             .url(originalHttpUrl)
 
         val request = requestBuilder.build()

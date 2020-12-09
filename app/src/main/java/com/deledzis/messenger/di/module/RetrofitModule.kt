@@ -22,7 +22,6 @@ class RetrofitModule(private val baseUrl: String) {
     @ApplicationScope
     fun provideGson(): Gson {
         val gsonBuilder = GsonBuilder()
-        gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
         return gsonBuilder.create()
     }
 

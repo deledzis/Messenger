@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.*
+import com.deledzis.messenger.App
 import com.deledzis.messenger.R
 import com.deledzis.messenger.base.BaseFragment
 import com.deledzis.messenger.data.model.chats.ChatReduced
@@ -67,9 +68,7 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        adapter = MessagesAdapter(App.injector.userData().auth?.userId!!, this)
-        // TODO remove when backend work, mock
-        adapter = MessagesAdapter(0, this)
+        adapter = MessagesAdapter(App.injector.userData().authorizedUser?.id!!, this)
         dataBinding.rvMessages.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, true)
         dataBinding.rvMessages.adapter = adapter
