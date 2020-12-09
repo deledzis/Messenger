@@ -3,7 +3,7 @@ package com.deledzis.messenger.ui.register
 import androidx.lifecycle.MutableLiveData
 import com.deledzis.messenger.App
 import com.deledzis.messenger.base.BaseViewModel
-import com.deledzis.messenger.data.model.auth.Auth
+import com.deledzis.messenger.data.model.auth.AuthorizedUser
 import kotlinx.coroutines.launch
 
 class RegisterViewModel : BaseViewModel() {
@@ -13,7 +13,7 @@ class RegisterViewModel : BaseViewModel() {
     var nickname = MutableLiveData("")
     var password = MutableLiveData("")
     val error = MutableLiveData<String>()
-    val userData = MutableLiveData<Auth>()
+    val userData = MutableLiveData<AuthorizedUser>()
 
     fun register() {
         startLoading()

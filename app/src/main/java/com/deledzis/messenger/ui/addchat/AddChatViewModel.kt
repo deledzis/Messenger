@@ -10,7 +10,6 @@ import com.deledzis.messenger.util.debounce
 import com.deledzis.messenger.util.onTextChangedDebounced
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AddChatViewModel : BaseViewModel() {
@@ -31,12 +30,8 @@ class AddChatViewModel : BaseViewModel() {
                     } else {
                         startLoading()
                         val response = repository.getAvailableUsers(it)
-                        // artificial delay for progress while loading demonstration purposes
-                        delay(1000L)
                         if (response == null) {
-                            // TODO to be fixed when backend works
-//                            users.postValue(emptyList())
-                            users.postValue(generateMockList())
+                            users.postValue(emptyList())
                         } else {
                             users.postValue(response.users)
                         }
@@ -50,75 +45,11 @@ class AddChatViewModel : BaseViewModel() {
         scope.launch {
             startLoading()
             val response = repository.addChat(
-                userId = App.injector.userData().auth?.userId ?: 0,
+                userId = App.injector.userData().authorizedUser?.id ?: 0,
                 interlocutorId = user.id
             )
-            delay(1000L)
-            // TODO to be fixed when backend works
-//            addedChat.postValue(response)
-            addedChat.postValue(
-                ChatReduced(
-                    id = 5,
-                    interlocutor = user,
-                    lastMessage = null
-                )
-            )
+            addedChat.postValue(response)
             stopLoading()
         }
-    }
-
-    companion object {
-        fun generateMockList() = listOf(
-            User(
-                id = 0,
-                username = "user@name.com"
-            ),
-            User(
-                id = 1,
-                username = "user1@name.com"
-            ),
-            User(
-                id = 2,
-                username = "user2@name.com",
-                nickname = "Denis Petrov"
-            ),
-            User(
-                id = 3,
-                username = "user3@name.com",
-                nickname = "Denis Petrov"
-            ),
-            User(
-                id = 4,
-                username = "user4@name.com",
-                nickname = "Denis Petrov"
-            ),
-            User(
-                id = 5,
-                username = "user5@name.com",
-            ),
-            User(
-                id = 6,
-                username = "user6@name.com",
-                nickname = "Denis Petrov"
-            ),
-            User(
-                id = 7,
-                username = "user7@name.com",
-                nickname = "Denis Petrov"
-            ),
-            User(
-                id = 8,
-                username = "user8@name.com",
-            ),
-            User(
-                id = 9,
-                username = "user9@name.com",
-            ),
-            User(
-                id = 10,
-                username = "user10@name.com",
-                nickname = "Denis Petrov"
-            ),
-        )
     }
 }

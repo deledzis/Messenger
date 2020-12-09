@@ -2,7 +2,6 @@ package com.deledzis.messenger.ui.main
 
 import android.content.Context
 import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -55,27 +54,23 @@ class MainActivity : BaseActivity() {
         databinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         databinding.lifecycleOwner = this
 
-        /*if (savedInstanceState == null) {
-            if (userData.auth != null) {
-                start()
-                bindObservers()
+        if (savedInstanceState == null) {
+            if (userData.authorizedUser != null &&
+                !userData.authorizedUser?.accessToken.isNullOrBlank()
+            ) {
+                tokenInterceptor.token = userData.authorizedUser!!.accessToken!!
+                navigateToHome()
             } else {
                 navigateToLogin()
             }
-        }*/
-        start()
+        }
     }
 
-    private fun start() {
-        // TODO init vm
+    fun navigateToHome() {
         setFragment(
             fragment = ChatsFragment.newInstance(),
             tag = CHATS_FRAGMENT_TAG
         )
-    }
-
-    private fun bindObservers() {
-
     }
 
     private fun navigateToLogin() {
@@ -83,6 +78,11 @@ class MainActivity : BaseActivity() {
             fragment = LoginFragment.newInstance(),
             tag = LOGIN_FRAGMENT_TAG
         )
+    }
+
+    fun logout() {
+        userData.authorizedUser = null
+        navigateToLogin()
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -100,15 +100,5 @@ class MainActivity : BaseActivity() {
             }
         }
         return super.dispatchTouchEvent(event)
-    }
-
-    private fun getDeviceName(): String {
-        val manufacturer = Build.MANUFACTURER
-        val model = Build.MODEL
-        return if (model.startsWith(manufacturer)) {
-            model
-        } else {
-            "$manufacturer $model"
-        }
     }
 }

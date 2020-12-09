@@ -36,6 +36,7 @@
     <string name="search_empty_message">Попробуйте изменить запрос</string>
 
     <string name="settings">Настройки</string>
+    <string name="settings_need_password_disclaimer">Для сохранения изменений необходимо указать действительный текущий пароль</string>
 
     <!-- Action strings (usually for buttons) -->
     <string name="action_login">Войти</string>

@@ -52,8 +52,6 @@ class AddChatFragment : BaseFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        adapter = MessagesAdapter(App.injector.userData().auth?.userId!!, this)
-        // TODO remove when backend work, mock
         adapter = UsersAdapter(this)
         dataBinding.rvUsers.layoutManager = LinearLayoutManager(activity)
         dataBinding.rvUsers.adapter = adapter

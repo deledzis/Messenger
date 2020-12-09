@@ -1,18 +1,17 @@
 package com.deledzis.messenger.ui.chat
 
-import com.deledzis.messenger.data.remote.ApiInterface
 import com.deledzis.messenger.base.BaseRepository
 import com.deledzis.messenger.data.model.chats.Chat
+import com.deledzis.messenger.data.remote.ApiInterface
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class ChatRepository(private val api: ApiInterface) : BaseRepository() {
     suspend fun getChat(id: Int): Chat? {
-        // TODO to be fixed when backend works
-        return null/*safeApiCall(
+        return safeApiCall(
             call = { api.getChat(id = id) },
             errorMessage = "Error while getting chat"
-        )*/
+        )
     }
 
     suspend fun sendTextMessage(chatId: Int, authorId: Int, type: Boolean, content: String): Any? {

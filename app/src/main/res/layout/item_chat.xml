@@ -83,8 +83,7 @@
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text='@{chat.lastMessage.type == true ? "Вложение" : chat.lastMessage.content}'
-            app:chat_preview_content="@{chat.lastMessage.type}"
+            app:chat_preview_content="@{chat.lastMessage}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
