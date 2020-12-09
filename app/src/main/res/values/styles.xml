@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PrimaryButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+        <item name="backgroundTint">@color/color_primary_button_background</item>
+        <item name="android:textColor">@color/color_primary_button_text</item>
+    </style>
+
+    <style name="SecondaryButton" parent="PrimaryButton">
+        <item name="backgroundTint">@color/color_secondary_button_background</item>
+        <item name="android:textColor">@color/color_secondary_button_text</item>
+    </style>
+
+    <style name="TextButton" parent="PrimaryButton">
+        <item name="backgroundTint">@color/color_text_button_background</item>
+        <item name="android:textColor">@color/color_secondary_button_text</item>
+    </style>
+
+    <style name="TextButton.Red" parent="PrimaryButton">
+        <item name="backgroundTint">@color/color_text_button_background</item>
+        <item name="android:textColor">@color/color_text_button_red_text</item>
+    </style>
+
+    <style name="InputText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxBackgroundColor">@color/edit_text_background</item>
+        <item name="boxStrokeColor">@color/color_box_stroke</item>
+        <item name="boxStrokeWidth">@dimen/stroke_width</item>
+        <item name="boxStrokeWidthFocused">@dimen/stroke_width</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/corner_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/corner_radius</item>
+        <item name="boxCornerRadiusTopStart">@dimen/corner_radius</item>
+    </style>
+
+    <style name="SendMessage.InputText" parent="InputText">
+        <item name="boxBackgroundColor">@color/edit_text_background</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+    </style>
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bgr_top_corners_shape</item>
+    </style>
+
+    <style name="AlertDialogTheme.Light" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <!-- Title -->
+        <item name="materialAlertDialogTitleTextStyle">
+            @style/MyTitle_MaterialAlertDialog.MaterialComponents.Title.Text
+        </item>
+        <!-- Body -->
+        <item name="materialAlertDialogBodyTextStyle">
+            @style/BodyTextAppearance.MaterialComponents.Body2
+        </item>
+        <!-- Buttons -->
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButtonStyle</item>
+        <!-- Text Color for title and message -->
+        <item name="colorOnSurface">@color/text</item>
+        <!-- Text Color for buttons -->
+        <item name="colorPrimary">@color/primary</item>
+    </style>
+
+    <style name="DialogButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+    </style>
+
+    <style name="MyTitle_MaterialAlertDialog.MaterialComponents.Title.Text" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textAppearance">
+            @style/MyTitle_TextAppearance.MaterialComponents.Subtitle1
+        </item>
+    </style>
+
+    <style name="HintTextAppearance" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/text_hint</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ErrorSnackbar" parent="@style/Widget.MaterialComponents.Snackbar.FullWidth">
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:inset">0dp</item>
+    </style>
+</resources>
