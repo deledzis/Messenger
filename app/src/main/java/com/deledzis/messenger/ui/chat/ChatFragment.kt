@@ -22,6 +22,8 @@ import com.deledzis.messenger.data.model.chats.Message
 import com.deledzis.messenger.databinding.FragmentChatBinding
 import com.deledzis.messenger.ui.search.SearchFragment
 import com.deledzis.messenger.util.*
+import com.deledzis.messenger.util.extensions.animateGone
+import com.deledzis.messenger.util.extensions.animateShow
 import com.deledzis.messenger.util.extensions.viewModelFactory
 import java.io.File
 import java.io.FileInputStream
@@ -78,10 +80,14 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
         viewModel.getChat()
         viewModel.messages.observe(viewLifecycleOwner, {
             logi { "Messages: $it" }
+            dataBinding.icSend.animateShow()
+            dataBinding.sendProgress.animateGone()
             adapter.messages = it ?: return@observe
         })
         viewModel.error.observe(viewLifecycleOwner, {
             loge { "Error: $it" }
+            dataBinding.icSend.animateShow()
+            dataBinding.sendProgress.animateGone()
             if (!it.isNullOrBlank()) {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
@@ -96,7 +102,7 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
 
     override fun onSearchClicked(view: View) {
         activity.addFragment(
-            fragment = SearchFragment(),
+            fragment = SearchFragment(chat),
             tag = SEARCH_FRAGMENT_TAG
         )
     }
@@ -109,6 +115,12 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
 
     override fun onSelected(message: Message) {
         // TODO
+    }
+
+    override fun onSendClicked(view: View) {
+        dataBinding.icSend.animateGone()
+        dataBinding.sendProgress.animateShow()
+        viewModel.sendMessage()
     }
 
     override fun onDestroy() {

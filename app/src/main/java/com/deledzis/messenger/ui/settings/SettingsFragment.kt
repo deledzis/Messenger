@@ -87,9 +87,4 @@ class SettingsFragment : BaseFragment(), SettingsActionsHandler {
     override fun onLogoutClicked(view: View) {
         activity.logout()
     }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = SettingsFragment()
-    }
 }

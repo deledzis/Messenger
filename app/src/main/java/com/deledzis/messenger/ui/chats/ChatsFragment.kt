@@ -97,7 +97,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     override fun onSettingsClicked(view: View) {
         stopSnackbar()
         activity.addFragment(
-            fragment = SettingsFragment.newInstance(),
+            fragment = SettingsFragment(),
             tag = SETTINGS_FRAGMENT_TAG
         )
     }
@@ -176,10 +176,5 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
                     }
                 })
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = ChatsFragment()
     }
 }

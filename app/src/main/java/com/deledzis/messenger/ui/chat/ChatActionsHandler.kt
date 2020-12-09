@@ -8,4 +8,6 @@ interface ChatActionsHandler {
     fun onSearchClicked(view: View)
 
     fun onAttachmentClicked(view: View)
+
+    fun onSendClicked(view: View)
 }

@@ -1,5 +1,7 @@
 package com.deledzis.messenger.util.extensions
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +35,11 @@ fun View.toggleKeyboard(
 
 fun View.show(): View {
     this.visibility = View.VISIBLE
+    return this
+}
+
+fun View.invisible(): View {
+    this.visibility = View.INVISIBLE
     return this
 }
 
@@ -148,4 +155,34 @@ internal fun View?.findSuitableParent(): ViewGroup? {
 
     // If we reach here then we didn't find a CoL or a suitable content view so we'll fallback
     return fallback
+}
+
+fun View.animateShow() {
+    animate().alpha(1.0f).setDuration(250)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+                this@animateShow.show()
+            }
+        })
+}
+
+fun View.animateInvisible() {
+    animate().alpha(0.0f).setDuration(250)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+                this@animateInvisible.invisible()
+            }
+        })
+}
+
+fun View.animateGone() {
+    animate().alpha(0.0f).setDuration(250)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+                this@animateGone.hide()
+            }
+        })
 }

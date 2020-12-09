@@ -1,5 +1,6 @@
 package com.deledzis.messenger.data.remote
 
+import com.deledzis.messenger.data.model.BaseResponse
 import com.deledzis.messenger.data.model.auth.AuthUserRequest
 import com.deledzis.messenger.data.model.auth.AuthorizedUser
 import com.deledzis.messenger.data.model.auth.RegisterUserRequest
@@ -59,31 +60,25 @@ interface ApiInterface {
         @Body request: AddChatRequest
     ): Response<ChatReduced>
 
-    // Чат
+    // Чат с фильтром сообщений
     @GET("chats/{id}")
     suspend fun getChat(
-        @Path("id") id: Int
+        @Path("id") chatId: Int,
+        @Query("search") search: String? = ""
     ): Response<Chat>
 
     // Отправить сообщение в чат
     @POST("chats/{id}")
     suspend fun sendMessageToChat(
-        @Path("id") id: Int,
+        @Path("id") chatId: Int,
         @Body request: SendMessageRequest
-    ): Response<Boolean>
+    ): Response<BaseResponse>
 
     @Multipart
     @POST("chats/{id}")
     suspend fun sendPhotoToChat(
-        @Path("id") id: Int,
+        @Path("id") chatId: Int,
         @Part image: MultipartBody.Part,
         @Part("authorId") authorId: RequestBody
-    ): Response<Boolean>
-
-    // Поиск по сообщениям в чате
-    @GET("chats/{id}")
-    suspend fun getMessagesByQuery(
-        @Path("id") id: Int,
-        @Query("search") search: String? = null
-    ): Response<Messages>
+    ): Response<BaseResponse>
 }

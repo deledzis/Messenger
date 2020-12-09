@@ -79,13 +79,8 @@ class RegisterFragment : BaseFragment(), RegisterActionsHandler {
 
     override fun onLoginClicked() {
         activity.setFragment(
-            fragment = LoginFragment.newInstance(),
+            fragment = LoginFragment(),
             tag = LOGIN_FRAGMENT_TAG
         )
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = RegisterFragment()
     }
 }

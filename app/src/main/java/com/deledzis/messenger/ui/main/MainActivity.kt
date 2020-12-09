@@ -8,7 +8,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import com.deledzis.messenger.App
 import com.deledzis.messenger.R
 import com.deledzis.messenger.base.BaseActivity
@@ -19,7 +18,6 @@ import com.deledzis.messenger.ui.chats.ChatsFragment
 import com.deledzis.messenger.ui.login.LoginFragment
 import com.deledzis.messenger.util.CHATS_FRAGMENT_TAG
 import com.deledzis.messenger.util.LOGIN_FRAGMENT_TAG
-import com.deledzis.messenger.util.extensions.viewModelFactory
 import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
@@ -31,13 +29,6 @@ class MainActivity : BaseActivity() {
     lateinit var tokenInterceptor: TokenInterceptor
 
     private lateinit var databinding: ActivityMainBinding
-
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(
-            this,
-            viewModelFactory { MainViewModel(userData) }
-        )[MainViewModel::class.java]
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_Messenger)
@@ -68,14 +59,14 @@ class MainActivity : BaseActivity() {
 
     fun navigateToHome() {
         setFragment(
-            fragment = ChatsFragment.newInstance(),
+            fragment = ChatsFragment(),
             tag = CHATS_FRAGMENT_TAG
         )
     }
 
     private fun navigateToLogin() {
         setFragment(
-            fragment = LoginFragment.newInstance(),
+            fragment = LoginFragment(),
             tag = LOGIN_FRAGMENT_TAG
         )
     }

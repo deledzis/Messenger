@@ -11,11 +11,12 @@ import androidx.work.*
 import com.deledzis.messenger.App
 import com.deledzis.messenger.R
 import com.deledzis.messenger.base.BaseFragment
+import com.deledzis.messenger.data.model.chats.ChatReduced
 import com.deledzis.messenger.databinding.FragmentSearchBinding
 import com.deledzis.messenger.util.extensions.viewModelFactory
 import com.deledzis.messenger.util.logi
 
-class SearchFragment : BaseFragment(), SearchActionsHandler {
+class SearchFragment(private val chat: ChatReduced) : BaseFragment(), SearchActionsHandler {
 
     private lateinit var dataBinding: FragmentSearchBinding
     private lateinit var adapter: MessagesAdapter
@@ -23,7 +24,7 @@ class SearchFragment : BaseFragment(), SearchActionsHandler {
     private val viewModel: SearchViewModel by lazy {
         ViewModelProvider(
             this,
-            viewModelFactory { SearchViewModel() }
+            viewModelFactory { SearchViewModel(chat.id) }
         )[SearchViewModel::class.java]
     }
 
