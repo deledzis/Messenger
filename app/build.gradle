@@ -28,7 +28,7 @@ android {
             value = 1
         }
         def versionMajor = 0
-        def versionMinor = 1
+        def versionMinor = 3
         def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
         def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
         def versionNumber = versionProps['VERSION_NUMBER'].toInteger() + value
@@ -154,7 +154,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$x_compat_version"
     implementation "androidx.core:core-ktx:$x_core_version"
     implementation "androidx.legacy:legacy-support-v4:$legacy_version"
