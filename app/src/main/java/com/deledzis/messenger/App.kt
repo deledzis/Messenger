@@ -10,14 +10,13 @@ import com.deledzis.messenger.di.component.DaggerApplicationComponent
 import com.deledzis.messenger.di.module.ApplicationModule
 import com.deledzis.messenger.di.module.ContextModule
 import com.deledzis.messenger.di.module.RetrofitModule
-import com.deledzis.messenger.util.API_BASE_URL
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
         injector = DaggerApplicationComponent.builder()
             .contextModule(ContextModule(this))
-            .retrofitModule(RetrofitModule(API_BASE_URL))
+            .retrofitModule(RetrofitModule("${getString(R.string.base_url)}/${getString(R.string.api_version)}/"))
             .applicationModule(ApplicationModule(this))
             .build()
         injector.inject(this)

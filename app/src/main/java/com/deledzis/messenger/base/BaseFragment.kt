@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -79,5 +80,14 @@ abstract class BaseFragment : Fragment(), Loggable {
             logv { "Permission is granted" }
             true
         }
+    }
+
+    protected fun hideKeyboard() {
+        val inputManager =
+            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(
+            activity.currentFocus?.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
     }
 }

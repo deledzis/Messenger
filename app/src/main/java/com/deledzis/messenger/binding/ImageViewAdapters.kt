@@ -56,10 +56,3 @@ fun loadImage(view: ImageView, imageUrl: String?) {
             .into(view)
     }
 }
-
-@BindingAdapter("app:alpha")
-fun setAlpha(view: ImageView, value: Boolean?) {
-    value?.let {
-        view.alpha = if (it) 1.0f else 0.5f
-    }
-}

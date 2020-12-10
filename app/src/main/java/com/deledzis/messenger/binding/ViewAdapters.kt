@@ -50,3 +50,10 @@ fun setReverseVisibilityFromBoolean(view: View, value: Boolean?) {
 fun setVisibilityInv(view: View, value: Boolean?) {
     view.visibility = if (value == true) View.VISIBLE else View.INVISIBLE
 }
+
+@BindingAdapter("app:reduce_alpha")
+fun setAlpha(view: View, value: Boolean?) {
+    value?.let {
+        view.alpha = if (it) 1.0f else 0.5f
+    }
+}
