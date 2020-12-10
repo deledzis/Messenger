@@ -20,6 +20,7 @@ class ChatViewModel(private val chatId: Int) : BaseViewModel(),
     val type = MutableLiveData(false) // false -- text, true -- file
     val error = MutableLiveData<String>()
     val messages = MutableLiveData<List<Message>>()
+    val newMessages = MutableLiveData<Boolean>()
     val uploadProgress = MutableLiveData<Int>()
 
     fun getChat() {
@@ -30,7 +31,7 @@ class ChatViewModel(private val chatId: Int) : BaseViewModel(),
             if (response == null) {
                 error.postValue("Не удалось обновить сообщения")
             } else {
-                messages.postValue(response.messages)
+                postMessages(response.messages)
             }
             stopLoading()
         }
@@ -84,10 +85,25 @@ class ChatViewModel(private val chatId: Int) : BaseViewModel(),
     fun handleBackgroundMessagesResult(messagesJson: String?) {
         messagesJson ?: return
         val list = fromJson<List<Message>>(messagesJson)
-        messages.postValue(list)
+        postMessages(list)
         if (list.isNotEmpty()) {
             error.postValue(null)
         }
+    }
+
+    private fun postMessages(list: List<Message>) {
+        messages.postValue(list)
+        newMessages.postValue(checkHasNewMessages(list))
+    }
+
+    private fun checkHasNewMessages(newList: List<Message>): Boolean {
+        val originalList = messages.value ?: emptyList()
+
+        val sum = originalList + newList
+        return sum.groupBy { it.id }
+            .filter { it.value.size == 1 }
+            .flatMap { it.value }
+            .isNotEmpty()
     }
 
     override fun onProgressUpdate(percentage: Int) {

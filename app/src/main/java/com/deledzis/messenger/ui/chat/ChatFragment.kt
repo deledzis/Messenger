@@ -76,14 +76,27 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
         dataBinding.rvMessages.adapter = adapter
     }
 
+    override fun onStart() {
+        super.onStart()
+        startPeriodicWorker()
+    }
+
+    override fun onStop() {
+        stopPeriodicWorker()
+        super.onStop()
+    }
+
     override fun bindObservers() {
         viewModel.getChat()
         viewModel.messages.observe(viewLifecycleOwner, {
-            logi { "Messages: $it" }
             dataBinding.icSend.animateShow()
             dataBinding.sendProgress.animateGone()
             adapter.messages = it ?: return@observe
-            dataBinding.rvMessages.scrollToPosition(0)
+        })
+        viewModel.newMessages.observe(viewLifecycleOwner, {
+            if (it == true) {
+                dataBinding.rvMessages.scrollToPosition(0)
+            }
         })
         viewModel.error.observe(viewLifecycleOwner, {
             dataBinding.icSend.animateShow()
@@ -92,8 +105,6 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         })
-
-//        startPeriodicWorker()
     }
 
     override fun onBackClicked(view: View) {
@@ -123,11 +134,6 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
         viewModel.sendMessage()
     }
 
-    override fun onDestroy() {
-        stopPeriodicWorker()
-        super.onDestroy()
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -135,7 +141,6 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            logv { "Permission: ${permissions[0]}, was ${grantResults[0]}" }
             startFilePicker()
         } else {
             startSnackbar(
@@ -166,7 +171,6 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
             }
         }
     }
-
 
     private fun startPeriodicWorker() {
         if (scheduledFuture != null) return
@@ -206,13 +210,13 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
             .build()
 
         WorkManager
-            .getInstance(requireContext())
+            .getInstance(activity.applicationContext)
             .enqueue(workRequest) // run work request
 
         // explicitly observing results in main thread
         // since all this code runs in a background thread
         Handler(Looper.getMainLooper()).post {
-            WorkManager.getInstance(requireContext())
+            WorkManager.getInstance(activity.applicationContext)
                 .getWorkInfoByIdLiveData(workRequest.id)
                 .observe(this, { info ->
                     if (info != null && info.state.isFinished) {

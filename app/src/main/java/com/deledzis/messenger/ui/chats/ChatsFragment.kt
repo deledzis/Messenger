@@ -65,10 +65,19 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onStop() {
+        stopPeriodicWorker()
+        super.onStop()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        startPeriodicWorker()
+    }
+
     override fun bindObservers() {
         viewModel.getChats(refresh = srl.isRefreshing)
         viewModel.chats.observe(viewLifecycleOwner, {
-            logi { "Chats: $it" }
             srl.isRefreshing = false
             adapter.chats = it ?: return@observe
         })
@@ -81,8 +90,6 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
                 ) { viewModel.getChats(refresh = true) }
             } ?: run { stopSnackbar() }
         })
-
-//        startPeriodicWorker()
     }
 
     override fun onAddChatClicked(view: View) {
@@ -159,13 +166,13 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
             .build()
 
         WorkManager
-            .getInstance(requireContext())
+            .getInstance(activity.applicationContext)
             .enqueue(workRequest) // run work request
 
         // explicitly observing results in main thread
         // since all this code runs in a background thread
         Handler(Looper.getMainLooper()).post {
-            WorkManager.getInstance(requireContext())
+            WorkManager.getInstance(activity.applicationContext)
                 .getWorkInfoByIdLiveData(workRequest.id)
                 .observe(this, { info ->
                     if (info != null && info.state.isFinished) {
