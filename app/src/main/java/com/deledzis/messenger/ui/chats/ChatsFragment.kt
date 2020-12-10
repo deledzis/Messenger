@@ -73,7 +73,6 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
             adapter.chats = it ?: return@observe
         })
         viewModel.error.observe(viewLifecycleOwner, {
-            loge { "Error: $it" }
             srl.isRefreshing = false
             it?.let {
                 startSnackbar(
@@ -83,7 +82,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
             } ?: run { stopSnackbar() }
         })
 
-        startPeriodicWorker()
+//        startPeriodicWorker()
     }
 
     override fun onAddChatClicked(view: View) {

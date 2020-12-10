@@ -54,11 +54,11 @@ fun Date.month(): String {
 fun Date.daysBetween(other: Date): Long {
     return when {
         this.compareIgnoreTime(other) < 0 -> TimeUnit.DAYS.convert(
-            other.time - this.time,
+            other.ignoreTime().time - this.ignoreTime().time,
             TimeUnit.MILLISECONDS
         )
         this.compareIgnoreTime(other) > 0 -> TimeUnit.DAYS.convert(
-            this.time - other.time,
+            this.ignoreTime().time - other.ignoreTime().time,
             TimeUnit.MILLISECONDS
         )
         else -> 0L

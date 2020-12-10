@@ -9,16 +9,33 @@ import kotlinx.coroutines.launch
 class LoginViewModel : BaseViewModel() {
     override val repository: LoginRepository = LoginRepository(App.injector.api())
 
-    var username = MutableLiveData("")
-    var password = MutableLiveData("")
-    val error = MutableLiveData<String>()
     val userData = MutableLiveData<AuthorizedUser>()
+    val error = MutableLiveData<String>()
+
+    var username = MutableLiveData<String>()
+    val usernameError = MutableLiveData<String>()
+
+    var password = MutableLiveData<String>()
+    val passwordError = MutableLiveData<String>()
+
+    private fun clearErrors() {
+        error.postValue(null)
+        usernameError.postValue(null)
+        passwordError.postValue(null)
+    }
 
     fun login() {
-        startLoading()
+        clearErrors()
         scope.launch {
-            if (username.value.isNullOrBlank() || password.value.isNullOrBlank()) {
-                error.postValue("Нужно ввести имя пользователя и пароль")
+            startLoading()
+            if (username.value.isNullOrBlank()) {
+                usernameError.postValue("Нужно ввести логин")
+                stopLoading()
+                return@launch
+            }
+            if (password.value.isNullOrBlank()) {
+                passwordError.postValue("Нужно ввести пароль")
+                stopLoading()
                 return@launch
             }
             val response = repository.login(

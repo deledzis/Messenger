@@ -1,33 +1,21 @@
 package com.deledzis.messenger.ui.register
 
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.deledzis.messenger.R
 import com.deledzis.messenger.base.BaseFragment
 import com.deledzis.messenger.databinding.FragmentRegisterBinding
-import com.deledzis.messenger.di.model.TokenInterceptor
-import com.deledzis.messenger.di.model.UserData
 import com.deledzis.messenger.ui.login.LoginFragment
 import com.deledzis.messenger.util.LOGIN_FRAGMENT_TAG
 import com.deledzis.messenger.util.extensions.viewModelFactory
-import javax.inject.Inject
 
 class RegisterFragment : BaseFragment(), RegisterActionsHandler {
     private lateinit var dataBinding: FragmentRegisterBinding
-
-    @Inject
-    lateinit var tokenInterceptor: TokenInterceptor
-
-    @Inject
-    lateinit var userData: UserData
 
     private val viewModel: RegisterViewModel by lazy {
         ViewModelProvider(
@@ -56,24 +44,27 @@ class RegisterFragment : BaseFragment(), RegisterActionsHandler {
 
     override fun bindObservers() {
         viewModel.userData.observe(viewLifecycleOwner, {
-            val inputManager = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.hideSoftInputFromWindow(
-                activity.currentFocus?.windowToken,
-                HIDE_NOT_ALWAYS
-            )
+            hideKeyboard()
             if (it != null) {
-                userData.authorizedUser = it
-                tokenInterceptor.token = it.accessToken ?: ""
+                activity.setUserData(it)
                 activity.navigateToHome()
             }
         })
         viewModel.error.observe(viewLifecycleOwner, {
-            val inputManager = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.hideSoftInputFromWindow(
-                activity.currentFocus?.windowToken,
-                HIDE_NOT_ALWAYS
-            )
-            Toast.makeText(activity, it ?: "Неизвестная ошибка", Toast.LENGTH_LONG).show()
+            hideKeyboard()
+            it?.let { Toast.makeText(activity, it, Toast.LENGTH_LONG).show() }
+        })
+        viewModel.usernameError.observe(viewLifecycleOwner, {
+            hideKeyboard()
+            dataBinding.tilUsername.error = it
+        })
+        viewModel.nicknameError.observe(viewLifecycleOwner, {
+            hideKeyboard()
+            dataBinding.tilNickname.error = it
+        })
+        viewModel.passwordError.observe(viewLifecycleOwner, {
+            hideKeyboard()
+            dataBinding.tilPassword.error = it
         })
     }
 

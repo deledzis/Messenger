@@ -9,33 +9,52 @@ import kotlinx.coroutines.launch
 class RegisterViewModel : BaseViewModel() {
     override val repository: RegisterRepository = RegisterRepository(App.injector.api())
 
-    var username = MutableLiveData("")
-    var nickname = MutableLiveData("")
-    var password = MutableLiveData("")
-    val error = MutableLiveData<String>()
     val userData = MutableLiveData<AuthorizedUser>()
+    val error = MutableLiveData<String>()
+
+    var username = MutableLiveData<String>()
+    val usernameError = MutableLiveData<String>()
+
+    var nickname = MutableLiveData<String>()
+    val nicknameError = MutableLiveData<String>()
+
+    var password = MutableLiveData<String>()
+    val passwordError = MutableLiveData<String>()
+
+    private fun clearErrors() {
+        error.postValue(null)
+        usernameError.postValue(null)
+        nicknameError.postValue(null)
+        passwordError.postValue(null)
+    }
 
     fun register() {
-        startLoading()
+        clearErrors()
         scope.launch {
+            startLoading()
             if (username.value.isNullOrBlank()) {
-                error.postValue("Нужно ввести логин")
-                return@launch
-            }
-            if (username.value?.length !in (3 .. 32)) {
-                error.postValue("Логин не может содержать более 32 символов")
-                return@launch
-            }
-            if (nickname.value?.length !in (3 .. 32)) {
-                error.postValue("Имя не может содержать более 32 символов")
+                usernameError.postValue("Нужно ввести логин")
+                stopLoading()
                 return@launch
             }
             if (password.value.isNullOrBlank()) {
-                error.postValue("Нужно ввести пароль")
+                passwordError.postValue("Нужно ввести пароль")
+                stopLoading()
                 return@launch
             }
-            if (password.value?.length !in (8 .. 32)) {
-                error.postValue("Пароль не может содержать более 32 символов")
+            if (username.value?.length !in (4..100)) {
+                usernameError.postValue("Логин должен содержать от 4 до 100 символов включительно")
+                stopLoading()
+                return@launch
+            }
+            if (nickname.value?.length !in (1..100)) {
+                nicknameError.postValue("Имя может содержать до 100 символов включительно")
+                stopLoading()
+                return@launch
+            }
+            if (password.value != null && password.value?.length !in (8..64)) {
+                passwordError.postValue("Пароль должен содержать от 8 до 64 символов включительно")
+                stopLoading()
                 return@launch
             }
             val response = repository.register(

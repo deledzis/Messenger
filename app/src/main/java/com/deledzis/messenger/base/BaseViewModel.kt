@@ -16,8 +16,8 @@ abstract class BaseViewModel : ViewModel() {
 
     protected abstract val repository: BaseRepository
 
-    val loading = MutableLiveData(false)
-    val loadingError = MutableLiveData(false)
+    val loading = MutableLiveData<Boolean>()
+    val loadingError = MutableLiveData<Boolean>()
 
     protected open fun startLoading() {
         loading.postValue(true)

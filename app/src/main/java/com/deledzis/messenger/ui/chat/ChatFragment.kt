@@ -83,9 +83,9 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
             dataBinding.icSend.animateShow()
             dataBinding.sendProgress.animateGone()
             adapter.messages = it ?: return@observe
+            dataBinding.rvMessages.scrollToPosition(0)
         })
         viewModel.error.observe(viewLifecycleOwner, {
-            loge { "Error: $it" }
             dataBinding.icSend.animateShow()
             dataBinding.sendProgress.animateGone()
             if (!it.isNullOrBlank()) {
@@ -93,7 +93,7 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
             }
         })
 
-        startPeriodicWorker()
+//        startPeriodicWorker()
     }
 
     override fun onBackClicked(view: View) {

@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.deledzis.messenger.App
 import com.deledzis.messenger.R
 import com.deledzis.messenger.base.BaseActivity
+import com.deledzis.messenger.data.model.auth.AuthorizedUser
 import com.deledzis.messenger.databinding.ActivityMainBinding
 import com.deledzis.messenger.di.model.TokenInterceptor
 import com.deledzis.messenger.di.model.UserData
@@ -71,8 +72,13 @@ class MainActivity : BaseActivity() {
         )
     }
 
+    fun setUserData(user: AuthorizedUser?) {
+        userData.authorizedUser = user
+        tokenInterceptor.token = user?.accessToken ?: ""
+    }
+
     fun logout() {
-        userData.authorizedUser = null
+        setUserData(null)
         navigateToLogin()
     }
 

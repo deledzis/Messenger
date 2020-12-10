@@ -94,7 +94,11 @@ class MessagesAdapter(private val userId: Int, private val controller: MessageIt
         val message = messages[position]
         val previousMessage = if (position < messages.size - 1) messages[position + 1] else null
         val date = if (previousMessage == null) {
-            DateUtils.getDate(message.date).formatDate(format = DF_ONLY_DAY)
+            when {
+                DateUtils.getDate(message.date).isToday() -> "Сегодня"
+                DateUtils.getDate(message.date).isYesterday() -> "Вчера"
+                else -> DateUtils.getDate(message.date).formatDate(format = DF_ONLY_DAY)
+            }
         } else {
             val messageDate = DateUtils.getDate(message.date)
             val previousMessageDate = DateUtils.getDate(previousMessage.date)
@@ -110,13 +114,29 @@ class MessagesAdapter(private val userId: Int, private val controller: MessageIt
         }
         if (message.author.id == userId) {
             when (message.type) {
-                true -> (holder as FileMessageFromUserViewHolder).bind(message, date)
-                false -> (holder as TextMessageFromUserViewHolder).bind(message, date)
+                true -> (holder as FileMessageFromUserViewHolder).bind(
+                    item = message,
+                    date = date,
+                    last = position == 0
+                )
+                false -> (holder as TextMessageFromUserViewHolder).bind(
+                    item = message,
+                    date = date,
+                    last = position == 0
+                )
             }
         } else {
             when (message.type) {
-                true -> (holder as FileMessageFromInterlocutorViewHolder).bind(message, date)
-                false -> (holder as TextMessageFromInterlocutorViewHolder).bind(message, date)
+                true -> (holder as FileMessageFromInterlocutorViewHolder).bind(
+                    item = message,
+                    date = date,
+                    last = position == 0
+                )
+                false -> (holder as TextMessageFromInterlocutorViewHolder).bind(
+                    item = message,
+                    date = date,
+                    last = position == 0
+                )
             }
         }
     }
@@ -124,40 +144,44 @@ class MessagesAdapter(private val userId: Int, private val controller: MessageIt
     inner class TextMessageFromUserViewHolder(private val binding: ItemTextMessageUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message, date: String? = null) = with(binding) {
+        fun bind(item: Message, date: String? = null, last: Boolean = false) = with(binding) {
             message = item
             controller = this@MessagesAdapter.controller
             this.date = date
+            this.last = last
         }
     }
 
     inner class TextMessageFromInterlocutorViewHolder(private val binding: ItemTextMessageInterlocutorBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message, date: String? = null) = with(binding) {
+        fun bind(item: Message, date: String? = null, last: Boolean = false) = with(binding) {
             message = item
             controller = this@MessagesAdapter.controller
             this.date = date
+            this.last = last
         }
     }
 
     inner class FileMessageFromUserViewHolder(private val binding: ItemFileMessageUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message, date: String? = null) = with(binding) {
+        fun bind(item: Message, date: String? = null, last: Boolean = false) = with(binding) {
             message = item
             controller = this@MessagesAdapter.controller
             this.date = date
+            this.last = last
         }
     }
 
     inner class FileMessageFromInterlocutorViewHolder(private val binding: ItemFileMessageInterlocutorBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message, date: String? = null) = with(binding) {
+        fun bind(item: Message, date: String? = null, last: Boolean = false) = with(binding) {
             message = item
             controller = this@MessagesAdapter.controller
             this.date = date
+            this.last = last
         }
     }
 }

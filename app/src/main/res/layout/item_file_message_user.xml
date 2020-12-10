@@ -17,19 +17,24 @@
             name="date"
             type="String" />
 
+        <variable
+            name="last"
+            type="Boolean" />
+
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="32dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/bgr_new_chat_date"
             app:reverse_visibility="@{date == null || date.empty}">
 
@@ -51,9 +56,15 @@
 
         </FrameLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            app:reverse_visibility="@{date == null || date.empty}" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:paddingStart="72dp"
             android:paddingEnd="0dp">
 
@@ -102,7 +113,7 @@
                     android:layout_marginEnd="12dp"
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/white"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:message_date="@{message.date}"
@@ -111,6 +122,11 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            app:visibility="@{last}" />
 
     </LinearLayout>
 

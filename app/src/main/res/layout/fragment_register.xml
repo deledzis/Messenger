@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -47,18 +46,19 @@
                 android:textColor="@color/text_label" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/login_text_input"
+                android:id="@+id/til_username"
                 style="@style/InputText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/login_edit_text"
+                    android:id="@+id/tie_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:text="@={viewModel.username}"
-                    tools:text="Anvil" />
+                    android:text="@={viewModel.username}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
@@ -69,17 +69,18 @@
                 android:textColor="@color/text_label" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/nickname_text_input"
+                android:id="@+id/til_nickname"
                 style="@style/InputText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/nickname_edit_text"
+                    android:id="@+id/tie_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.nickname}"
-                    tools:text="Anvil" />
+                    android:text="@={viewModel.nickname}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
@@ -90,19 +91,18 @@
                 android:textColor="@color/text_label" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/password_text_input"
+                android:id="@+id/til_password"
                 style="@style/InputText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password_edit_text"
+                    android:id="@+id/tie_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:text="@={viewModel.password}"
-                    tools:text="Anvil" />
+                    android:text="@={viewModel.password}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -111,8 +111,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginTop="64dp"
-                android:clickable="@{!viewModel.loading &amp;&amp; !viewModel.username.empty &amp;&amp; !viewModel.password.empty &amp;&amp; viewModel.username.length() >= 3 &amp;&amp; viewModel.password.length() >= 8}"
-                android:enabled="@{!viewModel.loading &amp;&amp; !viewModel.username.empty &amp;&amp; !viewModel.password.empty &amp;&amp; viewModel.username.length() >= 3 &amp;&amp; viewModel.password.length() >= 8}"
+                android:clickable="@{!viewModel.loading &amp;&amp; viewModel.username != null &amp;&amp; !viewModel.username.empty &amp;&amp; viewModel.password != null &amp;&amp; !viewModel.password.empty}"
+                android:enabled="@{!viewModel.loading &amp;&amp; viewModel.username != null &amp;&amp; !viewModel.username.empty &amp;&amp; viewModel.password != null &amp;&amp; !viewModel.password.empty}"
                 android:onClick="@{() -> viewModel.register()}"
                 android:text="@string/action_register" />
 
