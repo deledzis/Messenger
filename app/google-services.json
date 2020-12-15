@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "986648657854",
+    "project_id": "spbstu-messenger",
+    "storage_bucket": "spbstu-messenger.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986648657854:android:e32b5016a5a40a524183ef",
+        "android_client_info": {
+          "package_name": "com.deledzis.messenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "986648657854-nh16bergne5lbbn23u95bq0svt3hoqou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deledzis.messenger",
+            "certificate_hash": "6baf4d3427356a42eea0f0b6d1416435a62cdfb0"
+          }
+        },
+        {
+          "client_id": "986648657854-e5dg6ond3o9tar3vcs9rk6c3ga3oof2v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK4_VkPLfGCCJZSrVQik8n1rta3f2YSQI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "986648657854-e5dg6ond3o9tar3vcs9rk6c3ga3oof2v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

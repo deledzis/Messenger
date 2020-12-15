@@ -19,6 +19,10 @@ import com.deledzis.messenger.ui.chats.ChatsFragment
 import com.deledzis.messenger.ui.login.LoginFragment
 import com.deledzis.messenger.util.CHATS_FRAGMENT_TAG
 import com.deledzis.messenger.util.LOGIN_FRAGMENT_TAG
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
@@ -30,6 +34,8 @@ class MainActivity : BaseActivity() {
     lateinit var tokenInterceptor: TokenInterceptor
 
     private lateinit var databinding: ActivityMainBinding
+    private lateinit var storage: FirebaseStorage
+    private lateinit var storageRef: StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_Messenger)
@@ -45,6 +51,9 @@ class MainActivity : BaseActivity() {
 
         databinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         databinding.lifecycleOwner = this
+
+        storage = Firebase.storage
+        this.storageRef = storage.reference
 
         if (savedInstanceState == null) {
             if (userData.authorizedUser != null &&
@@ -81,6 +90,8 @@ class MainActivity : BaseActivity() {
         setUserData(null)
         navigateToLogin()
     }
+
+    fun getStorageRef() = storageRef
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_DOWN) {
