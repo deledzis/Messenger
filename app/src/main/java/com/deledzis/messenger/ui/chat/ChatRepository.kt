@@ -10,27 +10,21 @@ import okhttp3.RequestBody
 
 class ChatRepository(private val api: ApiInterface) : BaseRepository() {
     suspend fun getChat(id: Int): Chat? {
-        return safeApiCall(
-            call = { api.getChat(chatId = id) },
-            errorMessage = "Error while getting chat"
-        )
+        return safeApiCall { api.getChat(chatId = id) }
     }
 
     suspend fun sendTextMessage(chatId: Int, authorId: Int, type: Boolean, content: String): BaseResponse? {
-        return safeApiCall(
-            call = {
-                api.sendMessageToChat(
+        return safeApiCall {
+            api.sendMessageToChat(
+                chatId = chatId,
+                request = SendMessageRequest(
                     chatId = chatId,
-                    request = SendMessageRequest(
-                        chatId = chatId,
-                        authorId = authorId,
-                        type = type,
-                        content = content
-                    )
+                    authorId = authorId,
+                    type = type,
+                    content = content
                 )
-            },
-            errorMessage = "Error while sending message"
-        )
+            )
+        }
     }
 
     suspend fun sendImageMessage(

@@ -102,7 +102,6 @@ android {
             // and the plugin automatically assigns all the module's flavors to
             // that dimension.
             dimension "version"
-            applicationIdSuffix ".mock"
             versionNameSuffix "-mock"
 
             resValue "string", "api_version", "v1"
@@ -175,7 +174,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_ext_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_ext_version"
 
-    //Kotlin Coroutines
+    // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutine_version_android"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutine_version_core"
 

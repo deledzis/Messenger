@@ -78,11 +78,15 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
 
     override fun onStart() {
         super.onStart()
-        startPeriodicWorker()
+        if (!isMock) {
+            startPeriodicWorker()
+        }
     }
 
     override fun onStop() {
-        stopPeriodicWorker()
+        if (!isMock) {
+            stopPeriodicWorker()
+        }
         super.onStop()
     }
 

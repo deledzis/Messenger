@@ -56,7 +56,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = ChatsAdapter(this, App.injector.userData().authorizedUser?.id!!)
+        adapter = ChatsAdapter(this, App.injector.userData().authorizedUser?.id ?: -1)
         dataBinding.rvChats.layoutManager = LinearLayoutManager(activity)
         dataBinding.rvChats.adapter = adapter
 
@@ -65,14 +65,18 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onStop() {
-        stopPeriodicWorker()
-        super.onStop()
-    }
-
     override fun onStart() {
         super.onStart()
-        startPeriodicWorker()
+        if (!isMock) {
+            startPeriodicWorker()
+        }
+    }
+
+    override fun onStop() {
+        if (!isMock) {
+            stopPeriodicWorker()
+        }
+        super.onStop()
     }
 
     override fun bindObservers() {

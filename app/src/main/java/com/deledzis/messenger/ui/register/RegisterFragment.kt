@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.deledzis.messenger.R
@@ -49,10 +48,6 @@ class RegisterFragment : BaseFragment(), RegisterActionsHandler {
                 activity.setUserData(it)
                 activity.navigateToHome()
             }
-        })
-        viewModel.error.observe(viewLifecycleOwner, {
-            hideKeyboard()
-            it?.let { Toast.makeText(activity, it, Toast.LENGTH_LONG).show() }
         })
         viewModel.usernameError.observe(viewLifecycleOwner, {
             hideKeyboard()

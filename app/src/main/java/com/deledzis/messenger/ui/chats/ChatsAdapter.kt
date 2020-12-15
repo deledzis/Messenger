@@ -31,17 +31,16 @@ class ChatsAdapter(private val controller: ChatItemActionsHandler, private val u
     override fun getItemCount() = chats.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(chats[position], first = position == 0)
+        holder.bind(chats[position])
     }
 
     inner class ViewHolder(private val binding: ItemChatBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ChatReduced, first: Boolean = false) = with(binding) {
+        fun bind(item: ChatReduced) = with(binding) {
             chat = item
             userId = this@ChatsAdapter.userId
             controller = this@ChatsAdapter.controller
-            this.first = first
         }
     }
 }

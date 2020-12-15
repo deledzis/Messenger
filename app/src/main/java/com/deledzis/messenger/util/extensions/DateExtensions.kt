@@ -1,6 +1,5 @@
 package com.deledzis.messenger.util.extensions
 
-import android.annotation.SuppressLint
 import com.deledzis.messenger.util.DateUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,12 +44,6 @@ fun Date.isYesterday(): Boolean {
     return today.after(this) && this.ignoreTime().daysBetween(today) == 1L
 }
 
-fun Date.month(): String {
-    return this.formatDate(
-        format = DateUtils.MONTH_FORMAT
-    )
-}
-
 fun Date.daysBetween(other: Date): Long {
     return when {
         this.compareIgnoreTime(other) < 0 -> TimeUnit.DAYS.convert(
@@ -64,23 +57,3 @@ fun Date.daysBetween(other: Date): Long {
         else -> 0L
     }
 }
-
-fun Date.getBigger(other: Date) = if (this > other) this else other
-
-fun Date.getLower(other: Date) = if (this < other) this else other
-
-fun Date.afterToday(): Boolean = this.after(DateUtils.getCurrentDate())
-
-@SuppressLint("SimpleDateFormat")
-fun Date.convertWithTimeZone(
-    timePattern: String = "yyyy-MM-dd'T'HH:mm:ss",
-    timeZone: String = "Europe/Moscow"
-): Date? {
-    val isoFormat = SimpleDateFormat(timePattern)
-    isoFormat.timeZone = TimeZone.getTimeZone(timeZone)
-    val oldDate = isoFormat.format(this)
-    isoFormat.timeZone = TimeZone.getDefault()
-    return isoFormat.parse(oldDate)
-}
-
-fun Date.copy() = Date(time)

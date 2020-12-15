@@ -7,17 +7,14 @@ import com.deledzis.messenger.data.remote.ApiInterface
 
 class RegisterRepository(private val api: ApiInterface) : BaseRepository() {
     suspend fun register(username: String, nickname: String?, password: String): AuthorizedUser? {
-        return safeApiCall(
-            call = {
-                api.registerUser(
-                    request = RegisterUserRequest(
-                        username = username,
-                        nickname = nickname,
-                        password = password
-                    )
+        return safeApiCall {
+            api.registerUser(
+                request = RegisterUserRequest(
+                    username = username,
+                    nickname = nickname,
+                    password = password
                 )
-            },
-            errorMessage = "Error while registering"
-        )
+            )
+        }
     }
 }
