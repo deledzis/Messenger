@@ -54,4 +54,9 @@
     <!-- Placeholders for edit texts -->
     <string name="placeholder_send_message">Введите сообщение…</string>
     <string name="placeholder_search">Поиск</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_logout">Подтвердите выход из аккаунта\n\n</string>
+    <string name="dialog_btn_cancel">Отмена</string>
+    <string name="dialog_btn_exit">Выйти</string>
 </resources>

@@ -12,6 +12,7 @@ import com.deledzis.messenger.base.BaseFragment
 import com.deledzis.messenger.databinding.FragmentSettingsBinding
 import com.deledzis.messenger.util.extensions.animateGone
 import com.deledzis.messenger.util.extensions.animateShow
+import com.deledzis.messenger.util.extensions.showDialog
 import com.deledzis.messenger.util.extensions.viewModelFactory
 
 class SettingsFragment : BaseFragment(), SettingsActionsHandler {
@@ -91,6 +92,12 @@ class SettingsFragment : BaseFragment(), SettingsActionsHandler {
     }
 
     override fun onLogoutClicked(view: View) {
-        activity.logout()
+        requireContext().showDialog(
+            messageId = R.string.dialog_logout,
+            positiveBtnId = R.string.dialog_btn_exit,
+            negativeBtnId = R.string.dialog_btn_cancel
+        ) {
+            activity.logout()
+        }
     }
 }
