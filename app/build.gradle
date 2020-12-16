@@ -4,15 +4,26 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
+
+// Create a variable called keystorePropertiesFile, and initialize it to your
+// keystore.properties file, in the rootProject folder.
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     signingConfigs {
         release {
-            storeFile file('./keystore/release-keystore.jks')
-            storePassword 'kla999NBV2012'
-            keyAlias 'key0'
-            keyPassword 'kla999NBV2012'
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
         }
     }
     compileSdkVersion 30
@@ -27,8 +38,8 @@ android {
         if (runTasks.contains('assembleRelease') || runTasks.contains('aR')) {
             value = 1
         }
-        def versionMajor = 0
-        def versionMinor = 1
+        def versionMajor = 1
+        def versionMinor = 0
         def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
         def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
         def versionNumber = versionProps['VERSION_NUMBER'].toInteger() + value
@@ -92,7 +103,6 @@ android {
             // and the plugin automatically assigns all the module's flavors to
             // that dimension.
             dimension "version"
-            applicationIdSuffix ".mock"
             versionNameSuffix "-mock"
 
             resValue "string", "api_version", "v1"
@@ -117,10 +127,6 @@ android {
         jvmTarget = "1.8"
     }
 
-    dataBinding {
-        enabled = true
-    }
-
     buildFeatures {
         dataBinding true
     }
@@ -136,25 +142,20 @@ dependencies {
     def lifecycle_ext_version = "2.2.0"
     def kotlin_coroutine_version_android = "1.4.1"
     def kotlin_coroutine_version_core = "1.3.9"
-    def navigation_version = '2.3.2'
     def okhttp_version = '4.9.0'
     def retrofit_version = '2.9.0'
     def gson_version = "2.8.6"
     def glide_version = "4.11.0"
-    def rxjava_version = "2.2.10"
-    def rxandroid_version = "2.1.1"
     def dagger_version = '2.30.1'
-    def room_version = "2.2.1"
-    def room_coroutines_version = "2.1.0-alpha04"
-    def paging_runtime_version = "2.1.2"
     def work_manager_version = "2.4.0"
+    def firebase_bom_version = "26.1.1"
     def junit_version = '4.13.1'
     def android_junit_version = '1.1.2'
     def espresso_version = '3.3.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$x_compat_version"
     implementation "androidx.core:core-ktx:$x_core_version"
     implementation "androidx.legacy:legacy-support-v4:$legacy_version"
@@ -165,15 +166,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_ext_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_ext_version"
 
-    //Kotlin Coroutines
+    // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutine_version_android"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutine_version_core"
-
-    // Navigation Component
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
     // OkHttp 4
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
@@ -182,10 +177,6 @@ dependencies {
     // Retrofit 2
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-
-    // RxJava 2
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
 
     // Dagger 2
     api "com.google.dagger:dagger:$dagger_version"
@@ -201,17 +192,13 @@ dependencies {
         exclude group: "com.android.support"
     }
 
-    // Room
-    implementation "android.arch.persistence.room:runtime:$room_version"
-    implementation "androidx.room:room-coroutines:$room_coroutines_version"
-    kapt "android.arch.persistence.room:compiler:$room_version"
-
-    // Paging Library
-    implementation "androidx.paging:paging-runtime-ktx:$paging_runtime_version"
-    implementation "androidx.paging:paging-rxjava2-ktx:$paging_runtime_version"
-
     // Worker Manager Library
     implementation "androidx.work:work-runtime-ktx:$work_manager_version"
+
+    // Import the BoM for the Firebase platform
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$android_junit_version"

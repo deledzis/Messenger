@@ -183,8 +183,10 @@
             android:id="@+id/send_message_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:background="@color/background_dark"
             android:elevation="12dp"
+            android:minHeight="72dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -216,7 +218,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 app:hintEnabled="false"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -236,18 +238,37 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <ProgressBar
+                android:id="@+id/progress_upload"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="@{viewModel.uploadProgress}"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/send_container"
+                app:layout_constraintStart_toEndOf="@id/ic_attach"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/send_container"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:clickable="@{viewModel.text != null &amp;&amp; !viewModel.text.empty}"
                 android:onClick="@{controller::onSendClicked}"
-                app:cardBackgroundColor="@color/background_dark"
+                app:cardBackgroundColor="@color/transparent"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:visibility="@{viewModel.text != null &amp;&amp; !viewModel.text.empty}">
 
                 <ProgressBar
                     android:id="@+id/send_progress"
@@ -262,8 +283,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_send"
-                    app:reduce_alpha="@{viewModel.text != null &amp;&amp; !viewModel.text.empty}" />
+                    android:src="@drawable/ic_send" />
 
             </com.google.android.material.card.MaterialCardView>
 

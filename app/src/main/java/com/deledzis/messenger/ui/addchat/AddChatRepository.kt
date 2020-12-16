@@ -8,23 +8,17 @@ import com.deledzis.messenger.data.remote.ApiInterface
 
 class AddChatRepository(private val api: ApiInterface) : BaseRepository() {
     suspend fun getAvailableUsers(searchText: String): Users? {
-        return safeApiCall(
-            call = { api.getUsersAvailable(search = searchText) },
-            errorMessage = "Error while getting available users, param = $searchText"
-        )
+        return safeApiCall { api.getUsersAvailable(search = searchText) }
     }
 
     suspend fun addChat(userId: Int, interlocutorId: Int): ChatReduced? {
-        return safeApiCall(
-            call = {
-                api.addChat(
-                    request = AddChatRequest(
-                        authorId = userId,
-                        interlocutorId = interlocutorId,
-                    )
+        return safeApiCall {
+            api.addChat(
+                request = AddChatRequest(
+                    authorId = userId,
+                    interlocutorId = interlocutorId,
                 )
-            },
-            errorMessage = "Error while adding chat"
-        )
+            )
+        }
     }
 }

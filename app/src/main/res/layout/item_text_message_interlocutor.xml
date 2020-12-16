@@ -17,10 +17,6 @@
             name="date"
             type="String" />
 
-        <variable
-            name="last"
-            type="Boolean" />
-
     </data>
 
     <LinearLayout
@@ -35,7 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/bgr_new_chat_date"
+            android:visibility="gone"
             app:reverse_visibility="@{date == null || date.empty}">
 
             <TextView
@@ -56,15 +54,10 @@
 
         </FrameLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            app:reverse_visibility="@{date == null || date.empty}" />
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:paddingStart="0dp"
             android:paddingEnd="72dp">
 
@@ -109,11 +102,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            app:visibility="@{last}" />
 
     </LinearLayout>
 

@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 val isDebug = BuildConfig.DEBUG
+const val isMock = BuildConfig.FLAVOR == "mock"
 
 inline fun <reified T> toJson(value: T): String {
     return Gson().toJson(value, object : TypeToken<T>() {}.type)

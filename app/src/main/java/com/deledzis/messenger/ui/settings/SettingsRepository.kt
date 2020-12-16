@@ -13,19 +13,16 @@ class SettingsRepository(private val api: ApiInterface) : BaseRepository() {
         password: String?,
         newPassword: String?
     ): AuthorizedUser? {
-        return safeApiCall(
-            call = {
-                api.updateUserData(
-                    UpdateUserRequest(
-                        userId = id,
-                        username = username,
-                        nickname = nickname,
-                        password = password,
-                        newPassword = newPassword
-                    )
+        return safeApiCall {
+            api.updateUserData(
+                UpdateUserRequest(
+                    userId = id,
+                    username = username,
+                    nickname = nickname,
+                    password = password,
+                    newPassword = newPassword
                 )
-            },
-            errorMessage = "Error while login"
-        )
+            )
+        }
     }
 }

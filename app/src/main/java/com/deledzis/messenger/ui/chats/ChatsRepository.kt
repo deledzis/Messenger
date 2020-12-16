@@ -6,9 +6,6 @@ import com.deledzis.messenger.data.remote.ApiInterface
 
 class ChatsRepository(private val api: ApiInterface) : BaseRepository() {
     suspend fun getChats(): Chats? {
-        return safeApiCall(
-            call = { api.getChats() },
-            errorMessage = "Error while getting chats"
-        )
+        return safeApiCall { api.getChats() }
     }
 }

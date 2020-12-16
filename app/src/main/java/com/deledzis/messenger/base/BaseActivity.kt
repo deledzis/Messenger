@@ -107,7 +107,7 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleOwner,
     fun addFragment(fragment: Fragment, tag: String) {
         if (isActivityVisible) {
             fm.beginTransaction()
-                .add(R.id.main_container, fragment)
+                .replace(R.id.main_container, fragment)
                 .addToBackStack(tag)
                 .commit()
         } else {

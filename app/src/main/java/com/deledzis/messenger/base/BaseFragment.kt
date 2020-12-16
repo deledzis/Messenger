@@ -61,7 +61,7 @@ abstract class BaseFragment : Fragment(), Loggable {
     protected fun isStoragePermissionGranted(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
-                    requireContext(),
+                    activity.applicationContext,
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED
             ) {

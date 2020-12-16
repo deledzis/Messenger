@@ -3,26 +3,27 @@ package com.deledzis.messenger.base
 import com.deledzis.messenger.App
 import com.deledzis.messenger.data.remote.NetworkManager
 import com.deledzis.messenger.util.extensions.tag
+import com.deledzis.messenger.util.extensions.toast
 import com.deledzis.messenger.util.logd
-import com.deledzis.messenger.util.loge
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Response
-import java.io.IOException
+import java.net.ConnectException
 
 open class BaseRepository {
-    val netManager = NetworkManager(App.injector.context())
+    private val networkManager = NetworkManager(App.injector.context())
 
-    suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>, errorMessage: String): T? {
-        val result: Result<T> = safeApiResult(call, errorMessage)
+    suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): T? {
+        val result: Result<T> = safeApiResult(call)
         var data: T? = null
         when (result) {
             is Result.Success -> data = result.data
             is Result.Error -> {
-                logd(this.tag(), "$errorMessage & Exception - ${result.exception}")
-                if (result.exception is NoInternetConnectionException) {
-                    throw NoInternetConnectionException()
-                }
-                if (result.exception is TestTimeBetweenAttemptsNotGoneException) {
-                    throw TestTimeBetweenAttemptsNotGoneException()
+                logd(this.tag(), "Exception - ${result.exception}")
+                if (result.exception is AppException) {
+                    withContext(Dispatchers.Main) {
+                        App.injector.context().toast(result.exception.message)
+                    }
                 }
             }
         }
@@ -30,33 +31,45 @@ open class BaseRepository {
     }
 
     private suspend fun <T : Any> safeApiResult(
-        call: suspend () -> Response<T>,
-        errorMessage: String
+        call: suspend () -> Response<T>
     ): Result<T> {
-        if (netManager.isConnectedToInternet) {
-            val response = call.invoke()
+        if (networkManager.isConnectedToInternet) {
+            try {
+                val response = call.invoke()
 
-            if (response.isSuccessful) {
-                return Result.Success(response.body()!!)
+                if (response.isSuccessful) {
+                    return Result.Success(response.body()!!)
+                }
+
+                return Result.Error(ApiException(message = getMessageForCode(response.code())))
+            } catch (e: ConnectException) {
+                return Result.Error(ServerDownException())
             }
-            loge(tag(), "Raw response: ${response.raw()}")
-            loge(tag(), "Error message: $errorMessage")
-
-            if (response.code() == 400 && response.raw().request.url.encodedPath.contains("tests/attempts")) {
-                return Result.Error(TestTimeBetweenAttemptsNotGoneException())
-            }
-
-            return Result.Error(IOException("Error Occurred during getting safe Api result, Custom ERROR - $errorMessage"))
         } else {
             return Result.Error(NoInternetConnectionException())
         }
     }
+}
 
-    class NoInternetConnectionException : Exception()
-    class TestTimeBetweenAttemptsNotGoneException : Exception() {
-        override val message: String?
-            get() = "Время между попытками еще не прошло"
-    }
+fun getMessageForCode(apiCode: Int): String = when (apiCode) {
+    400 -> "Не удалось выполнить запрос"
+    401 -> "Не указан логин"
+    402 -> "Не указан пароль"
+    403 -> "Неправильный логин или пароль"
+    404 -> "Неправильный логин или пароль"
+    405 -> "Пользователь с таким логином уже зарегистрирован"
+    406 -> "Ошибка авторизации. Пожалуйста, авторизуйтесь заново"
+    407 -> "Собеседник не найден"
+    408 -> "Чат не найден"
+    409 -> "Не указан пользователь"
+    410 -> "Не указан собеседник"
+    411 -> "Не указан чат"
+    412 -> "Не удалось отправить сообщение"
+    413 -> "Не указан текущий пароль"
+    414 -> "Указан неверный текущий пароль"
+    415 -> "Не удалось обновить пользователя"
+    416 -> "Диалог уже создан"
+    else -> "Не удалось выполнить запрос: неизвестная ошибка сервера"
 }
 
 /**
@@ -75,3 +88,9 @@ sealed class Result<out T : Any> {
         }
     }
 }
+
+sealed class AppException(override val message: String) : Exception(message)
+
+class ServerDownException : AppException("Сервер не отвечает. Пожалуйста, попробуйте позднее")
+class ApiException(override val message: String) : AppException(message)
+class NoInternetConnectionException : AppException("Отсутствует подключение к интернету")

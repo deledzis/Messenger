@@ -17,10 +17,6 @@
             name="date"
             type="String" />
 
-        <variable
-            name="last"
-            type="Boolean" />
-
     </data>
 
     <LinearLayout
@@ -35,7 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/bgr_new_chat_date"
+            android:visibility="gone"
             app:reverse_visibility="@{date == null || date.empty}">
 
             <TextView
@@ -56,61 +54,41 @@
 
         </FrameLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            app:reverse_visibility="@{date == null || date.empty}" />
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:paddingStart="72dp"
             android:paddingEnd="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="140dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:background="@drawable/bgr_user_message_ripple"
+                android:minWidth="140dp"
                 android:minHeight="48dp"
-                android:onClick="@{() -> controller.onSelected(message)}">
+                android:onClick="@{() -> controller.onSelected(message)}"
+                android:paddingStart="12dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="12dp">
 
                 <ImageView
                     android:id="@+id/ic_file"
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="12dp"
-                    android:src="@drawable/ic_file"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_file_name"
-                    app:layout_constraintStart_toStartOf="@+id/tv_file_name"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_file_name"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginBottom="16dp"
-                    android:ellipsize="end"
-                    android:maxWidth="100dp"
-                    android:maxLines="2"
-                    android:text="@{message.fileName}"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:layout_marginBottom="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/tv_time"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ic_file"
-                    tools:text="text text text text text text text text text text " />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:src="@{message.content}"
+                    tools:src="@tools:sample/avatars" />
 
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/white"
                     android:textSize="12sp"
@@ -122,11 +100,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            app:visibility="@{last}" />
 
     </LinearLayout>
 

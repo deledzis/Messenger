@@ -7,16 +7,13 @@ import com.deledzis.messenger.data.remote.ApiInterface
 
 class LoginRepository(private val api: ApiInterface) : BaseRepository() {
     suspend fun login(email: String?, password: String?): AuthorizedUser? {
-        return safeApiCall(
-            call = {
-                api.authUser(
-                    AuthUserRequest(
-                        username = email ?: "",
-                        password = password ?: ""
-                    )
+        return safeApiCall {
+            api.authUser(
+                AuthUserRequest(
+                    username = email ?: "",
+                    password = password ?: ""
                 )
-            },
-            errorMessage = "Error while login"
-        )
+            )
+        }
     }
 }

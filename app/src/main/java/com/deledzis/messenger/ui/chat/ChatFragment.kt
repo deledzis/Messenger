@@ -25,9 +25,6 @@ import com.deledzis.messenger.util.*
 import com.deledzis.messenger.util.extensions.animateGone
 import com.deledzis.messenger.util.extensions.animateShow
 import com.deledzis.messenger.util.extensions.viewModelFactory
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -39,7 +36,6 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
     private lateinit var dataBinding: FragmentChatBinding
     private lateinit var adapter: MessagesAdapter
     private var scheduledFuture: ScheduledFuture<*>? = null
-    private var selectedImageUri: Uri? = null
 
     private val viewModel: ChatViewModel by lazy {
         ViewModelProvider(
@@ -76,24 +72,43 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
         dataBinding.rvMessages.adapter = adapter
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!isDebug) {
+            startPeriodicWorker()
+        }
+    }
+
+    override fun onStop() {
+        if (!isDebug) {
+            stopPeriodicWorker()
+        }
+        super.onStop()
+    }
+
     override fun bindObservers() {
         viewModel.getChat()
         viewModel.messages.observe(viewLifecycleOwner, {
-            logi { "Messages: $it" }
-            dataBinding.icSend.animateShow()
-            dataBinding.sendProgress.animateGone()
             adapter.messages = it ?: return@observe
-            dataBinding.rvMessages.scrollToPosition(0)
+        })
+        viewModel.newMessages.observe(viewLifecycleOwner, {
+            if (it == true) {
+                dataBinding.rvMessages.scrollToPosition(0)
+            }
+        })
+        viewModel.uploading.observe(viewLifecycleOwner, {
+            toggleSendProgress(it)
+            toggleUploadProgress(it)
+        })
+        viewModel.sent.observe(viewLifecycleOwner, {
+            toggleSendProgress(it)
         })
         viewModel.error.observe(viewLifecycleOwner, {
-            dataBinding.icSend.animateShow()
-            dataBinding.sendProgress.animateGone()
+            toggleSendProgress(false)
             if (!it.isNullOrBlank()) {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         })
-
-//        startPeriodicWorker()
     }
 
     override fun onBackClicked(view: View) {
@@ -118,14 +133,28 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
     }
 
     override fun onSendClicked(view: View) {
-        dataBinding.icSend.animateGone()
-        dataBinding.sendProgress.animateShow()
+        toggleSendProgress(true)
         viewModel.sendMessage()
     }
 
-    override fun onDestroy() {
-        stopPeriodicWorker()
-        super.onDestroy()
+    private fun toggleSendProgress(progress: Boolean) {
+        if (progress) {
+            dataBinding.icSend.animateGone()
+            dataBinding.sendProgress.animateShow()
+        } else {
+            dataBinding.icSend.animateShow()
+            dataBinding.sendProgress.animateGone()
+        }
+    }
+
+    private fun toggleUploadProgress(progress: Boolean) {
+        if (progress) {
+            dataBinding.tilMessage.animateGone()
+            dataBinding.progressUpload.animateShow()
+        } else {
+            dataBinding.tilMessage.animateShow()
+            dataBinding.progressUpload.animateGone()
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -135,7 +164,6 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            logv { "Permission: ${permissions[0]}, was ${grantResults[0]}" }
             startFilePicker()
         } else {
             startSnackbar(
@@ -160,13 +188,11 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
         data ?: return
         when (requestCode) {
             FILE_REQUEST_CODE -> {
-                selectedImageUri = data.data
-                loge { "selected image uri: $selectedImageUri" }
-                uploadImage()
+                loge { "selected image uri: ${data.data}" }
+                data.data?.let { uploadImage(it) }
             }
         }
     }
-
 
     private fun startPeriodicWorker() {
         if (scheduledFuture != null) return
@@ -206,13 +232,13 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
             .build()
 
         WorkManager
-            .getInstance(requireContext())
+            .getInstance(activity.applicationContext)
             .enqueue(workRequest) // run work request
 
         // explicitly observing results in main thread
         // since all this code runs in a background thread
         Handler(Looper.getMainLooper()).post {
-            WorkManager.getInstance(requireContext())
+            WorkManager.getInstance(activity.applicationContext)
                 .getWorkInfoByIdLiveData(workRequest.id)
                 .observe(this, { info ->
                     if (info != null && info.state.isFinished) {
@@ -224,17 +250,8 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
         }
     }
 
-    private fun uploadImage() {
-        selectedImageUri ?: return
-        val parcelFileDescriptor = activity.contentResolver
-            .openFileDescriptor(selectedImageUri!!, "r", null) ?: return
-
-        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-        val file = File(activity.cacheDir, activity.contentResolver.getFileName(selectedImageUri!!))
-        val outputStream = FileOutputStream(file)
-        inputStream.copyTo(outputStream)
-
-        viewModel.uploadFile(file)
+    private fun uploadImage(uri: Uri) {
+        viewModel.uploadFileToFirebase(uri, activity.getStorageRef())
     }
 
     companion object {

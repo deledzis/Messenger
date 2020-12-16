@@ -61,6 +61,7 @@
         <item name="materialAlertDialogBodyTextStyle">
             @style/BodyTextAppearance.MaterialComponents.Body2
         </item>
+        <item name="dialogCornerRadius">8dp</item>
         <!-- Buttons -->
         <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
         <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>

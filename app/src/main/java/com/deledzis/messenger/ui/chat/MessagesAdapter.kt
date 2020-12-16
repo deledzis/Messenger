@@ -6,10 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.deledzis.messenger.R
 import com.deledzis.messenger.data.model.chats.Message
-import com.deledzis.messenger.databinding.ItemFileMessageInterlocutorBinding
-import com.deledzis.messenger.databinding.ItemFileMessageUserBinding
-import com.deledzis.messenger.databinding.ItemTextMessageInterlocutorBinding
-import com.deledzis.messenger.databinding.ItemTextMessageUserBinding
+import com.deledzis.messenger.databinding.*
 import com.deledzis.messenger.util.DateUtils
 import com.deledzis.messenger.util.DateUtils.DF_ONLY_DAY
 import com.deledzis.messenger.util.extensions.*
@@ -117,12 +114,10 @@ class MessagesAdapter(private val userId: Int, private val controller: MessageIt
                 true -> (holder as FileMessageFromUserViewHolder).bind(
                     item = message,
                     date = date,
-                    last = position == 0
                 )
                 false -> (holder as TextMessageFromUserViewHolder).bind(
                     item = message,
                     date = date,
-                    last = position == 0
                 )
             }
         } else {
@@ -130,12 +125,10 @@ class MessagesAdapter(private val userId: Int, private val controller: MessageIt
                 true -> (holder as FileMessageFromInterlocutorViewHolder).bind(
                     item = message,
                     date = date,
-                    last = position == 0
                 )
                 false -> (holder as TextMessageFromInterlocutorViewHolder).bind(
                     item = message,
                     date = date,
-                    last = position == 0
                 )
             }
         }
@@ -144,44 +137,40 @@ class MessagesAdapter(private val userId: Int, private val controller: MessageIt
     inner class TextMessageFromUserViewHolder(private val binding: ItemTextMessageUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message, date: String? = null, last: Boolean = false) = with(binding) {
+        fun bind(item: Message, date: String? = null) = with(binding) {
             message = item
             controller = this@MessagesAdapter.controller
             this.date = date
-            this.last = last
         }
     }
 
     inner class TextMessageFromInterlocutorViewHolder(private val binding: ItemTextMessageInterlocutorBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message, date: String? = null, last: Boolean = false) = with(binding) {
+        fun bind(item: Message, date: String? = null) = with(binding) {
             message = item
             controller = this@MessagesAdapter.controller
             this.date = date
-            this.last = last
         }
     }
 
     inner class FileMessageFromUserViewHolder(private val binding: ItemFileMessageUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message, date: String? = null, last: Boolean = false) = with(binding) {
+        fun bind(item: Message, date: String? = null) = with(binding) {
             message = item
             controller = this@MessagesAdapter.controller
             this.date = date
-            this.last = last
         }
     }
 
     inner class FileMessageFromInterlocutorViewHolder(private val binding: ItemFileMessageInterlocutorBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message, date: String? = null, last: Boolean = false) = with(binding) {
+        fun bind(item: Message, date: String? = null) = with(binding) {
             message = item
             controller = this@MessagesAdapter.controller
             this.date = date
-            this.last = last
         }
     }
 }

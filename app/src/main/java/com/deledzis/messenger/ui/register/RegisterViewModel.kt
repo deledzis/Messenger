@@ -10,7 +10,6 @@ class RegisterViewModel : BaseViewModel() {
     override val repository: RegisterRepository = RegisterRepository(App.injector.api())
 
     val userData = MutableLiveData<AuthorizedUser>()
-    val error = MutableLiveData<String>()
 
     var username = MutableLiveData<String>()
     val usernameError = MutableLiveData<String>()
@@ -22,7 +21,6 @@ class RegisterViewModel : BaseViewModel() {
     val passwordError = MutableLiveData<String>()
 
     private fun clearErrors() {
-        error.postValue(null)
         usernameError.postValue(null)
         nicknameError.postValue(null)
         passwordError.postValue(null)
@@ -62,9 +60,7 @@ class RegisterViewModel : BaseViewModel() {
                 nickname = nickname.value,
                 password = password.value!!
             )
-            if (response == null) {
-                error.postValue("Не удалось зарегистрироваться с предоставленными данными")
-            } else {
+            if (response != null) {
                 userData.postValue(response)
             }
             stopLoading()
