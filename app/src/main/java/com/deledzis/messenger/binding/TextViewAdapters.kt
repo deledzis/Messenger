@@ -30,13 +30,13 @@ fun setDateFormat(
 ) {
     date?.let {
         if (it.isBlank()) return
-        val dated = DateUtils.getDate(it, inputFormat) ?: return
+        val dated = DateUtils.getDate(it, inputFormat)
         view.text = outputFormat.format(dated)
     }
 }
 
 @Suppress("DEPRECATION")
-@BindingAdapter("from_html")
+@BindingAdapter("app:fromHtml")
 fun setTextFromHtml(view: TextView, value: String?) {
     value?.let {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
