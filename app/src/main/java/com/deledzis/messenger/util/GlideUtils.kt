@@ -26,7 +26,6 @@ class BigBitmapTransformation(private val maxWidth: Int) : BitmapTransformation(
                 toTransform.width,
                 toTransform.height
             )
-//            toTransform
         } else TransformationUtils.centerCrop(
             pool,
             toTransform,

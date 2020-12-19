@@ -68,7 +68,7 @@
                 app:cardBackgroundColor="@color/gray_100"
                 app:cardElevation="0dp"
                 app:cardPreventCornerOverlap="false"
-                app:shapeAppearanceOverlay="@style/ShapeCardInterlocutor">
+                app:shapeAppearanceOverlay="@style/ShapeInterlocutor">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"

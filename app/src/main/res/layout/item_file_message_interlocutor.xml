@@ -68,42 +68,36 @@
                 app:cardBackgroundColor="@color/gray_100"
                 app:cardElevation="0dp"
                 app:cardPreventCornerOverlap="false"
-                app:shapeAppearanceOverlay="@style/ShapeCardInterlocutor">
+                app:cardUseCompatPadding="false"
+                app:shapeAppearanceOverlay="@style/ShapeInterlocutor">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ic_file"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="32dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/ShapeInterlocutor"
+                    app:src="@{message.content}"
+                    tools:src="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="140dp"
-                    android:minHeight="48dp"
-                    android:paddingStart="12dp"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="12dp">
-
-                    <ImageView
-                        android:id="@+id/ic_file"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="32dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:src="@{message.content}"
-                        tools:src="@tools:sample/avatars" />
-
-                    <TextView
-                        android:id="@+id/tv_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:textColor="@color/gray_400"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:message_date="@{message.date}"
-                        tools:text="11:30" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_gravity="bottom|start"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/gray_400"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:message_date="@{message.date}"
+                    tools:text="11:30" />
 
             </com.google.android.material.card.MaterialCardView>
 
