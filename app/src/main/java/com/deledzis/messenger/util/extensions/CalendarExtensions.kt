@@ -2,6 +2,10 @@ package com.deledzis.messenger.util.extensions
 
 import java.util.*
 
+fun Calendar.from(date: Date): Calendar = this.apply {
+    time = date
+}
+
 fun Calendar.compareIgnoreTime(other: Calendar): Int {
     val isEqualYear = this.get(Calendar.YEAR)
         .compareTo(other.get(Calendar.YEAR))

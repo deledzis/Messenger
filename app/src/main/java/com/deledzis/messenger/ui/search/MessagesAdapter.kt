@@ -34,16 +34,15 @@ class MessagesAdapter(private val userId: Int) :
     override fun getItemCount() = messages.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(messages[position], first = position == 0)
+        holder.bind(messages[position])
     }
 
     inner class ViewHolder(private val binding: ItemMessageBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message, first: Boolean = false) = with(binding) {
+        fun bind(item: Message) = with(binding) {
             message = item
             userId = this@MessagesAdapter.userId
-            this.first = first
         }
     }
 }

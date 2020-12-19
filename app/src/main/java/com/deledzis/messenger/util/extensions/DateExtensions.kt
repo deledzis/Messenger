@@ -44,6 +44,12 @@ fun Date.isYesterday(): Boolean {
     return today.after(this) && this.ignoreTime().daysBetween(today) == 1L
 }
 
+fun Date.isInCurrentYear(): Boolean {
+    val today = Calendar.getInstance()
+    val thisDay = Calendar.getInstance().from(this)
+    return thisDay.year == today.year
+}
+
 fun Date.daysBetween(other: Date): Long {
     return when {
         this.compareIgnoreTime(other) < 0 -> TimeUnit.DAYS.convert(
@@ -56,4 +62,11 @@ fun Date.daysBetween(other: Date): Long {
         )
         else -> 0L
     }
+}
+
+fun Date.formatForChat(): String = when {
+    this.isToday() -> "Сегодня"
+    this.isYesterday() -> "Вчера"
+    this.isInCurrentYear() -> this.formatDate(format = DateUtils.DATE_FORMATTED)
+    else -> this.formatDate(format = DateUtils.DATE_FORMATTED_FULL)
 }

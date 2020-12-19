@@ -12,10 +12,7 @@ import com.deledzis.messenger.data.model.chats.Message
 import com.deledzis.messenger.util.Base64ImageGetter
 import com.deledzis.messenger.util.DateUtils
 import com.deledzis.messenger.util.GlideImageGetter
-import com.deledzis.messenger.util.extensions.colorStateListFrom
-import com.deledzis.messenger.util.extensions.formatDate
-import com.deledzis.messenger.util.extensions.isToday
-import com.deledzis.messenger.util.extensions.isYesterday
+import com.deledzis.messenger.util.extensions.*
 import java.text.SimpleDateFormat
 
 @BindingAdapter(
@@ -82,7 +79,8 @@ fun setMessagePreviewDate(view: TextView, value: String?) {
     view.text = when {
         date.isToday() -> date.formatDate(format = DateUtils.TIME_FORMAT)
         date.isYesterday() -> "вчера"
-        else -> date.formatDate(format = DateUtils.RU_DATE_FORMAT)
+        date.isInCurrentYear() -> date.formatDate(format = DateUtils.DATE_FORMAT)
+        else -> date.formatDate(format = DateUtils.DATE_FORMAT_FULL)
     }
 }
 

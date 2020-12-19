@@ -67,13 +67,13 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
 
     override fun onStart() {
         super.onStart()
-        if (!isDebug) {
+        if (!isMock) {
             startPeriodicWorker()
         }
     }
 
     override fun onStop() {
-        if (!isDebug) {
+        if (!isMock) {
             stopPeriodicWorker()
         }
         super.onStop()

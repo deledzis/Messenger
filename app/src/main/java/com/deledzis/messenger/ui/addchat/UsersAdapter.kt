@@ -34,16 +34,15 @@ class UsersAdapter(private val controller: UserItemActionsHandler) :
     override fun getItemCount() = users.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(users[position], first = position == 0)
+        holder.bind(users[position])
     }
 
     inner class ViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: User, first: Boolean = false) = with(binding) {
+        fun bind(item: User) = with(binding) {
             user = item
             controller = this@UsersAdapter.controller
-            this.first = first
         }
     }
 }
