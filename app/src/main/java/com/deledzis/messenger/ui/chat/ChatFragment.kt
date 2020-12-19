@@ -90,6 +90,7 @@ class ChatFragment(private val chat: ChatReduced) : BaseFragment(),
         viewModel.getChat()
         viewModel.messages.observe(viewLifecycleOwner, {
             adapter.messages = it ?: return@observe
+            dataBinding.rvMessages.setItemViewCacheSize(it.size)
         })
         viewModel.newMessages.observe(viewLifecycleOwner, {
             if (it == true) {

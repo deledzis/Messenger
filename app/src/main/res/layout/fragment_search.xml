@@ -104,7 +104,7 @@
                             android:drawablePadding="12dp"
                             android:drawableTint="@color/gray_400"
                             android:hint="@string/placeholder_search"
-                            android:inputType="textEmailAddress" />
+                            android:inputType="textFilter" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

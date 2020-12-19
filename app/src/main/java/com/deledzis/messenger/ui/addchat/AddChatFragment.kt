@@ -15,7 +15,6 @@ import com.deledzis.messenger.databinding.FragmentAddChatBinding
 import com.deledzis.messenger.ui.chat.ChatFragment
 import com.deledzis.messenger.util.CHAT_FRAGMENT_TAG
 import com.deledzis.messenger.util.extensions.viewModelFactory
-import com.deledzis.messenger.util.logi
 
 class AddChatFragment : BaseFragment(),
     AddChatActionsHandler,
@@ -61,11 +60,10 @@ class AddChatFragment : BaseFragment(),
 
     override fun bindObservers() {
         viewModel.users.observe(viewLifecycleOwner, {
-            logi { "Users: $it" }
             adapter.users = it ?: return@observe
+            dataBinding.rvUsers.setItemViewCacheSize(it.size)
         })
         viewModel.addedChat.observe(viewLifecycleOwner, {
-            logi { "Added chat: $it" }
             if (it != null) {
                 activity.replaceTopFragment(
                     fragment = ChatFragment(it),

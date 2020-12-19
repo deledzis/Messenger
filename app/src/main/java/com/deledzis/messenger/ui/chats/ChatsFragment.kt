@@ -84,6 +84,7 @@ class ChatsFragment : RefreshableFragment(), ChatsActionsHandler, ChatItemAction
         viewModel.chats.observe(viewLifecycleOwner, {
             srl.isRefreshing = false
             adapter.chats = it ?: return@observe
+            dataBinding.rvChats.setItemViewCacheSize(it.size)
         })
         viewModel.error.observe(viewLifecycleOwner, {
             srl.isRefreshing = false

@@ -14,7 +14,6 @@ import com.deledzis.messenger.base.BaseFragment
 import com.deledzis.messenger.data.model.chats.ChatReduced
 import com.deledzis.messenger.databinding.FragmentSearchBinding
 import com.deledzis.messenger.util.extensions.viewModelFactory
-import com.deledzis.messenger.util.logi
 
 class SearchFragment(private val chat: ChatReduced) : BaseFragment(), SearchActionsHandler {
 
@@ -58,8 +57,8 @@ class SearchFragment(private val chat: ChatReduced) : BaseFragment(), SearchActi
 
     override fun bindObservers() {
         viewModel.messages.observe(viewLifecycleOwner, {
-            logi { "Messages: $it" }
             adapter.messages = it ?: return@observe
+            dataBinding.rvMessages.setItemViewCacheSize(it.size)
         })
     }
 
