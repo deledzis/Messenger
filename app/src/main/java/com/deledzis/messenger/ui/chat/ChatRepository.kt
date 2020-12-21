@@ -1,27 +1,31 @@
 package com.deledzis.messenger.ui.chat
 
 import com.deledzis.messenger.base.BaseRepository
+import com.deledzis.messenger.cache.DataSourceFactory
 import com.deledzis.messenger.data.model.BaseResponse
 import com.deledzis.messenger.data.model.chats.Chat
+import com.deledzis.messenger.data.model.chats.Chats
 import com.deledzis.messenger.data.model.chats.SendMessageRequest
 import com.deledzis.messenger.data.remote.ApiInterface
 
-class ChatRepository(private val api: ApiInterface) : BaseRepository() {
+class ChatRepository : BaseRepository() {
     suspend fun getChat(id: Int): Chat? {
-        return safeApiCall { api.getChat(chatId = id) }
+        val respond: Chat?
+        if(networkManager.isConnectedToInternet) {
+            respond = safeApiCall{DataSourceFactory().getRemote().getChat(chatId = id)}
+            if (respond != null)
+                DataSourceFactory().getCache().updateMessages(respond.messages)
+        }
+        else
+            respond = DataSourceFactory().getCache().getChat(chatId = id)
+        return respond
     }
 
     suspend fun sendTextMessage(chatId: Int, authorId: Int, type: Boolean, content: String): BaseResponse? {
-        return safeApiCall {
-            api.sendMessageToChat(
-                chatId = chatId,
-                request = SendMessageRequest(
-                    chatId = chatId,
-                    authorId = authorId,
-                    type = type,
-                    content = content
-                )
-            )
-        }
+        return safeApiCall { DataSourceFactory().getRemote().sendTextMessage(
+                                                                chatId = chatId,
+                                                                authorId = authorId,
+                                                                type = type,
+                                                                content = content) }
     }
 }

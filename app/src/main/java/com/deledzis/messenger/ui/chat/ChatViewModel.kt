@@ -16,7 +16,7 @@ import kotlin.math.roundToInt
 
 class ChatViewModel(private val chatId: Int) : BaseViewModel(),
     UploadRequestBody.UploadCallback {
-    override val repository: ChatRepository = ChatRepository(App.injector.api())
+    override val repository: ChatRepository = ChatRepository()
 
     val text = MutableLiveData<String>()
     val type = MutableLiveData(false) // false -- text, true -- file

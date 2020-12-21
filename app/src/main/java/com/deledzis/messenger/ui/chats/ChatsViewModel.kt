@@ -8,7 +8,7 @@ import com.deledzis.messenger.util.fromJson
 import kotlinx.coroutines.launch
 
 class ChatsViewModel : BaseViewModel() {
-    override val repository: ChatsRepository = ChatsRepository(App.injector.api())
+    override val repository: ChatsRepository = ChatsRepository()
 
     val error = MutableLiveData<Boolean>()
     val chats = MutableLiveData<List<ChatReduced>>()

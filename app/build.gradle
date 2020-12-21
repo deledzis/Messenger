@@ -152,6 +152,7 @@ dependencies {
     def junit_version = '4.13.1'
     def android_junit_version = '1.1.2'
     def espresso_version = '3.3.0'
+    def room_version = '2.2.6'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -177,6 +178,10 @@ dependencies {
     // Retrofit 2
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     // Dagger 2
     api "com.google.dagger:dagger:$dagger_version"

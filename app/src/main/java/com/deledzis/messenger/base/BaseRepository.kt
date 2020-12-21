@@ -11,7 +11,7 @@ import retrofit2.Response
 import java.net.ConnectException
 
 open class BaseRepository {
-    private val networkManager = NetworkManager(App.injector.context())
+    val networkManager = NetworkManager(App.injector.context())
 
     suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): T? {
         val result: Result<T> = safeApiResult(call)
