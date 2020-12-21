@@ -7,7 +7,7 @@ import androidx.room.Query
 
 @Dao
 interface MessageEntityDao {
-    @Insert(onConflict =  OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMessages(messages: List<MessageEntity>)
 
     @Query(value = "SELECT * FROM messages_table WHERE chatId = :chatId ")
@@ -15,4 +15,7 @@ interface MessageEntityDao {
 
     @Query(value = "SELECT * FROM messages_table WHERE chatId = :chatId ORDER BY id DESC LIMIT 1")
     fun getLastMessage(chatId: Int): MessageEntity
+
+    @Query("DELETE FROM messages_table")
+    fun deleteAll(): Int
 }

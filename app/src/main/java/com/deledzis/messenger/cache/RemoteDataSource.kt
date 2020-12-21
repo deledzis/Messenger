@@ -1,7 +1,6 @@
 package com.deledzis.messenger.cache
 
 import com.deledzis.messenger.App
-import com.deledzis.messenger.base.BaseRepository
 import com.deledzis.messenger.data.model.BaseResponse
 import com.deledzis.messenger.data.model.chats.Chat
 import com.deledzis.messenger.data.model.chats.Chats
@@ -19,15 +18,20 @@ class RemoteDataSource {
         return api.getChats()
     }
 
-    suspend fun sendTextMessage(chatId: Int, authorId: Int, type: Boolean, content: String): Response<BaseResponse> {
+    suspend fun sendTextMessage(
+        chatId: Int,
+        authorId: Int,
+        type: Boolean,
+        content: String
+    ): Response<BaseResponse> {
         return api.sendMessageToChat(
-                    chatId = chatId,
-                    request = SendMessageRequest(
-                    chatId = chatId,
-                    authorId = authorId,
-                    type = type,
-                    content = content
-                )
+            chatId = chatId,
+            request = SendMessageRequest(
+                chatId = chatId,
+                authorId = authorId,
+                type = type,
+                content = content
             )
+        )
     }
 }

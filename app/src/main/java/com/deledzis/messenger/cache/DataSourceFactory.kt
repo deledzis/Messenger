@@ -2,11 +2,11 @@ package com.deledzis.messenger.cache
 
 
 class DataSourceFactory {
-    fun getRemote(): RemoteDataSource{
+    fun getRemote(): RemoteDataSource {
         return RemoteDataSource()
     }
 
-    fun getCache(): CacheDataSource{
+    fun getCache(): CacheDataSource {
         return CacheDataSource()
     }
 }

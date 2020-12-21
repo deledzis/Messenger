@@ -18,4 +18,7 @@ interface ChatEntityDao {
 
     @Query(value = "SELECT * FROM chats_table WHERE id = :chatId")
     fun getChat(chatId: Int): ChatEntity
+
+    @Query("DELETE FROM chats_table")
+    fun deleteAll(): Int
 }
