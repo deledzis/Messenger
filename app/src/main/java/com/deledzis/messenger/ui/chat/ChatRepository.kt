@@ -4,9 +4,6 @@ import com.deledzis.messenger.base.BaseRepository
 import com.deledzis.messenger.cache.DataSourceFactory
 import com.deledzis.messenger.data.model.BaseResponse
 import com.deledzis.messenger.data.model.chats.Chat
-import com.deledzis.messenger.data.model.chats.Chats
-import com.deledzis.messenger.data.model.chats.SendMessageRequest
-import com.deledzis.messenger.data.remote.ApiInterface
 
 class ChatRepository : BaseRepository() {
     suspend fun getChat(id: Int): Chat? {

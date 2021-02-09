@@ -2,11 +2,11 @@ package com.deledzis.messenger.cache
 
 import com.deledzis.messenger.App
 import com.deledzis.messenger.data.model.chats.*
+import com.deledzis.messenger.data.model.users.User
 import com.deledzis.messenger.room.database.MessengerDatabase
 import com.deledzis.messenger.room.mapper.ChatEntityMapper
 import com.deledzis.messenger.room.mapper.MessageEntityMapper
 import com.deledzis.messenger.room.mapper.UserEntityMapper
-import com.deledzis.messenger.room.model.ChatEntity
 
 class CacheDataSource {
     private var chatEntityDao = MessengerDatabase.getInstance(App.injector.context()).chatEntityDao
@@ -34,5 +34,9 @@ class CacheDataSource {
         for (chat in chats)
             userEntityDao.insertUser(UserEntityMapper().mapToEntity(chat.interlocutor))
         chatEntityDao.updateChats(chats.map{ ChatEntityMapper().mapToEntity(it) })
+    }
+
+    fun insertUser(user: User) {
+        userEntityDao.insertUser(UserEntityMapper().mapToEntity(user))
     }
 }

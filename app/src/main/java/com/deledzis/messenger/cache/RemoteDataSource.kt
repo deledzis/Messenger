@@ -1,7 +1,6 @@
 package com.deledzis.messenger.cache
 
 import com.deledzis.messenger.App
-import com.deledzis.messenger.base.BaseRepository
 import com.deledzis.messenger.data.model.BaseResponse
 import com.deledzis.messenger.data.model.chats.Chat
 import com.deledzis.messenger.data.model.chats.Chats

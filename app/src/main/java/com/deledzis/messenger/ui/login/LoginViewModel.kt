@@ -3,7 +3,9 @@ package com.deledzis.messenger.ui.login
 import androidx.lifecycle.MutableLiveData
 import com.deledzis.messenger.App
 import com.deledzis.messenger.base.BaseViewModel
+import com.deledzis.messenger.cache.DataSourceFactory
 import com.deledzis.messenger.data.model.auth.AuthorizedUser
+import com.deledzis.messenger.data.model.users.User
 import kotlinx.coroutines.launch
 
 class LoginViewModel : BaseViewModel() {
@@ -46,6 +48,7 @@ class LoginViewModel : BaseViewModel() {
                 error.postValue("Не удалось войти с предоставленными учетными данными")
             } else {
                 userData.postValue(response)
+                DataSourceFactory().getCache().insertUser(User(userData.value!!.id, userData.value!!.username, userData.value!!.nickname))
             }
             stopLoading()
         }

@@ -2,7 +2,6 @@ package com.deledzis.messenger.room.mapper
 
 import com.deledzis.messenger.App
 import com.deledzis.messenger.data.model.chats.Message
-import com.deledzis.messenger.data.model.users.User
 import com.deledzis.messenger.room.database.MessengerDatabase
 import com.deledzis.messenger.room.model.MessageEntity
 
