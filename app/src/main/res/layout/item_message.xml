@@ -7,7 +7,7 @@
 
         <variable
             name="message"
-            type="com.deledzis.messenger.data.model.chats.Message" />
+            type="com.deledzis.messenger.domain.model.entity.messages.Message" />
 
         <variable
             name="userId"
@@ -48,7 +48,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:message_date_preview="@{message.date}"
+            android:message_datePreview="@{message.date}"
             tools:text="вчера" />
 
         <TextView
@@ -61,14 +61,14 @@
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:maxLines="10"
-            app:chat_preview_content="@{message}"
+            android:chat_previewContent="@{message}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_username"
             app:layout_constraintVertical_bias="0.0"
-            app:message_text_preview="@{message}"
-            app:user_id="@{userId}"
+            android:message_textPreview="@{message}"
+            android:userId="@{userId}"
             tools:text="хорошо)" />
 
         <View

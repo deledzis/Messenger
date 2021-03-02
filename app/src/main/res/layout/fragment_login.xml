@@ -6,11 +6,11 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.ui.login.LoginViewModel" />
+            type="com.deledzis.messenger.old.ui.login.LoginViewModel" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.ui.login.LoginActionsHandler" />
+            type="com.deledzis.messenger.old.ui.login.LoginActionsHandler" />
 
     </data>
 

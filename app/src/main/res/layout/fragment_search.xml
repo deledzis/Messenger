@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.ui.search.SearchViewModel" />
+            type="com.deledzis.messenger.old.ui.search.SearchViewModel" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.ui.search.SearchActionsHandler" />
+            type="com.deledzis.messenger.old.ui.search.SearchActionsHandler" />
 
     </data>
 
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="160dp"
                 android:orientation="vertical"
-                app:visibility="@{!viewModel.loading &amp;&amp; (viewModel.searchText == null || viewModel.searchText.empty)}"
+                android:visibility="@{!viewModel.loading &amp;&amp; (viewModel.searchText == null || viewModel.searchText.empty)}"
                 tools:visibility="visible">
 
                 <TextView
@@ -156,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="160dp"
                 android:orientation="vertical"
-                app:visibility="@{!viewModel.loading &amp;&amp; (viewModel.searchText != null &amp;&amp; !viewModel.searchText.empty) &amp;&amp; (viewModel.messages == null || viewModel.messages.empty)}"
+                android:visibility="@{!viewModel.loading &amp;&amp; (viewModel.searchText != null &amp;&amp; !viewModel.searchText.empty) &amp;&amp; (viewModel.messages == null || viewModel.messages.empty)}"
                 tools:visibility="visible">
 
                 <TextView
@@ -187,7 +187,7 @@
                 android:id="@+id/rv_messages"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:visibility="@{!viewModel.loading &amp;&amp; viewModel.messages != null &amp;&amp; !viewModel.messages.empty}"
+                android:visibility="@{!viewModel.loading &amp;&amp; viewModel.messages != null &amp;&amp; !viewModel.messages.empty}"
                 tools:itemCount="4"
                 tools:listitem="@layout/item_message"
                 tools:visibility="gone" />
@@ -198,7 +198,7 @@
                 android:layout_gravity="center"
                 android:indeterminateTint="@color/primary"
                 android:padding="24dp"
-                app:visibility="@{viewModel.loading}"
+                android:visibility="@{viewModel.loading}"
                 tools:visibility="gone" />
 
         </FrameLayout>

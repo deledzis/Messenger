@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.ui.chats.ChatsViewModel" />
+            type="com.deledzis.messenger.old.ui.chats.ChatsViewModel" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.ui.chats.ChatsActionsHandler" />
+            type="com.deledzis.messenger.old.ui.chats.ChatsActionsHandler" />
 
     </data>
 
@@ -86,7 +86,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:reverse_visibility="@{viewModel.chats == null || viewModel.chats.empty}">
+                        android:visibilityReverse="@{viewModel.chats == null || viewModel.chats.empty}">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="160dp"
                     android:orientation="vertical"
-                    app:visibility="@{!viewModel.loading &amp;&amp; (viewModel.chats == null || viewModel.chats.empty)}"
+                    android:visibility="@{!viewModel.loading &amp;&amp; (viewModel.chats == null || viewModel.chats.empty)}"
                     tools:visibility="gone">
 
                     <TextView
@@ -160,7 +160,7 @@
                     android:id="@+id/rv_chats"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:visibility="@{!viewModel.loading &amp;&amp; viewModel.chats != null &amp;&amp; !viewModel.chats.empty}"
+                    android:visibility="@{!viewModel.loading &amp;&amp; viewModel.chats != null &amp;&amp; !viewModel.chats.empty}"
                     tools:itemCount="4"
                     tools:listitem="@layout/item_chat" />
 
@@ -170,7 +170,7 @@
                     android:layout_gravity="center"
                     android:indeterminateTint="@color/primary"
                     android:padding="24dp"
-                    app:visibility="@{viewModel.loading}"
+                    android:visibility="@{viewModel.loading}"
                     tools:visibility="gone" />
 
             </FrameLayout>

@@ -7,15 +7,15 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.ui.chat.ChatViewModel" />
+            type="com.deledzis.messenger.old.ui.chat.ChatViewModel" />
 
         <variable
             name="chat"
-            type="com.deledzis.messenger.data.model.chats.ChatReduced" />
+            type="com.deledzis.messenger.domain.model.entity.chats.ChatReduced" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.ui.chat.ChatActionsHandler" />
+            type="com.deledzis.messenger.old.ui.chat.ChatActionsHandler" />
 
     </data>
 
@@ -101,7 +101,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:reverse_visibility="@{viewModel.messages == null || viewModel.messages.empty}">
+                        android:visibilityReverse="@{viewModel.messages == null || viewModel.messages.empty}">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -130,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="160dp"
                 android:orientation="vertical"
-                app:visibility="@{!viewModel.loading &amp;&amp; (viewModel.messages == null || viewModel.messages.empty)}"
+                android:visibility="@{!viewModel.loading &amp;&amp; (viewModel.messages == null || viewModel.messages.empty)}"
                 tools:visibility="gone">
 
                 <TextView
@@ -164,7 +164,7 @@
                 android:scrollbars="vertical"
                 app:reverseLayout="true"
                 app:stackFromEnd="true"
-                app:visibility="@{!viewModel.loading &amp;&amp; viewModel.messages != null &amp;&amp; !viewModel.messages.empty}"
+                android:visibility="@{!viewModel.loading &amp;&amp; viewModel.messages != null &amp;&amp; !viewModel.messages.empty}"
                 tools:itemCount="1"
                 tools:listitem="@layout/item_text_message_user" />
 
@@ -174,7 +174,7 @@
                 android:layout_gravity="center"
                 android:indeterminateTint="@color/primary"
                 android:padding="24dp"
-                app:visibility="@{viewModel.loading}"
+                android:visibility="@{viewModel.loading}"
                 tools:visibility="gone" />
 
         </FrameLayout>
@@ -268,7 +268,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:visibility="@{viewModel.text != null &amp;&amp; !viewModel.text.empty}">
+                android:visibility="@{viewModel.text != null &amp;&amp; !viewModel.text.empty}">
 
                 <ProgressBar
                     android:id="@+id/send_progress"

@@ -1,41 +1,37 @@
 package com.deledzis.messenger.di.component
 
-import android.content.Context
-import android.content.SharedPreferences
 import com.deledzis.messenger.App
-import com.deledzis.messenger.base.BaseFragment
-import com.deledzis.messenger.data.remote.ApiInterface
-import com.deledzis.messenger.di.model.UserData
+import com.deledzis.messenger.cache.di.CacheModule
+import com.deledzis.messenger.data.di.RepositoriesModule
 import com.deledzis.messenger.di.module.ApplicationModule
-import com.deledzis.messenger.di.module.ContextModule
-import com.deledzis.messenger.di.module.RetrofitModule
-import com.deledzis.messenger.di.qualifier.ApplicationContext
-import com.deledzis.messenger.di.scopes.ApplicationScope
-import com.deledzis.messenger.ui.main.MainActivity
+import com.deledzis.messenger.infrastructure.di.UtilsModule
+import com.deledzis.messenger.presentation.di.builder.MainActivityBuilder
+import com.deledzis.messenger.presentation.di.module.ViewModelModule
+import com.deledzis.messenger.remote.di.NetworkModule
 import dagger.Component
+import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Singleton
 
-@ApplicationScope
+@Singleton
 @Component(
     modules = [
-        ContextModule::class,
-        RetrofitModule::class,
-        ApplicationModule::class
+        ApplicationModule::class,
+        NetworkModule::class,
+        UtilsModule::class,
+        RepositoriesModule::class,
+        CacheModule::class,
+        MainActivityBuilder::class,
+        ViewModelModule::class,
+        PreferencesUtilsModule::class,
+        PushServicesModule::class,
+        AndroidSupportInjectionModule::class,
+        AndroidInjectionModule::class
     ]
 )
-interface ApplicationComponent {
+interface ApplicationComponent : AndroidInjector<App> {
 
-    fun inject(application: App)
-
-    fun inject(activity: MainActivity)
-
-    fun inject(fragment: BaseFragment)
-
-    fun api(): ApiInterface
-
-    @ApplicationContext
-    fun context(): Context
-
-    fun sharedPreferences(): SharedPreferences
-
-    fun userData(): UserData
+    @Component.Factory
+    interface Factory : AndroidInjector.Factory<App>
 }

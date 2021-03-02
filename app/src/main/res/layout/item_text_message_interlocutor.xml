@@ -7,11 +7,11 @@
 
         <variable
             name="message"
-            type="com.deledzis.messenger.data.model.chats.Message" />
+            type="com.deledzis.messenger.domain.model.entity.messages.Message" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.ui.chat.MessageItemActionsHandler" />
+            type="com.deledzis.messenger.old.ui.chat.MessageItemActionsHandler" />
 
         <variable
             name="date"
@@ -34,7 +34,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/bgr_chat_new_date"
             android:visibility="gone"
-            app:reverse_visibility="@{date == null || date.empty}">
+            android:visibilityReverse="@{date == null || date.empty}">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:message_date="@{message.date}"
+                        android:message_date="@{message.date}"
                         tools:text="11:30" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

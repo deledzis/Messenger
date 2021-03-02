@@ -7,11 +7,11 @@
 
         <variable
             name="chat"
-            type="com.deledzis.messenger.data.model.chats.ChatReduced" />
+            type="com.deledzis.messenger.domain.model.entity.chats.ChatReduced" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.ui.chats.ChatItemActionsHandler" />
+            type="com.deledzis.messenger.old.ui.chats.ChatItemActionsHandler" />
 
         <variable
             name="userId"
@@ -54,7 +54,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:message_date_preview="@{chat.lastMessage.date}"
+            android:message_datePreview="@{chat.lastMessage.date}"
             tools:text="вчера" />
 
         <TextView
@@ -67,14 +67,14 @@
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:maxLines="1"
-            app:chat_preview_content="@{chat.lastMessage}"
+            android:chat_previewContent="@{chat.lastMessage}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_username"
             app:layout_constraintVertical_bias="0.0"
-            app:message_text_preview="@{chat.lastMessage}"
-            app:user_id="@{userId}"
+            android:message_textPreview="@{chat.lastMessage}"
+            android:userId="@{userId}"
             tools:text="Вы: хорошо)" />
 
         <View

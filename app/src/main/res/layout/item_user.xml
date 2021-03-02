@@ -7,11 +7,11 @@
 
         <variable
             name="user"
-            type="com.deledzis.messenger.data.model.users.User" />
+            type="com.deledzis.messenger.old.data.model.users.User" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.ui.addchat.UserItemActionsHandler" />
+            type="com.deledzis.messenger.old.ui.addchat.UserItemActionsHandler" />
 
     </data>
 
@@ -57,7 +57,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_nickname"
             app:layout_constraintVertical_bias="0.0"
-            app:visibility="@{user.nickname != null &amp;&amp; !user.nickname.empty}"
+            android:visibility="@{user.nickname != null &amp;&amp; !user.nickname.empty}"
             tools:text="\@tamik" />
 
         <View

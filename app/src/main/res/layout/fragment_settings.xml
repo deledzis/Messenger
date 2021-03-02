@@ -6,11 +6,11 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.ui.settings.SettingsViewModel" />
+            type="com.deledzis.messenger.old.ui.settings.SettingsViewModel" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.ui.settings.SettingsActionsHandler" />
+            type="com.deledzis.messenger.old.ui.settings.SettingsActionsHandler" />
 
     </data>
 
@@ -62,7 +62,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_close_blue"
-                            app:reduce_alpha="@{!viewModel.loading}" />
+                            android:reduceAlpha="@{!viewModel.loading}" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -110,7 +110,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_done"
-                            app:reduce_alpha="@{viewModel.password != null &amp;&amp; !viewModel.password.empty}" />
+                            android:reduceAlpha="@{viewModel.password != null &amp;&amp; !viewModel.password.empty}" />
 
                     </com.google.android.material.card.MaterialCardView>
 

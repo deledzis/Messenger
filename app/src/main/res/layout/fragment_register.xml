@@ -6,11 +6,11 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.ui.register.RegisterViewModel" />
+            type="com.deledzis.messenger.old.ui.register.RegisterViewModel" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.ui.register.RegisterActionsHandler" />
+            type="com.deledzis.messenger.old.ui.register.RegisterActionsHandler" />
 
     </data>
 
