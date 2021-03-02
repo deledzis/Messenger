@@ -144,7 +144,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     api(project(":data"))
-//    api(project(":cache"))
+    api(project(":cache"))
     api(project(":remote"))
     api(project(":presentation"))
 

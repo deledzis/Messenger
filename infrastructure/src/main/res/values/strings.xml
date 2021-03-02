@@ -46,11 +46,6 @@
     <string name="action_retry">Повторить</string>
     <string name="action_logout">Выйти</string>
 
-    <!-- Errors localization -->
-    <string name="error_get_chats">Не удалось обновить сообщения</string>
-    <string name="error_add_chat">Не удалось создать диалог</string>
-    <string name="error_storage_permissions">Необходимо разрешение на доступ к файлам</string>
-
     <!-- Placeholders for edit texts -->
     <string name="placeholder_send_message">Введите сообщение…</string>
     <string name="placeholder_search">Поиск</string>

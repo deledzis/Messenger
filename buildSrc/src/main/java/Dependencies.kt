@@ -103,6 +103,7 @@ object Libraries {
     /* Firebase dependencies */
     const val crashlyticsLib: String = "com.google.firebase:firebase-crashlytics-ktx"
     const val analyticsLib: String = "com.google.firebase:firebase-analytics-ktx"
+    const val storageLib: String = "com.google.firebase:firebase-storage-ktx"
     const val performanceLib: String = "com.google.firebase:firebase-perf-ktx"
 
     /* Logging dependencies */

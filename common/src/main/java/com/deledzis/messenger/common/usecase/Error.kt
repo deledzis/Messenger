@@ -79,3 +79,8 @@ class ResponseErrorException(val errorCode: Int?, val errorMessage: String?) : E
     override val message: String
         get() = "Error code: $errorCode, message: $errorMessage"
 }
+
+class EmptyCacheException : Exception() {
+    override val message: String
+        get() = "No value cached"
+}

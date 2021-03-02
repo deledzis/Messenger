@@ -21,8 +21,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.deledzis.messenger.infrastructure.view.ErrorSnackbar
-import com.deledzis.messenger.presentation.screens.main.MainActivity
-import com.deledzis.messenger.presentation.screens.main.UserViewModel
+import com.deledzis.messenger.presentation.features.main.MainActivity
+import com.deledzis.messenger.presentation.features.main.UserViewModel
 import timber.log.Timber
 import javax.inject.Inject
 

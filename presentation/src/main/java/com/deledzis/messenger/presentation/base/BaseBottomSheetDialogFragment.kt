@@ -11,7 +11,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.deledzis.messenger.presentation.R
-import com.deledzis.messenger.presentation.screens.main.MainActivity
+import com.deledzis.messenger.presentation.features.main.MainActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

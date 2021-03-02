@@ -11,7 +11,7 @@
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.presentation.screens.chat.MessageItemActionsHandler" />
+            type="com.deledzis.messenger.presentation.features.chat.MessageItemActionsHandler" />
 
         <variable
             name="date"

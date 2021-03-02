@@ -21,11 +21,4 @@
         <item name="materialAlertDialogTheme">@style/AlertDialogTheme.Light</item>
         <item name="snackbarStyle">@style/ErrorSnackbar</item>
     </style>
-
-    <style name="Theme.Messenger.Launcher">
-        <item name="colorPrimaryDark">@color/white</item>
-        <item name="android:windowBackground">@drawable/launch_screen</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowTranslucentNavigation">false</item>
-    </style>
 </resources>

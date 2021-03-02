@@ -100,3 +100,10 @@ fun Date.convertWithTimeZone(
 }
 
 fun Date.copy(): Date = Date(time)
+
+fun Date.formatForChat(): String = when {
+    this.isToday() -> "Сегодня"
+    this.isYesterday() -> "Вчера"
+    this.isInCurrentYear() -> this.formatDate(format = DateUtils.DATE_FORMATTED)
+    else -> this.formatDate(format = DateUtils.DATE_FORMATTED_FULL)
+}

@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.presentation.screens.search.SearchViewModel" />
+            type="com.deledzis.messenger.presentation.features.search.SearchViewModel" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.presentation.screens.search.SearchActionsHandler" />
+            type="com.deledzis.messenger.presentation.features.search.SearchActionsHandler" />
 
     </data>
 

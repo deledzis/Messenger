@@ -24,8 +24,6 @@ import javax.inject.Singleton
         CacheModule::class,
         MainActivityBuilder::class,
         ViewModelModule::class,
-        PreferencesUtilsModule::class,
-        PushServicesModule::class,
         AndroidSupportInjectionModule::class,
         AndroidInjectionModule::class
     ]

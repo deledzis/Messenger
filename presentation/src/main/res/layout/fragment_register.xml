@@ -6,11 +6,11 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.presentation.screens.register.RegisterViewModel" />
+            type="com.deledzis.messenger.presentation.features.register.RegisterViewModel" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.presentation.screens.register.RegisterActionsHandler" />
+            type="com.deledzis.messenger.presentation.features.register.RegisterActionsHandler" />
 
     </data>
 
@@ -125,7 +125,7 @@
                 android:layout_marginBottom="72dp"
                 android:clickable="@{!viewModel.loading}"
                 android:enabled="@{!viewModel.loading}"
-                android:onClick="@{() -> controller.onLoginClicked()}"
+                android:onClick="@{controller::onLoginClicked}"
                 android:text="@string/action_to_login" />
 
         </LinearLayout>

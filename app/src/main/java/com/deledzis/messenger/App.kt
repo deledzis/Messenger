@@ -2,6 +2,7 @@ package com.deledzis.messenger
 
 import android.content.Context
 import androidx.multidex.MultiDex
+import com.deledzis.messenger.di.component.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import timber.log.Timber

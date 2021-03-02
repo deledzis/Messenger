@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Implementation of the [ChatsDataStore] interface to provide a means of communicating
  * with the remote data source
  */
-open class ChatsRemoteDataStore @Inject constructor(private val remote: ChatsRemote) :
+class ChatsRemoteDataStore @Inject constructor(private val remote: ChatsRemote) :
     ChatsDataStore {
 
     override suspend fun getChats(): Response<ChatsEntity, Error> {

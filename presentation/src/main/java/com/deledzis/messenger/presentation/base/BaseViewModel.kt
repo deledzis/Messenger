@@ -67,18 +67,6 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
         }
     }
 
-    protected fun logError(
-        errorCode: Int? = null,
-        originMessage: String? = null,
-        normalizedMessage: String? = null
-    ) {
-        Timber.e("Error #$errorCode: $originMessage")
-        error.postValue(
-            "$normalizedMessage" +
-                    if (errorCode != null) " Код ошибки: $errorCode" else ""
-        )
-    }
-
     protected fun logException(exception: Exception?) {
         Timber.e("Error $exception")
     }

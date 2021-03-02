@@ -7,15 +7,15 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.presentation.screens.chat.ChatViewModel" />
+            type="com.deledzis.messenger.presentation.features.chat.ChatViewModel" />
 
         <variable
-            name="chat"
-            type="com.deledzis.messenger.domain.model.entity.chats.Chat" />
+            name="chatTitle"
+            type="String" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.presentation.screens.chat.ChatActionsHandler" />
+            type="com.deledzis.messenger.presentation.features.chat.ChatActionsHandler" />
 
     </data>
 
@@ -79,7 +79,7 @@
                         android:layout_marginEnd="16dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="@{chat.title}"
+                        android:text="@{chatTitle}"
                         android:textColor="@color/text"
                         android:textSize="24sp"
                         android:textStyle="bold"

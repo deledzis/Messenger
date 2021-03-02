@@ -12,7 +12,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import com.deledzis.messenger.infrastructure.extensions.layoutInflater
 import com.deledzis.messenger.presentation.R
-import com.deledzis.messenger.presentation.screens.main.MainActivity
+import com.deledzis.messenger.presentation.features.main.MainActivity
 
 abstract class BaseDialogFragment(@LayoutRes val layoutId: Int) : DialogFragment() {
     protected lateinit var activity: MainActivity

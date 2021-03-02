@@ -1,0 +1,16 @@
+<resources>
+    <string name="error_auth_failed">Не удалось войти с предоставленными учетными данными</string>
+    <string name="error_register_failed">Не удалось зарегистрироваться с предоставленными учетными данными</string>
+    <string name="error_get_chats">Не удалось обновить список чатов</string>
+    <string name="error_add_chat">Не удалось создать диалог</string>
+    <string name="error_storage_permissions">Необходимо разрешение на доступ к файлам</string>
+    <string name="error_get_messages">Не удалось обновить сообщения</string>
+    <string name="error_empty_username">Нужно ввести логин</string>
+    <string name="error_empty_actual_password">Нужно ввести действующий пароль</string>
+    <string name="error_username_invalid_length">Логин должен содержать от 4 до 100 символов включительно</string>
+    <string name="error_nickname_invalid_length">Имя может содержать до 100 символов включительно</string>
+    <string name="error_password_invalid_length">Пароль должен содержать от 8 до 64 символов включительно</string>
+    <string name="error_empty_message">Пустое сообщение!</string>
+    <string name="error_message_sending">Не удалось отправить сообщение</string>
+    <string name="error_file_size_exceed">Максимальный размер изображения 5 МБ</string>
+</resources>

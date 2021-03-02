@@ -1,10 +1,15 @@
 package com.deledzis.messenger.data.repository
 
-interface CrudCache<T> {
+interface CrudCache<T, TSearch> {
     /**
      * Retrieve a single instance of [T] by [id] from the cache
      */
     suspend fun get(id: Int): T?
+
+    /**
+     * Retrieve a single instance of [T] by [TSearch] from the cache
+     */
+    suspend fun search(search: TSearch): List<T>?
 
     /**
      * Retrieve a list of [T] by [id] from the cache

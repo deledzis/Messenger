@@ -6,11 +6,11 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.presentation.screens.settings.SettingsViewModel" />
+            type="com.deledzis.messenger.presentation.features.settings.SettingsViewModel" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.presentation.screens.settings.SettingsActionsHandler" />
+            type="com.deledzis.messenger.presentation.features.settings.SettingsActionsHandler" />
 
     </data>
 

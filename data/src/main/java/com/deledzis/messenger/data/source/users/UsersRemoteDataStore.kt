@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Implementation of the [UsersDataStore] interface to provide a means of communicating
  * with the remote data source
  */
-open class UsersRemoteDataStore @Inject constructor(private val remote: UsersRemote) :
+class UsersRemoteDataStore @Inject constructor(private val remote: UsersRemote) :
     UsersDataStore {
 
     override suspend fun getUser(id: Int): Response<UserEntity, Error> {
@@ -48,6 +48,14 @@ open class UsersRemoteDataStore @Inject constructor(private val remote: UsersRem
         } catch (e: Exception) {
             Response.Failure(Error.NetworkError(exception = e))
         }
+    }
+
+    override suspend fun clearUsers(): Response<Int, Error> {
+        return Response.Failure(Error.UnsupportedOperationError())
+    }
+
+    override suspend fun saveUsers(items: List<UserEntity>): Response<Int, Error> {
+        return Response.Failure(Error.UnsupportedOperationError())
     }
 
 }

@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.presentation.screens.chats.ChatsViewModel" />
+            type="com.deledzis.messenger.presentation.features.chats.ChatsViewModel" />
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.presentation.screens.chats.ChatsActionsHandler" />
+            type="com.deledzis.messenger.presentation.features.chats.ChatsActionsHandler" />
 
     </data>
 

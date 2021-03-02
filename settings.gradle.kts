@@ -6,6 +6,6 @@ include(
     ":common",
     ":presentation",
     ":infrastructure",
-//    ":cache",
+    ":cache",
     ":app"
 )

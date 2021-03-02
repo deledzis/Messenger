@@ -16,4 +16,8 @@ interface UsersDataStore {
 
     suspend fun getUsers(search: String?): Response<UsersEntity, Error>
 
+    suspend fun clearUsers(): Response<Int, Error>
+
+    suspend fun saveUsers(items: List<UserEntity>): Response<Int, Error>
+
 }

@@ -1,16 +1,17 @@
 package com.deledzis.messenger.presentation.di.module
 
 import androidx.lifecycle.ViewModel
+import com.deledzis.messenger.presentation.base.AssistedSavedStateViewModelFactory
 import com.deledzis.messenger.presentation.di.key.ViewModelKey
-import com.deledzis.messenger.presentation.screens.addchat.AddChatViewModel
-import com.deledzis.messenger.presentation.screens.chat.ChatViewModel
-import com.deledzis.messenger.presentation.screens.chats.ChatsViewModel
-import com.deledzis.messenger.presentation.screens.login.LoginViewModel
-import com.deledzis.messenger.presentation.screens.main.MainActivityViewModel
-import com.deledzis.messenger.presentation.screens.main.UserViewModel
-import com.deledzis.messenger.presentation.screens.register.RegisterViewModel
-import com.deledzis.messenger.presentation.screens.search.SearchViewModel
-import com.deledzis.messenger.presentation.screens.settings.SettingsViewModel
+import com.deledzis.messenger.presentation.features.addchat.AddChatViewModel
+import com.deledzis.messenger.presentation.features.chat.ChatViewModel
+import com.deledzis.messenger.presentation.features.chats.ChatsViewModel
+import com.deledzis.messenger.presentation.features.login.LoginViewModel
+import com.deledzis.messenger.presentation.features.main.MainActivityViewModel
+import com.deledzis.messenger.presentation.features.main.UserViewModel
+import com.deledzis.messenger.presentation.features.register.RegisterViewModel
+import com.deledzis.messenger.presentation.features.search.SearchViewModel
+import com.deledzis.messenger.presentation.features.settings.SettingsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -41,7 +42,7 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(ChatsViewModel::class)
-    internal abstract fun bindChatsViewModel(viewModel: ChatsViewModel): ViewModel
+    internal abstract fun bindChatsViewModelFactory(f: ChatsViewModel.Factory): AssistedSavedStateViewModelFactory<out ViewModel>
 
     @Binds
     @IntoMap

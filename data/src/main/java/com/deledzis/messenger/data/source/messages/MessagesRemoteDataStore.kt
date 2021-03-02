@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Implementation of the [MessagesDataStore] interface to provide a means of communicating
  * with the remote data source
  */
-open class MessagesRemoteDataStore @Inject constructor(private val remote: MessagesRemote) :
+class MessagesRemoteDataStore @Inject constructor(private val remote: MessagesRemote) :
     MessagesDataStore {
 
     override suspend fun getChatMessages(

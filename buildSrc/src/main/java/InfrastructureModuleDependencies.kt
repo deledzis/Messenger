@@ -11,6 +11,7 @@ object InfrastructureModuleDependencies : ModuleDependencies() {
     override val apiLibs: List<String> = arrayListOf<String>().apply {
         add(Libraries.daggerApi)
         add(Libraries.daggerAndroidApi)
+        add(Libraries.okhttpApi)
     }
 
     override val kaptLibs: List<String> = arrayListOf<String>().apply {

@@ -10,7 +10,7 @@ import javax.inject.Inject
  * Implementation of the [AuthDataStore] interface to provide a means of communicating
  * with the remote data source
  */
-open class AuthRemoteDataStore @Inject constructor(private val remote: AuthRemote) :
+class AuthRemoteDataStore @Inject constructor(private val remote: AuthRemote) :
     AuthDataStore {
 
     override suspend fun login(username: String, password: String): Response<AuthEntity, Error> {

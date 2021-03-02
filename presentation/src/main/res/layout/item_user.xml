@@ -11,7 +11,7 @@
 
         <variable
             name="controller"
-            type="com.deledzis.messenger.presentation.screens.addchat.UserItemActionsHandler" />
+            type="com.deledzis.messenger.presentation.features.addchat.UserItemActionsHandler" />
 
     </data>
 

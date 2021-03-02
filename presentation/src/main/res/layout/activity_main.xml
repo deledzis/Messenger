@@ -6,11 +6,11 @@
 
         <variable
             name="viewModel"
-            type="com.deledzis.messenger.presentation.screens.main.MainActivityViewModel" />
+            type="com.deledzis.messenger.presentation.features.main.MainActivityViewModel" />
 
         <variable
             name="userViewModel"
-            type="com.deledzis.messenger.presentation.screens.main.UserViewModel" />
+            type="com.deledzis.messenger.presentation.features.main.UserViewModel" />
 
     </data>
 
@@ -27,7 +27,6 @@
             android:name="com.deledzis.messenger.presentation.base.InjectingNavHostFragment"
             android:layout_width="@dimen/size_0dp"
             android:layout_height="@dimen/size_0dp"
-            android:paddingBottom="@{(userViewModel.user != null &amp;&amp; viewModel.inTopLevelFragment) ? @dimen/size_48dp : @dimen/size_0dp}"
             app:defaultNavHost="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

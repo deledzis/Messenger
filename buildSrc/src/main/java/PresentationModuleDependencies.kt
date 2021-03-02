@@ -17,12 +17,13 @@ object PresentationModuleDependencies : ModuleDependencies() {
         add(Libraries.cameraLifecycleLib)
         add(Libraries.cameraViewLib)
         add(Libraries.swipeRefreshLib)
-        add(Libraries.gpAuthLib)
         add(Libraries.glideLib)
+        add(Libraries.workManagerLib)
         add(Libraries.navFragmentLib)
         add(Libraries.navUiKtxLib)
         add(Libraries.gaugeLib)
         add(Libraries.analyticsLib)
+        add(Libraries.storageLib)
         add(Libraries.timberLib)
     }
 
