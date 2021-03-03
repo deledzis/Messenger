@@ -3,7 +3,7 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: java:8
+#image: java:8
 
 pipelines:
   default:
@@ -14,6 +14,8 @@ pipelines:
 
         script:
           # Download and unzip android sdk
+          - pwd
+          - ls -la
           - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
           - unzip -o -qq android-sdk.zip -d android-sdk
 
