@@ -18,21 +18,20 @@ pipelines:
           #          - ls -la
           - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
           - unzip -o -qq android-sdk.zip -d android-sdk
-          - ls -la /opt/atlassian/pipelines/agent/build/android-sdk/
-          - ls -la /opt/atlassian/pipelines/agent/build/android-sdk/bin/
+          - ls -la /opt/atlassian/pipelines/agent/build/android-sdk/cmdline-tools/bin
 
           # Define Android Home and add PATHs
-          - export ANDROID_HOME="/opt/atlassian/pipelines/agent/build/android-sdk"
+          - export ANDROID_HOME="/opt/atlassian/pipelines/agent/build/android-sdk/cmdline-tools"
           - export PATH="$ANDROID_HOME/bin:$ANDROID_HOME/lib:$ANDROID_HOME:$PATH"
 
           # Download packages.
-          #          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "platform-tools"
-          #          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "platforms;android-30"
-          #          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "build-tools;30.0.0"
-          #          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "extras;android;m2repository"
-          #          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "extras;google;m2repository"
-          #          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "extras;google;instantapps"
-          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager --licenses
+          - yes | sdkmanager "platform-tools"
+          - yes | sdkmanager "platforms;android-30"
+          - yes | sdkmanager "build-tools;30.0.0"
+          - yes | sdkmanager "extras;android;m2repository"
+          - yes | sdkmanager "extras;google;m2repository"
+          - yes | sdkmanager "extras;google;instantapps"
+          - yes | sdkmanager --licenses
           #          - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter "extra-android-m2repository" -a
 
           # Build apk
@@ -49,8 +48,6 @@ pipelines:
           image: bitbucketpipelines/android-ci-image
           script:
             - echo "$SIGNING_JKS_FILE" | base64 -d > upload-keystore.jks
-            - echo "$ANDROID_HOME"
-            - ls -la $ANDROID_HOME
             - yes | sdkmanager --licenses
             - ./gradlew assembleDebug
           artifacts:
