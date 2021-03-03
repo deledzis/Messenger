@@ -44,7 +44,7 @@ class SearchFragment @Inject constructor() :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dataBinding.rvMessages.layoutManager = LinearLayoutManager(activity)
+        dataBinding.rvMessages.layoutManager = LinearLayoutManager(requireActivity())
         dataBinding.rvMessages.adapter = adapter
     }
 

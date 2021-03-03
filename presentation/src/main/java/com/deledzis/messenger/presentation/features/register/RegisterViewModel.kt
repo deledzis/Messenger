@@ -45,6 +45,18 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    override fun handleFailure(error: Error) {
+        super.handleFailure(error)
+        error.exception?.asHttpError?.let {
+            when {
+                it.isMissingLoginError -> registerError.value = R.string.error_api_401
+                it.isMissingPasswordError -> registerError.value = R.string.error_api_402
+                it.isUserAlreadyExistsError -> registerError.value = R.string.error_api_405
+                else -> Unit
+            }
+        }
+    }
+
     private fun clearErrors() {
         registerError.value = 0
     }
@@ -72,7 +84,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun handleRegisterResponse(data: RegisterResponse) {
-        if (!data.response.accessToken.isNullOrBlank()) {
+        if (data.response.accessToken.isNotBlank()) {
             handleRegisterOkResponse(data.response)
         } else {
             registerError.value = R.string.error_register_failed

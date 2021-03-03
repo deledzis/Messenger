@@ -71,8 +71,8 @@ dependencies {
     //app libs
     implementationBom(BomLibraries.firebaseBom)
     implementation(PresentationModuleDependencies.implementationLibs)
-    kapt(PresentationModuleDependencies.kaptLibs)
     api(PresentationModuleDependencies.apiLibs)
+    kapt(PresentationModuleDependencies.kaptLibs)
 
     //test libs
     testImplementation(PresentationModuleDependencies.testLibs)

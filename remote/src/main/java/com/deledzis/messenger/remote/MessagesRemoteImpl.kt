@@ -7,7 +7,7 @@ import com.deledzis.messenger.remote.model.messages.AddMessageRequest
 
 class MessagesRemoteImpl(private val apiService: ApiService) : MessagesRemote {
 
-    override suspend fun getChatMessages(chatId: Int, search: String?): MessagesEntity =
+    override suspend fun getChatMessages(chatId: Int, search: String): MessagesEntity =
         apiService.getChatMessages(chatId = chatId, search = search)
 
     override suspend fun sendMessage(

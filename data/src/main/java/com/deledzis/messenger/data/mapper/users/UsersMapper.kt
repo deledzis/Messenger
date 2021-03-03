@@ -9,19 +9,11 @@ class UsersMapper @Inject constructor(
     private val entityMapper: UserMapper
 ) : Mapper<UsersEntity, Users> {
     override fun mapFromEntity(type: UsersEntity): Users {
-        return Users(
-            items = type.items?.map { entityMapper.mapFromEntity(it) },
-            errorCode = type.errorCode,
-            message = type.message
-        )
+        return Users(items = type.items.map { entityMapper.mapFromEntity(it) })
     }
 
     override fun mapToEntity(type: Users): UsersEntity {
-        return UsersEntity(
-            items = type.items?.map { entityMapper.mapToEntity(it) },
-            errorCode = 0,
-            message = null
-        )
+        return UsersEntity(items = type.items.map { entityMapper.mapToEntity(it) })
     }
 
 }

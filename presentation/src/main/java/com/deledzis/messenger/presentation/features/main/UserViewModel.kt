@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-open class UserViewModel @Inject constructor(
+class UserViewModel @Inject constructor(
     private val userData: BaseUserData
 ) : BaseViewModel() {
 

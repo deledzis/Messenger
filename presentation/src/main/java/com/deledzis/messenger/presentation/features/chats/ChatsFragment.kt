@@ -12,11 +12,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.deledzis.messenger.common.Constants
 import com.deledzis.messenger.common.Constants.CHATS_PERIODIC_DELAY
+import com.deledzis.messenger.domain.model.entity.auth.Auth
 import com.deledzis.messenger.domain.model.entity.chats.Chat
 import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentChatsBinding
+import com.deledzis.messenger.presentation.features.main.UserViewModel
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -30,6 +32,9 @@ class ChatsFragment @Inject constructor() :
     override val viewModel: ChatsViewModel by viewModels()
     private lateinit var adapter: ChatsAdapter
     private var scheduledFuture: ScheduledFuture<*>? = null
+
+    @Inject
+    lateinit var userViewModel: UserViewModel
 
     @Inject
     lateinit var userData: BaseUserData
@@ -53,7 +58,7 @@ class ChatsFragment @Inject constructor() :
             controller = this,
             userId = userData.getAuthUser()?.id ?: -1
         )
-        dataBinding.rvChats.layoutManager = LinearLayoutManager(activity)
+        dataBinding.rvChats.layoutManager = LinearLayoutManager(requireActivity())
         dataBinding.rvChats.adapter = adapter
 
         srl = dataBinding.srl
@@ -75,9 +80,25 @@ class ChatsFragment @Inject constructor() :
     }
 
     override fun bindObservers() {
-        viewModel.getChats(refresh = srl?.isRefreshing ?: false)
+        userViewModel.user.observe(viewLifecycleOwner, ::userObserver)
         viewModel.chats.observe(viewLifecycleOwner, ::chatsObserver)
         viewModel.chatsLoadingError.observe(viewLifecycleOwner, ::errorObserver)
+        viewModel.authError.observe(requireActivity(), {
+            authErrorObserver(
+                authError = it,
+                userViewModel = userViewModel
+            )
+        })
+    }
+
+    private fun userObserver(auth: Auth?) {
+        if (auth == null) {
+            userViewModel.saveUser(auth)
+            val action = ChatsFragmentDirections.actionChatsFragmentToLoginFragment()
+            findNavController().navigate(action)
+        } else {
+            viewModel.getChats(refresh = srl?.isRefreshing ?: false)
+        }
     }
 
     private fun chatsObserver(chats: List<Chat>?) {
@@ -88,14 +109,16 @@ class ChatsFragment @Inject constructor() :
 
     private fun errorObserver(@StringRes error: Int?) {
         srl?.isRefreshing = false
-        error?.let {
+        if (error != null && error != 0) {
             startSnackbar(
                 text = getString(error),
                 indefinite = true
             ) {
                 viewModel.getChats(refresh = true)
             }
-        } ?: run { stopSnackbar() }
+        } else {
+            stopSnackbar()
+        }
     }
 
     override fun onAddChatClicked(view: View) {

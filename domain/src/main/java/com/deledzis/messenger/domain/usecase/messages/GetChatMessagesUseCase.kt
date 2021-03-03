@@ -17,7 +17,7 @@ class GetChatMessagesUseCase @Inject constructor(
         // synchronous
         val response = repository.getChatMessages(
             chatId = params.chatId,
-            search = params.search
+            search = params.search ?: ""
         )
         resultChannel.send(response)
         resultChannel.send(Response.State.Loaded())

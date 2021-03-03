@@ -5,6 +5,7 @@ import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.data.model.ServerMessageResponseEntity
 import com.deledzis.messenger.data.model.messages.MessagesEntity
 import com.deledzis.messenger.data.repository.messages.MessagesRemote
+import retrofit2.HttpException
 import javax.inject.Inject
 
 /**
@@ -16,25 +17,17 @@ class MessagesRemoteDataStore @Inject constructor(private val remote: MessagesRe
 
     override suspend fun getChatMessages(
         chatId: Int,
-        search: String?
+        search: String
     ): Response<MessagesEntity, Error> {
         return try {
             val response = remote.getChatMessages(
                 chatId = chatId,
                 search = search
             )
-            if (response.errorCode == 0) {
-                Response.Success(successData = response)
-            } else {
-                Response.Failure(
-                    Error.ResponseError(
-                        errorCode = response.errorCode,
-                        errorMessage = response.message
-                    )
-                )
-            }
+            Response.Success(successData = response)
         } catch (e: Exception) {
-            Response.Failure(Error.NetworkError(exception = e))
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
         }
     }
 
@@ -52,15 +45,11 @@ class MessagesRemoteDataStore @Inject constructor(private val remote: MessagesRe
             if (response.errorCode == 0) {
                 Response.Success(successData = response)
             } else {
-                Response.Failure(
-                    Error.ResponseError(
-                        errorCode = response.errorCode,
-                        errorMessage = response.message
-                    )
-                )
+                Response.Failure(Error.ResponseError(errorCode = response.errorCode))
             }
         } catch (e: Exception) {
-            Response.Failure(Error.NetworkError(exception = e))
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
         }
     }
 

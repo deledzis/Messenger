@@ -66,8 +66,11 @@ class ChatFragment @Inject constructor() :
             userId = userData.getAuthUser()?.id ?: throw Exception(),
             controller = ::onSelected
         )
-        dataBinding.rvMessages.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, true)
+        dataBinding.rvMessages.layoutManager = LinearLayoutManager(
+            requireActivity(),
+            LinearLayoutManager.VERTICAL,
+            true
+        )
         dataBinding.rvMessages.adapter = adapter
     }
 
@@ -113,9 +116,8 @@ class ChatFragment @Inject constructor() :
 
     private fun errorObserver(@StringRes error: Int?) {
         hideSoftKeyboard()
-        if (error == null) return
-        val errorMessage = getString(error)
-        Toast.makeText(activity, errorMessage, Toast.LENGTH_LONG).show()
+        val errorMessage = getErrorString(error) ?: return
+        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show()
     }
 
     private fun sentObserver(sent: Boolean?) {
@@ -230,7 +232,7 @@ class ChatFragment @Inject constructor() :
     }
 
     private fun uploadImage(uri: Uri) {
-        viewModel.uploadFileToFirebase(uri, activity.storageRef)
+        viewModel.uploadFileToFirebase(uri)
     }
 
     companion object {

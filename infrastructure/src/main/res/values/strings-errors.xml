@@ -13,4 +13,24 @@
     <string name="error_empty_message">Пустое сообщение!</string>
     <string name="error_message_sending">Не удалось отправить сообщение</string>
     <string name="error_file_size_exceed">Максимальный размер изображения 5 МБ</string>
+
+    <!-- API errors -->
+    <string name="error_api_unknown">Не удалось выполнить запрос. Код ошибки: %d</string>
+    <string name="error_api_400">Не удалось выполнить запрос</string>
+    <string name="error_api_401">Не указан логин</string>
+    <string name="error_api_402">Не указан пароль</string>
+    <string name="error_api_403">Неправильный логин или пароль</string>
+    <string name="error_api_404">Неправильный логин или пароль</string>
+    <string name="error_api_405">Пользователь с таким логином уже зарегистрирован</string>
+    <string name="error_api_406">Ошибка авторизации. Пожалуйста, авторизуйтесь заново</string>
+    <string name="error_api_407">Собеседник не найден</string>
+    <string name="error_api_408">Чат не найден</string>
+    <string name="error_api_409">Не указан пользователь</string>
+    <string name="error_api_410">Не указан собеседник</string>
+    <string name="error_api_411">Не указан чат</string>
+    <string name="error_api_412">Не удалось отправить сообщение</string>
+    <string name="error_api_413">Не указан текущий пароль</string>
+    <string name="error_api_414">Указан неверный текущий пароль</string>
+    <string name="error_api_415">Не удалось обновить пользователя</string>
+    <string name="error_api_416">Диалог уже создан</string>
 </resources>

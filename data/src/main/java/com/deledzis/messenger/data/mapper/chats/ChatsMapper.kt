@@ -9,18 +9,10 @@ class ChatsMapper @Inject constructor(
     private val entityMapper: ChatMapper
 ) : Mapper<ChatsEntity, Chats> {
     override fun mapFromEntity(type: ChatsEntity): Chats {
-        return Chats(
-            items = type.items?.map { entityMapper.mapFromEntity(it) },
-            errorCode = type.errorCode,
-            message = type.message
-        )
+        return Chats(items = type.items.map { entityMapper.mapFromEntity(it) })
     }
 
     override fun mapToEntity(type: Chats): ChatsEntity {
-        return ChatsEntity(
-            items = type.items?.map { entityMapper.mapToEntity(it) },
-            errorCode = 0,
-            message = type.message
-        )
+        return ChatsEntity(items = type.items.map { entityMapper.mapToEntity(it) })
     }
 }

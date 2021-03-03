@@ -24,7 +24,7 @@ class UsersRepositoryImpl(
     override suspend fun getUser(id: Int): Response<GetUserResponse, Error> {
         return if (networkManager.isConnectedToInternet()) {
             val result = factory.retrieveDataStore().getUser(id = id)
-            var response: Response<GetUserResponse, Error> = Response.Failure(Error.ResponseError())
+            var response: Response<GetUserResponse, Error> = Response.Failure(Error.NetworkError())
             result.handleResult(
                 stateBlock = { response = it },
                 successBlock = {
@@ -43,9 +43,7 @@ class UsersRepositoryImpl(
     override suspend fun getUsers(search: String?): Response<GetUsersResponse, Error> {
         return if (networkManager.isConnectedToInternet()) {
             val result = factory.retrieveDataStore().getUsers(search = search)
-            var response: Response<GetUsersResponse, Error> = Response.Failure(
-                Error.ResponseError()
-            )
+            var response: Response<GetUsersResponse, Error> = Response.Failure(Error.NetworkError())
             result.handleResult(
                 stateBlock = { response = it },
                 successBlock = {

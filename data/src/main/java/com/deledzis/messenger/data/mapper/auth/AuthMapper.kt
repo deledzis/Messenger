@@ -11,9 +11,7 @@ class AuthMapper @Inject constructor() : Mapper<AuthEntity, Auth> {
             id = type.id,
             username = type.username,
             nickname = type.nickname,
-            accessToken = type.accessToken,
-            errorCode = type.errorCode,
-            message = type.message
+            accessToken = type.accessToken
         )
     }
 
@@ -22,9 +20,7 @@ class AuthMapper @Inject constructor() : Mapper<AuthEntity, Auth> {
             id = type.id,
             username = type.username,
             nickname = type.nickname,
-            accessToken = type.accessToken,
-            errorCode = type.errorCode,
-            message = type.message
+            accessToken = type.accessToken
         )
     }
 

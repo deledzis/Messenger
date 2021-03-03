@@ -26,14 +26,16 @@ class AuthRepositoryImpl(
                 username = username,
                 password = password
             )
-            var response: Response<LoginResponse, Error> = Response.Failure(Error.ResponseError())
+            var response: Response<LoginResponse, Error> = Response.Failure(Error.NetworkError())
             result.handleResult(
                 stateBlock = { response = it },
                 successBlock = {
                     response =
                         Response.Success(LoginResponse(response = authMapper.mapFromEntity(it)))
                 },
-                failureBlock = { response = Response.Failure(it) }
+                failureBlock = {
+                    response = Response.Failure(it)
+                }
             )
             response
         } else {
@@ -53,7 +55,7 @@ class AuthRepositoryImpl(
                 password = password
             )
             var response: Response<RegisterResponse, Error> =
-                Response.Failure(Error.ResponseError())
+                Response.Failure(Error.NetworkError())
             result.handleResult(
                 stateBlock = { response = it },
                 successBlock = {
@@ -83,7 +85,7 @@ class AuthRepositoryImpl(
                 newPassword = newPassword
             )
             var response: Response<UpdateUserDataResponse, Error> =
-                Response.Failure(Error.ResponseError())
+                Response.Failure(Error.NetworkError())
             result.handleResult(
                 stateBlock = { response = it },
                 successBlock = {

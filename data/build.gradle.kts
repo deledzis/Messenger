@@ -15,8 +15,8 @@ dependencies {
 
     //app libs
     implementation(DataModuleDependencies.implementationLibs)
-    kapt(DataModuleDependencies.kaptLibs)
     api(DataModuleDependencies.apiLibs)
+    kapt(DataModuleDependencies.kaptLibs)
 
     //test libs
     testImplementationBom(BomLibraries.junitBom)

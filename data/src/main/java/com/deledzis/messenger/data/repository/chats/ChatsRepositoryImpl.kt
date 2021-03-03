@@ -24,8 +24,7 @@ class ChatsRepositoryImpl(
     override suspend fun getChats(): Response<GetChatsResponse, Error> {
         return if (networkManager.isConnectedToInternet()) {
             val result = factory.retrieveDataStore().getChats()
-            var response: Response<GetChatsResponse, Error> =
-                Response.Failure(Error.ResponseError())
+            var response: Response<GetChatsResponse, Error> = Response.Failure(Error.NetworkError())
             result.handleResult(
                 stateBlock = { response = it },
                 successBlock = {
@@ -44,9 +43,7 @@ class ChatsRepositoryImpl(
     override suspend fun addChat(interlocutorId: Int): Response<AddChatResponse, Error> {
         return if (networkManager.isConnectedToInternet()) {
             val result = factory.retrieveDataStore().addChat(interlocutorId = interlocutorId)
-            var response: Response<AddChatResponse, Error> = Response.Failure(
-                Error.ResponseError()
-            )
+            var response: Response<AddChatResponse, Error> = Response.Failure(Error.NetworkError())
             result.handleResult(
                 stateBlock = { response = it },
                 successBlock = {

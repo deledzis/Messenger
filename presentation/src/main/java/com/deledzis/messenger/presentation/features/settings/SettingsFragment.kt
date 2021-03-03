@@ -44,7 +44,6 @@ class SettingsFragment @Inject constructor() :
         userViewModel.user.observe(viewLifecycleOwner, ::userObserver)
         viewModel.userData.observe(viewLifecycleOwner, ::updateStatusObserver)
         viewModel.loading.observe(viewLifecycleOwner, ::loadingObserver)
-        viewModel.error.observe(viewLifecycleOwner, ::errorObserver)
         viewModel.usernameError.observe(viewLifecycleOwner, ::usernameErrorObserver)
         viewModel.nicknameError.observe(viewLifecycleOwner, ::nicknameErrorObserver)
         viewModel.passwordError.observe(viewLifecycleOwner, ::passwordErrorObserver)
@@ -70,27 +69,27 @@ class SettingsFragment @Inject constructor() :
 
     private fun errorObserver(error: String?) {
         hideSoftKeyboard(dataBinding.root)
-        error?.let { Toast.makeText(activity, it, Toast.LENGTH_LONG).show() }
+        error?.let { Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show() }
     }
 
     private fun usernameErrorObserver(@StringRes error: Int?) {
         hideSoftKeyboard(dataBinding.root)
-        dataBinding.tilUsername.error = error?.let { getString(it) }
+        dataBinding.tilUsername.error = getErrorString(error)
     }
 
     private fun nicknameErrorObserver(@StringRes error: Int?) {
         hideSoftKeyboard(dataBinding.root)
-        dataBinding.tilNickname.error = error?.let { getString(it) }
+        dataBinding.tilNickname.error = getErrorString(error)
     }
 
     private fun passwordErrorObserver(@StringRes error: Int?) {
         hideSoftKeyboard(dataBinding.root)
-        dataBinding.tilPassword.error = error?.let { getString(it) }
+        dataBinding.tilPassword.error = getErrorString(error)
     }
 
     private fun newPasswordErrorObserver(@StringRes error: Int?) {
         hideSoftKeyboard(dataBinding.root)
-        dataBinding.tilNewPassword.error = error?.let { getString(it) }
+        dataBinding.tilNewPassword.error = getErrorString(error)
     }
 
     private fun toggleUpdateProgress(progress: Boolean) {

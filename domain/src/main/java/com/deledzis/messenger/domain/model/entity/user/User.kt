@@ -6,6 +6,4 @@ data class User(
     val id: Int?,
     val username: String,
     val nickname: String? = null,
-    val errorCode: Int?,
-    val message: String? = null
 ) : Serializable

@@ -1,7 +1,7 @@
 object Versions {
     /* App Level */
-    const val gradle = "4.1.1"
-    const val kotlin = "1.4.30"
+    const val gradle = "4.1.2"
+    const val kotlin = "1.4.31"
     const val googleServices = "4.3.5"
     const val crashlytics = "2.5.0"
     const val perfMonitor = "1.3.4"
@@ -63,5 +63,5 @@ object Versions {
     const val googleTruth = "0.42"
     const val espressoTest = "3.3.0"
     const val robolectricTest = "4.4"
-    const val mockitoTest = "3.8.5"
+    const val mockitoTest = "3.8.0"
 }

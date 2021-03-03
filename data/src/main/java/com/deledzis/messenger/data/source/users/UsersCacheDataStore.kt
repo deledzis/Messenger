@@ -19,13 +19,15 @@ open class UsersCacheDataStore @Inject constructor(
     override suspend fun getUsers(search: String?): Response<UsersEntity, Error> {
         return try {
             val response = cache.search(search = search)
-            Response.Success(
-                successData = UsersEntity(
-                    items = response,
-                    errorCode = 0,
-                    message = null
+            if (response != null) {
+                Response.Success(
+                    successData = UsersEntity(
+                        items = response
+                    )
                 )
-            )
+            } else {
+                Response.Failure(Error.MissingInCacheError())
+            }
         } catch (e: Exception) {
             Response.Failure(Error.PersistenceError(exception = e))
         }

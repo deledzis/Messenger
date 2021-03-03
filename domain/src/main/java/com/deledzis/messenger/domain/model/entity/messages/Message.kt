@@ -9,7 +9,7 @@ data class Message(
     val date: String,
     val chatId: Int,
     val authorId: Int,
-    val authorName: String?
+    val authorName: String
 ) : Serializable {
     companion object {
         const val TYPE_TEXT: Int = 0

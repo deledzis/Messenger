@@ -23,7 +23,7 @@ class MessagesRepositoryImpl(
 
     override suspend fun getChatMessages(
         chatId: Int,
-        search: String?
+        search: String
     ): Response<GetChatMessagesResponse, Error> {
         return if (networkManager.isConnectedToInternet()) {
             val result = factory.retrieveDataStore().getChatMessages(
@@ -31,7 +31,7 @@ class MessagesRepositoryImpl(
                 search = search
             )
             var response: Response<GetChatMessagesResponse, Error> =
-                Response.Failure(Error.ResponseError())
+                Response.Failure(Error.NetworkError())
             result.handleResult(
                 stateBlock = { response = it },
                 successBlock = {
@@ -58,9 +58,8 @@ class MessagesRepositoryImpl(
                 type = type,
                 content = content
             )
-            var response: Response<SendMessageResponse, Error> = Response.Failure(
-                Error.ResponseError()
-            )
+            var response: Response<SendMessageResponse, Error> =
+                Response.Failure(Error.NetworkError())
             result.handleResult(
                 stateBlock = { response = it },
                 successBlock = {

@@ -14,7 +14,7 @@ interface MessagesRepository {
 
     suspend fun getChatMessages(
         chatId: Int,
-        search: String?
+        search: String
     ): Response<GetChatMessagesResponse, Error>
 
     suspend fun sendMessageToChat(

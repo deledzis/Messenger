@@ -16,11 +16,6 @@ import com.deledzis.messenger.infrastructure.extensions.paintStatusBar
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseActivity
 import com.deledzis.messenger.presentation.databinding.ActivityMainBinding
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
@@ -30,20 +25,11 @@ class MainActivity : BaseActivity<UserViewModel>() {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
     }
 
-    private val storage: FirebaseStorage by lazy { Firebase.storage }
-    val storageRef: StorageReference by lazy { storage.reference }
-
-    @Inject
-    lateinit var userViewModel: UserViewModel
-
-    @Inject
-    lateinit var viewModel: MainActivityViewModel
-
     @SuppressLint("InlinedApi")
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_Messenger)
-        paintStatusBar(R.color.primary)
+        paintStatusBar(R.color.accent)
 
         if (Build.VERSION.SDK_INT in Build.VERSION_CODES.M until Build.VERSION_CODES.R) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -63,8 +49,6 @@ class MainActivity : BaseActivity<UserViewModel>() {
             return
         }
 
-        dataBinding.viewModel = viewModel
-        dataBinding.userViewModel = userViewModel
         dataBinding.lifecycleOwner = this
 
         createNotificationsChannels()

@@ -10,9 +10,7 @@ class UserMapper @Inject constructor() : Mapper<AuthenticatedUser, Auth> {
             id = type.id,
             username = type.username,
             nickname = type.nickname,
-            accessToken = type.accessToken,
-            errorCode = 0,
-            message = null
+            accessToken = type.accessToken
         )
     }
 
@@ -21,7 +19,7 @@ class UserMapper @Inject constructor() : Mapper<AuthenticatedUser, Auth> {
             id = type.id,
             username = type.username,
             nickname = type.nickname,
-            accessToken = type.accessToken ?: "",
+            accessToken = type.accessToken
         )
     }
 

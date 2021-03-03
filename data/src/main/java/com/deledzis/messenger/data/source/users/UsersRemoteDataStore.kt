@@ -5,6 +5,7 @@ import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.data.model.users.UserEntity
 import com.deledzis.messenger.data.model.users.UsersEntity
 import com.deledzis.messenger.data.repository.users.UsersRemote
+import retrofit2.HttpException
 import javax.inject.Inject
 
 /**
@@ -17,36 +18,20 @@ class UsersRemoteDataStore @Inject constructor(private val remote: UsersRemote) 
     override suspend fun getUser(id: Int): Response<UserEntity, Error> {
         return try {
             val response = remote.getUser(id = id)
-            if (response.errorCode == 0) {
-                Response.Success(successData = response)
-            } else {
-                Response.Failure(
-                    Error.ResponseError(
-                        errorCode = response.errorCode,
-                        errorMessage = response.message
-                    )
-                )
-            }
+            Response.Success(successData = response)
         } catch (e: Exception) {
-            Response.Failure(Error.NetworkError(exception = e))
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
         }
     }
 
     override suspend fun getUsers(search: String?): Response<UsersEntity, Error> {
         return try {
             val response = remote.getUsers(search = search)
-            if (response.errorCode == 0) {
-                Response.Success(successData = response)
-            } else {
-                Response.Failure(
-                    Error.ResponseError(
-                        errorCode = response.errorCode,
-                        errorMessage = response.message
-                    )
-                )
-            }
+            Response.Success(successData = response)
         } catch (e: Exception) {
-            Response.Failure(Error.NetworkError(exception = e))
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
         }
     }
 

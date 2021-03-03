@@ -44,6 +44,18 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    override fun handleFailure(error: Error) {
+        super.handleFailure(error)
+        error.exception?.asHttpError?.let {
+            when {
+                it.isMissingLoginError -> loginError.value = R.string.error_api_401
+                it.isMissingPasswordError -> loginError.value = R.string.error_api_402
+                it.isWrongCredentialsError -> loginError.value = R.string.error_api_403
+                else -> Unit
+            }
+        }
+    }
+
     private fun clearErrors() {
         loginError.value = 0
     }

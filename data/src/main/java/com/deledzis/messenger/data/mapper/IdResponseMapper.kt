@@ -6,19 +6,11 @@ import javax.inject.Inject
 
 class IdResponseMapper @Inject constructor() : Mapper<IdResponseEntity, IdResponse> {
     override fun mapFromEntity(type: IdResponseEntity): IdResponse {
-        return IdResponse(
-            id = type.id,
-            errorCode = type.errorCode,
-            message = type.message
-        )
+        return IdResponse(id = type.id)
     }
 
     override fun mapToEntity(type: IdResponse): IdResponseEntity {
-        return IdResponseEntity(
-            id = type.id,
-            errorCode = type.errorCode,
-            message = type.message
-        )
+        return IdResponseEntity(id = type.id)
     }
 
 }

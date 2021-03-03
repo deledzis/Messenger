@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
+import com.deledzis.messenger.common.usecase.ResponseErrorException
 import com.deledzis.messenger.domain.model.entity.Entity
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import kotlinx.coroutines.*
@@ -28,7 +30,7 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
 
     val loading: MutableLiveData<Boolean> = MutableLiveData(false)
     val loadingError: MutableLiveData<Boolean> = MutableLiveData(false)
-    val error: MutableLiveData<String> = MutableLiveData<String>()
+    val authError: MutableLiveData<Boolean> = SingleEventLiveData()
 
     abstract suspend fun resolve(value: Response<Entity, Error>)
 
@@ -56,7 +58,13 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
 
     protected open fun handleFailure(error: Error) {
         Timber.e("Handle Failure: ${error.exception}")
-        this.error.postValue(error.exception?.message)
+        error.exception?.asHttpError?.let {
+            if (it.isAuthError) {
+                GlobalScope.launch {
+                    authError.postValue(true)
+                }
+            }
+        }
         logException(exception = error.exception)
     }
 
@@ -76,6 +84,7 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
         analytics.logEvent(name) {
             params.forEach {
                 param(it.first, it.second)
+
             }
         }
     }
@@ -86,5 +95,46 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
         coroutineContext.cancel()
         stopLoading()
         super.onCleared()
+    }
+
+    companion object {
+        val Exception?.asHttpError: ResponseErrorException?
+            get() = if (this is ResponseErrorException) this else null
+
+        val ResponseErrorException.isGeneralError: Boolean
+            get() = this.errorCode == 400
+        val ResponseErrorException.isMissingLoginError: Boolean
+            get() = this.errorCode == 401
+        val ResponseErrorException.isMissingPasswordError: Boolean
+            get() = this.errorCode == 402
+        val ResponseErrorException.isWrongCredentialsError: Boolean
+            get() = this.errorCode == 403 || this.errorCode == 404
+        val ResponseErrorException.isUserAlreadyExistsError: Boolean
+            get() = this.errorCode == 405
+        val ResponseErrorException.isAuthError: Boolean
+            get() = this.errorCode == 406
+        val ResponseErrorException.isInterlocutorNotFoundError: Boolean
+            get() = this.errorCode == 407
+        val ResponseErrorException.isChatNotFoundError: Boolean
+            get() = this.errorCode == 408
+        val ResponseErrorException.isMissingUserError: Boolean
+            get() = this.errorCode == 409
+        val ResponseErrorException.isMissingInterlocutorError: Boolean
+            get() = this.errorCode == 410
+        val ResponseErrorException.isMissingChatError: Boolean
+            get() = this.errorCode == 411
+        val ResponseErrorException.isSendMessageError: Boolean
+            get() = this.errorCode == 412
+        val ResponseErrorException.isMissingCurrentPasswordError: Boolean
+            get() = this.errorCode == 413
+        val ResponseErrorException.isWrongPasswordError: Boolean
+            get() = this.errorCode == 414
+        val ResponseErrorException.isUpdateUserError: Boolean
+            get() = this.errorCode == 415
+        val ResponseErrorException.isDialogAlreadyCreatedError: Boolean
+            get() = this.errorCode == 416
+
+        val ResponseErrorException.isLoginError: Boolean
+            get() = this.isMissingLoginError || this.isMissingPasswordError || this.isWrongCredentialsError
     }
 }

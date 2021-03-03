@@ -31,8 +31,8 @@ sealed class Error(val exception: Exception?) {
         }
     }
 
-    class ResponseError(errorCode: Int? = null, errorMessage: String? = null) : Error(
-        exception = ResponseErrorException(errorCode = errorCode, errorMessage = errorMessage)
+    class ResponseError(errorCode: Int) : Error(
+        exception = ResponseErrorException(errorCode = errorCode)
     ) {
         override fun equals(other: Any?): Boolean {
             return this === other
@@ -75,9 +75,9 @@ sealed class Error(val exception: Exception?) {
     }
 }
 
-class ResponseErrorException(val errorCode: Int?, val errorMessage: String?) : Exception() {
+class ResponseErrorException(val errorCode: Int) : Exception() {
     override val message: String
-        get() = "Error code: $errorCode, message: $errorMessage"
+        get() = "Error code: $errorCode"
 }
 
 class EmptyCacheException : Exception() {

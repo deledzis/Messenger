@@ -4,6 +4,7 @@ import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.data.model.auth.AuthEntity
 import com.deledzis.messenger.data.repository.auth.AuthRemote
+import retrofit2.HttpException
 import javax.inject.Inject
 
 /**
@@ -21,7 +22,8 @@ class AuthRemoteDataStore @Inject constructor(private val remote: AuthRemote) :
             )
             Response.Success(successData = response)
         } catch (e: Exception) {
-            Response.Failure(Error.NetworkError(exception = e))
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
         }
     }
 
@@ -38,7 +40,8 @@ class AuthRemoteDataStore @Inject constructor(private val remote: AuthRemote) :
             )
             Response.Success(successData = response)
         } catch (e: Exception) {
-            Response.Failure(Error.NetworkError(exception = e))
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
         }
     }
 
@@ -57,7 +60,8 @@ class AuthRemoteDataStore @Inject constructor(private val remote: AuthRemote) :
             )
             Response.Success(successData = response)
         } catch (e: Exception) {
-            Response.Failure(Error.NetworkError(exception = e))
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
         }
     }
 }

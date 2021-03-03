@@ -12,7 +12,7 @@ import com.deledzis.messenger.data.model.messages.MessagesEntity
  */
 interface MessagesDataStore {
 
-    suspend fun getChatMessages(chatId: Int, search: String?): Response<MessagesEntity, Error>
+    suspend fun getChatMessages(chatId: Int, search: String): Response<MessagesEntity, Error>
 
     suspend fun sendMessage(
         chatId: Int,

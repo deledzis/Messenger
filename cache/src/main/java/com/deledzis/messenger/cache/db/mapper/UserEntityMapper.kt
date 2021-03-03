@@ -10,9 +10,7 @@ class UserEntityMapper @Inject constructor() :
         return UserEntity(
             id = type.id,
             username = type.username,
-            nickname = type.nickname,
-            errorCode = 0,
-            message = null
+            nickname = type.nickname
         )
     }
 

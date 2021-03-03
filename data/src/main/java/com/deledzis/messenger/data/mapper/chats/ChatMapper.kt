@@ -14,9 +14,7 @@ class ChatMapper @Inject constructor(
             id = type.id,
             title = type.title,
             interlocutorId = type.interlocutorId,
-            lastMessage = messageMapper.mapFromEntity(type.lastMessage),
-            errorCode = type.errorCode,
-            message = type.message
+            lastMessage = type.lastMessage?.let { messageMapper.mapFromEntity(it) }
         )
     }
 
@@ -25,9 +23,7 @@ class ChatMapper @Inject constructor(
             id = type.id,
             title = type.title,
             interlocutorId = type.interlocutorId,
-            lastMessage = messageMapper.mapToEntity(type.lastMessage),
-            errorCode = type.errorCode,
-            message = type.message
+            lastMessage = type.lastMessage?.let { messageMapper.mapToEntity(it) }
         )
     }
 }

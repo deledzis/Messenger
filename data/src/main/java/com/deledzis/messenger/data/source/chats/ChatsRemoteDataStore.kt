@@ -5,6 +5,7 @@ import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.data.model.chats.ChatEntity
 import com.deledzis.messenger.data.model.chats.ChatsEntity
 import com.deledzis.messenger.data.repository.chats.ChatsRemote
+import retrofit2.HttpException
 import javax.inject.Inject
 
 /**
@@ -17,36 +18,20 @@ class ChatsRemoteDataStore @Inject constructor(private val remote: ChatsRemote) 
     override suspend fun getChats(): Response<ChatsEntity, Error> {
         return try {
             val response = remote.getChats()
-            if (response.errorCode == 0) {
-                Response.Success(successData = response)
-            } else {
-                Response.Failure(
-                    Error.ResponseError(
-                        errorCode = response.errorCode,
-                        errorMessage = response.message
-                    )
-                )
-            }
+            Response.Success(successData = response)
         } catch (e: Exception) {
-            Response.Failure(Error.NetworkError(exception = e))
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
         }
     }
 
     override suspend fun addChat(interlocutorId: Int): Response<ChatEntity, Error> {
         return try {
             val response = remote.addChat(interlocutorId = interlocutorId)
-            if (response.errorCode == 0) {
-                Response.Success(successData = response)
-            } else {
-                Response.Failure(
-                    Error.ResponseError(
-                        errorCode = response.errorCode,
-                        errorMessage = response.message
-                    )
-                )
-            }
+            Response.Success(successData = response)
         } catch (e: Exception) {
-            Response.Failure(Error.NetworkError(exception = e))
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
         }
     }
 

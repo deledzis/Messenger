@@ -10,9 +10,7 @@ class UserMapper @Inject constructor() : Mapper<UserEntity, User> {
         return User(
             id = type.id,
             username = type.username,
-            nickname = type.nickname,
-            errorCode = type.errorCode,
-            message = type.message
+            nickname = type.nickname
         )
     }
 
@@ -20,9 +18,7 @@ class UserMapper @Inject constructor() : Mapper<UserEntity, User> {
         return UserEntity(
             id = type.id,
             username = type.username,
-            nickname = type.nickname,
-            errorCode = type.errorCode,
-            message = type.message
+            nickname = type.nickname
         )
     }
 

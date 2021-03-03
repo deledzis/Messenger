@@ -16,9 +16,12 @@ import com.deledzis.messenger.domain.usecase.messages.SendMessageUseCase
 import com.deledzis.messenger.infrastructure.util.UploadRequestBody
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
 import com.google.firebase.storage.ktx.storageMetadata
 import kotlinx.coroutines.channels.ReceiveChannel
 import timber.log.Timber
@@ -30,6 +33,9 @@ class ChatViewModel @Inject constructor(
     private val sendMessageUseCase: SendMessageUseCase,
 ) : BaseViewModel(),
     UploadRequestBody.UploadCallback {
+
+    private val storage: FirebaseStorage by lazy { Firebase.storage }
+    val storageRef: StorageReference by lazy { storage.reference }
 
     override val receiveChannel: ReceiveChannel<Response<Entity, Error>>
         get() = mergeChannels(
@@ -64,6 +70,11 @@ class ChatViewModel @Inject constructor(
             is GetChatMessagesResponse -> handleGetChatMessagesResponse(data)
             is SendMessageResponse -> handleSendMessageResponse(data)
         }
+    }
+
+    override fun handleFailure(error: Error) {
+        super.handleFailure(error)
+        uploading.value = false
     }
 
     fun init(chatId: Int) {
@@ -138,7 +149,7 @@ class ChatViewModel @Inject constructor(
         getChatMessages()
     }
 
-    fun uploadFileToFirebase(uri: Uri, storageRef: StorageReference) {
+    fun uploadFileToFirebase(uri: Uri) {
         uploading.value = true
         val fileRef = storageRef.child("user-files/${uri.lastPathSegment}")
 

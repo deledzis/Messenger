@@ -9,5 +9,5 @@ data class MessageEntity(
     val date: String,
     val chatId: Int,
     val authorId: Int,
-    val authorName: String?
+    val authorName: String
 ) : Serializable

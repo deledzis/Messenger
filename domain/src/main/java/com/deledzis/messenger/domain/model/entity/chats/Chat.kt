@@ -7,7 +7,5 @@ data class Chat(
     val id: Int,
     val title: String,
     val interlocutorId: Int,
-    val lastMessage: Message,
-    val errorCode: Int?,
-    val message: String?
+    val lastMessage: Message?
 ) : Serializable

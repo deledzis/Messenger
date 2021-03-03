@@ -66,7 +66,7 @@ interface ApiService {
     @GET("chats/{id}")
     suspend fun getChatMessages(
         @Path("id") chatId: Int,
-        @Query("search") search: String? = ""
+        @Query("search") search: String = ""
     ): MessagesEntity
 
     // Отправить сообщение в чат
@@ -75,12 +75,4 @@ interface ApiService {
         @Path("id") chatId: Int,
         @Body request: AddMessageRequest
     ): ServerMessageResponseEntity
-
-    /*@Multipart
-    @POST("chats/{id}")
-    suspend fun sendPhotoToChat(
-        @Path("id") chatId: Int,
-        @Part image: MultipartBody.Part,
-        @Part("authorId") authorId: RequestBody
-    ): ServerMessageResponseEntity*/
 }

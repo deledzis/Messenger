@@ -45,7 +45,7 @@ class AddChatFragment @Inject constructor() :
         super.onViewCreated(view, savedInstanceState)
 
         adapter = UsersAdapter(this)
-        dataBinding.rvUsers.layoutManager = LinearLayoutManager(activity)
+        dataBinding.rvUsers.layoutManager = LinearLayoutManager(requireActivity())
         dataBinding.rvUsers.adapter = adapter
     }
 

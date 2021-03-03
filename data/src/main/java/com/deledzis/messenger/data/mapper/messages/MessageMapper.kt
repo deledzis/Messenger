@@ -14,7 +14,7 @@ class MessageMapper @Inject constructor() : Mapper<MessageEntity, Message> {
             date = type.date,
             chatId = type.chatId,
             authorId = type.authorId,
-            authorName = type.authorName,
+            authorName = type.authorName
         )
     }
 
@@ -26,7 +26,7 @@ class MessageMapper @Inject constructor() : Mapper<MessageEntity, Message> {
             date = type.date,
             chatId = type.chatId,
             authorId = type.authorId,
-            authorName = type.authorName,
+            authorName = type.authorName
         )
     }
 }

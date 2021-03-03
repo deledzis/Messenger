@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -21,7 +22,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.deledzis.messenger.infrastructure.view.ErrorSnackbar
-import com.deledzis.messenger.presentation.features.main.MainActivity
 import com.deledzis.messenger.presentation.features.main.UserViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,7 +32,6 @@ abstract class BaseFragment<out T : ViewModel, B : ViewDataBinding>(
     LifecycleOwner,
     SwipeRefreshLayout.OnRefreshListener {
 
-    protected lateinit var activity: MainActivity
     protected lateinit var dataBinding: B
     protected abstract val viewModel: T
     protected open var srl: SwipeRefreshLayout? = null
@@ -47,8 +46,6 @@ abstract class BaseFragment<out T : ViewModel, B : ViewDataBinding>(
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Timber.d("onAttach: $this")
-
-        activity = context as MainActivity
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,6 +78,12 @@ abstract class BaseFragment<out T : ViewModel, B : ViewDataBinding>(
 
     protected open fun bindObservers() {}
 
+    protected fun authErrorObserver(authError: Boolean?, userViewModel: UserViewModel) {
+        if (authError == true) {
+            userViewModel.handleLogout()
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         Timber.d("onStart: $this")
@@ -102,12 +105,6 @@ abstract class BaseFragment<out T : ViewModel, B : ViewDataBinding>(
 
     private fun getStatusBarColor(@ColorRes statusBarColor: Int): Int {
         return statusBarColor
-    }
-
-    protected fun authErrorObserver(authError: Boolean?, userViewModel: UserViewModel) {
-        if (authError == true) {
-            userViewModel.handleLogout()
-        }
     }
 
     protected fun isStoragePermissionGranted(): Boolean {
@@ -186,5 +183,8 @@ abstract class BaseFragment<out T : ViewModel, B : ViewDataBinding>(
     companion object {
         const val EXTERNAL_STORAGE_PERMISSIONS_REQUEST_CODE: Int = 1235
         const val CAMERA_PERMISSIONS_REQUEST_CODE: Int = 1236
+
+        fun Fragment.getErrorString(@StringRes error: Int?): String? =
+            if (error != null && error != 0) this.getString(error) else null
     }
 }

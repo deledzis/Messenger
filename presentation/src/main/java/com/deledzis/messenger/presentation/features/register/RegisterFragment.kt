@@ -50,9 +50,8 @@ class RegisterFragment @Inject constructor() :
 
     private fun errorObserver(@StringRes error: Int?) {
         hideSoftKeyboard()
-        if (error == null) return
-        val errorMessage = getString(error)
-        Toast.makeText(activity, errorMessage, Toast.LENGTH_LONG).show()
+        val errorMessage = getErrorString(error) ?: return
+        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show()
     }
 
     override fun onLoginClicked(view: View) {
