@@ -10,7 +10,7 @@ pipelines:
     - step:
         caches:
           - gradle
-          - android-sdk
+#          - android-sdk
         image: runmymind/docker-android-sdk # bitbucketpipelines/android-ci-image
         script:
           # Download and unzip android sdk
