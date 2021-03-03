@@ -1,19 +1,20 @@
 pipelines:
   branches:
     master:
-      - parallel:
-          - step:
-              name: Build Debug
-              caches:
-                - gradle
-              image: bitbucketpipelines/android-ci-image
-              script:
-                - echo "$SIGNING_JKS_FILE" | base64 -d > upload-keystore.jks
-                - ./gradlew assembleDebug
-              artifacts:
-                - app/build/outputs/**
-          - step:
-              name: Test
-              image: bitbucketpipelines/android-ci-image
-              script:
-                - ./gradlew test
+      #      - parallel:
+      - step:
+          name: Build Debug
+          caches:
+            - gradle
+          image: bitbucketpipelines/android-ci-image
+          script:
+            - echo "$SIGNING_JKS_FILE" | base64 -d > upload-keystore.jks
+            - yes | sdkmanager --licenses
+            - ./gradlew assembleDebug
+          artifacts:
+            - app/build/outputs/**
+      - step:
+          name: Test
+          image: bitbucketpipelines/android-ci-image
+          script:
+            - ./gradlew test
