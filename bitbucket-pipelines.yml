@@ -24,13 +24,13 @@ pipelines:
           - export PATH="$ANDROID_HOME/bin:$ANDROID_HOME/lib:$ANDROID_HOME:$PATH"
 
           # Download packages.
-          - yes | sdkmanager "platform-tools"
-          - yes | sdkmanager "platforms;android-30"
-          - yes | sdkmanager "build-tools;30.0.0"
-          - yes | sdkmanager "extras;android;m2repository"
-          - yes | sdkmanager "extras;google;m2repository"
-          - yes | sdkmanager "extras;google;instantapps"
-          - yes | sdkmanager --licenses
+          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "platform-tools"
+          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "platforms;android-30"
+          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "build-tools;30.0.0"
+          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "extras;android;m2repository"
+          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "extras;google;m2repository"
+          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager "extras;google;instantapps"
+          - yes | /opt/atlassian/pipelines/agent/build/android-sdk/bin/sdkmanager --licenses
           - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter "extra-android-m2repository" -a
 
           # Build apk
