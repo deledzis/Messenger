@@ -11,11 +11,11 @@ pipelines:
         caches:
           - gradle
           - android-sdk
-
+        image: bitbucketpipelines/android-ci-image
         script:
           # Download and unzip android sdk
-          - pwd
-          - ls -la
+          #          -pwd
+          #          - ls -la
           - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
           - unzip -o -qq android-sdk.zip -d android-sdk
 
@@ -31,6 +31,7 @@ pipelines:
           - yes | sdkmanager "extras;google;m2repository"
           - yes | sdkmanager "extras;google;instantapps"
           - yes | sdkmanager --licenses
+          - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter "extra-android-m2repository" -a
 
           # Build apk
           - chmod a+x ./gradlew
