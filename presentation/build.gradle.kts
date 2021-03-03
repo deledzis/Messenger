@@ -54,6 +54,12 @@ android {
         disable("IconDensities")             //For testing purpose. This is safe to remove.
         disable("IconMissingDensityFolder")  //For testing purpose. This is safe to remove.
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -62,10 +68,20 @@ dependencies {
 
     api(project(":infrastructure"))
 
-    implementation(platform("com.google.firebase:firebase-bom:26.5.0"))
+    //app libs
+    implementationBom(BomLibraries.firebaseBom)
     implementation(PresentationModuleDependencies.implementationLibs)
     kapt(PresentationModuleDependencies.kaptLibs)
     api(PresentationModuleDependencies.apiLibs)
+
+    //test libs
     testImplementation(PresentationModuleDependencies.testLibs)
     androidTestImplementation(PresentationModuleDependencies.androidTestLibs)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }

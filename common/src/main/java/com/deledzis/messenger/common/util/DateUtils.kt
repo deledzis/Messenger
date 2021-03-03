@@ -20,7 +20,7 @@ object DateUtils {
     val MINUTES_FORMAT: SimpleDateFormat = SimpleDateFormat("mm", Locale("ru"))
 
     fun getDate(year: Int, month: Int, day: Int, ignoreTime: Boolean = true): Date {
-        val date = Calendar.getInstance().apply {
+        val date = Calendar.getInstance(TimeZone.getDefault()).apply {
             set(Calendar.YEAR, year)
             set(Calendar.MONTH, month)
             set(Calendar.DAY_OF_MONTH, day)

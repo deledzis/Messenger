@@ -20,12 +20,15 @@ object InfrastructureModuleDependencies : ModuleDependencies() {
         add(Libraries.glideCompilerKapt)
     }
 
-    override val testLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.jUnitTest)
-    }
+    override val testLibs: List<String> = emptyList()
 
     override val androidTestLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.androidxJUnitTest)
-        add(TestLibraries.espressoTest)
+        add(TestLibraries.androidCoreTest)
+        add(TestLibraries.androidRunnerTest)
+        add(TestLibraries.androidRulesTest)
+        add(TestLibraries.androidJunitTest)
+        add(TestLibraries.espressoCoreTest)
+        add(TestLibraries.robolectricTest)
+        add(TestLibraries.mockitoTest)
     }
 }

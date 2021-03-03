@@ -149,7 +149,7 @@ dependencies {
     api(project(":presentation"))
 
     //app libs
-    implementation(platform("com.google.firebase:firebase-bom:26.5.0"))
+    implementationBom(BomLibraries.firebaseBom)
     implementation(AppModuleDependencies.implementationLibs)
     kapt(AppModuleDependencies.kaptLibs)
     api(AppModuleDependencies.apiLibs)
@@ -157,4 +157,11 @@ dependencies {
     //test libs
     testImplementation(AppModuleDependencies.testLibs)
     androidTestImplementation(AppModuleDependencies.androidTestLibs)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }

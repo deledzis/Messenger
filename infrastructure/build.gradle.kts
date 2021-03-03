@@ -50,6 +50,12 @@ android {
         disable("IconDensities")             //For testing purpose. This is safe to remove.
         disable("IconMissingDensityFolder")  //For testing purpose. This is safe to remove.
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -59,9 +65,19 @@ dependencies {
     api(project(":common"))
     api(project(":domain"))
 
+    //app libs
     implementation(InfrastructureModuleDependencies.implementationLibs)
     kapt(InfrastructureModuleDependencies.kaptLibs)
     api(InfrastructureModuleDependencies.apiLibs)
+
+    //test libs
     testImplementation(InfrastructureModuleDependencies.testLibs)
     androidTestImplementation(InfrastructureModuleDependencies.androidTestLibs)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }

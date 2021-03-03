@@ -33,6 +33,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -42,11 +48,19 @@ dependencies {
     api(project(":data"))
 
     //app libs
-    implementation(platform("com.google.firebase:firebase-bom:26.5.0"))
+    implementationBom(BomLibraries.firebaseBom)
     implementation(CacheModuleDependencies.implementationLibs)
     kapt(CacheModuleDependencies.kaptLibs)
     api(CacheModuleDependencies.apiLibs)
 
     //test libs
+    testImplementation(CacheModuleDependencies.testLibs)
     androidTestImplementation(CacheModuleDependencies.androidTestLibs)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }

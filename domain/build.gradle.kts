@@ -14,5 +14,13 @@ dependencies {
 
     api(project(":common"))
 
+    //app libs
     implementation(DomainModuleDependencies.implementationLibs)
+    kapt(DomainModuleDependencies.kaptLibs)
+    api(DomainModuleDependencies.apiLibs)
+
+    //test libs
+    testImplementationBom(BomLibraries.junitBom)
+    testImplementation(DomainModuleDependencies.testLibs)
+    androidTestImplementation(DomainModuleDependencies.androidTestLibs)
 }

@@ -13,7 +13,20 @@ dependencies {
     api(project(":domain"))
     api(project(":common"))
 
+    //app libs
     implementation(DataModuleDependencies.implementationLibs)
     kapt(DataModuleDependencies.kaptLibs)
     api(DataModuleDependencies.apiLibs)
+
+    //test libs
+    testImplementationBom(BomLibraries.junitBom)
+    testImplementation(DataModuleDependencies.testLibs)
+    androidTestImplementation(DataModuleDependencies.androidTestLibs)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }

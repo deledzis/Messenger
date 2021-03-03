@@ -16,8 +16,6 @@ object CommonModuleDependencies : ModuleDependencies() {
 
     override val testLibs: List<String> = arrayListOf<String>().apply {
         add(TestLibraries.jUnitTest)
-        add(TestLibraries.kotlinTest)
-        add(TestLibraries.mockitoKotlinTest)
         add(TestLibraries.assertJTest)
     }
 

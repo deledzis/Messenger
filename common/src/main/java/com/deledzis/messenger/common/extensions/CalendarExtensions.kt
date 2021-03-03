@@ -21,19 +21,6 @@ fun Calendar.compareIgnoreTime(other: Calendar): Int {
         .compareTo(other.get(Calendar.DAY_OF_MONTH))
 }
 
-fun Calendar.dayBegin(): Calendar = this.also {
-    it.hour = 0
-    it.minute = 0
-    it.second = 0
-}
-
-fun Calendar.dayEnd(): Calendar = this.also {
-    it.hour = 23
-    it.minute = 59
-    it.second = 59
-    it.millisecond = 999
-}
-
 var Calendar.year: Int
     set(value) {
         this.set(Calendar.YEAR, value)

@@ -15,7 +15,20 @@ dependencies {
 
     api(project(":data"))
 
+    //app libs
     implementation(RemoteModuleDependencies.implementationLibs)
     api(RemoteModuleDependencies.apiLibs)
     kapt(RemoteModuleDependencies.kaptLibs)
+
+    //test libs
+    testImplementationBom(BomLibraries.junitBom)
+    testImplementation(RemoteModuleDependencies.testLibs)
+    androidTestImplementation(RemoteModuleDependencies.androidTestLibs)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }

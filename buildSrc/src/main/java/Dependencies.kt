@@ -56,10 +56,6 @@ object Libraries {
     const val cameraViewLib: String = "androidx.camera:camera-view:${Versions.cameraxView}"
     const val swipeRefreshLib: String =
         "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefresh}"
-    const val gpAuthLib: String =
-        "com.google.android.gms:play-services-auth:${Versions.googlePlayAuth}"
-    const val gaugeLib: String =
-        "pl.pawelkleczkowski.customgauge:CustomGauge:${Versions.customGauge}"
 
     /* Navigation component dependencies */
     const val navFragmentLib: String =
@@ -111,10 +107,45 @@ object Libraries {
 }
 
 object TestLibraries {
-    const val jUnitTest: String = "junit:junit:${Versions.jUnit}"
-    const val androidxJUnitTest: String = "androidx.test.ext:junit:${Versions.androidxJUnit}"
-    const val kotlinTest: String = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.kotlin}"
+    /* Java test implementation */
+    const val jUnitTest: String = "org.junit.jupiter:junit-jupiter"
     const val assertJTest: String = "org.assertj:assertj-core:${Versions.assertj}"
-    const val espressoTest: String = "androidx.test.espresso:espresso-core:${Versions.espresso}"
-    const val mockitoKotlinTest: String = "com.nhaarman:mockito-kotlin:${Versions.mockitoKotlin}"
+
+    /* Android test implementations */
+    // Core
+    const val androidCoreTest: String = "androidx.test:core:${Versions.androidTestCore}"
+
+    // AndroidJUnitRunner and JUnit Rules
+    const val androidRunnerTest: String = "androidx.test:runner:${Versions.androidTestRunner}"
+    const val androidRulesTest: String = "androidx.test:rules:${Versions.androidTestRules}"
+
+    // Assertions
+    const val androidJunitTest: String = "androidx.test.ext:junit:${Versions.androidTestExt}"
+    const val androidTruthTest: String = "androidx.test.ext:truth:${Versions.androidTestExt}"
+    const val googleTruthTest: String = "com.google.truth:truth:${Versions.googleTruth}"
+
+    // Espresso dependencies
+    const val espressoCoreTest: String =
+        "androidx.test.espresso:espresso-core:${Versions.espressoTest}"
+    const val espressoIntentsTest: String =
+        "androidx.test.espresso:espresso-intents:${Versions.espressoTest}"
+    const val espressoAccessibilityTest: String =
+        "androidx.test.espresso:espresso-accessibility:${Versions.espressoTest}"
+    const val espressoWebTest: String =
+        "androidx.test.espresso:espresso-web:${Versions.espressoTest}"
+    const val espressoIdlingTest: String =
+        "androidx.test.espresso.idling:idling-concurrent:${Versions.espressoTest}"
+    const val espressoIdlingResourceTest: String =
+        "androidx.test.espresso:espresso-idling-resource:${Versions.espressoTest}"
+
+    // Robolectric
+    const val robolectricTest: String = "org.robolectric:robolectric:${Versions.robolectricTest}"
+
+    // Mockito
+    const val mockitoTest: String = "org.mockito:mockito-core:${Versions.mockitoTest}"
+}
+
+object BomLibraries {
+    const val firebaseBom: String = "com.google.firebase:firebase-bom:${Versions.firebaseBom}"
+    const val junitBom: String = "org.junit:junit-bom:${Versions.jUnitBom}"
 }

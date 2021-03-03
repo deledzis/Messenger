@@ -21,7 +21,6 @@ object PresentationModuleDependencies : ModuleDependencies() {
         add(Libraries.workManagerLib)
         add(Libraries.navFragmentLib)
         add(Libraries.navUiKtxLib)
-        add(Libraries.gaugeLib)
         add(Libraries.analyticsLib)
         add(Libraries.storageLib)
         add(Libraries.timberLib)
@@ -38,12 +37,15 @@ object PresentationModuleDependencies : ModuleDependencies() {
         add(Libraries.daggerAndroidKapt)
     }
 
-    override val androidTestLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.androidxJUnitTest)
-        add(TestLibraries.espressoTest)
-    }
+    override val testLibs: List<String> = emptyList()
 
-    override val testLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.jUnitTest)
+    override val androidTestLibs: List<String> = arrayListOf<String>().apply {
+        add(TestLibraries.androidCoreTest)
+        add(TestLibraries.androidRunnerTest)
+        add(TestLibraries.androidRulesTest)
+        add(TestLibraries.androidJunitTest)
+        add(TestLibraries.espressoCoreTest)
+        add(TestLibraries.robolectricTest)
+        add(TestLibraries.mockitoTest)
     }
 }

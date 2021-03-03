@@ -14,11 +14,20 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     //app libs
-    implementation(platform("com.google.firebase:firebase-bom:26.5.0"))
+    implementationBom(BomLibraries.firebaseBom)
     implementation(CommonModuleDependencies.implementationLibs)
     kapt(CommonModuleDependencies.kaptLibs)
     api(CommonModuleDependencies.apiLibs)
 
     //test libs
+    testImplementationBom(BomLibraries.junitBom)
     testImplementation(CommonModuleDependencies.testLibs)
+    androidTestImplementation(CommonModuleDependencies.androidTestLibs)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }

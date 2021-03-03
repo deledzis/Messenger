@@ -19,14 +19,34 @@ fun DependencyHandler.implementation(list: List<String>) {
     }
 }
 
+fun DependencyHandler.testImplementation(list: List<String>) {
+    list.forEach { dependency ->
+        add("testImplementation", dependency)
+    }
+}
+
 fun DependencyHandler.androidTestImplementation(list: List<String>) {
     list.forEach { dependency ->
         add("androidTestImplementation", dependency)
     }
 }
 
-fun DependencyHandler.testImplementation(list: List<String>) {
-    list.forEach { dependency ->
-        add("testImplementation", dependency)
-    }
+fun DependencyHandler.apiBom(item: String) {
+    add("api", platform(item))
+}
+
+fun DependencyHandler.kaptBom(item: String) {
+    add("kapt", platform(item))
+}
+
+fun DependencyHandler.implementationBom(item: String) {
+    add("implementation", platform(item))
+}
+
+fun DependencyHandler.testImplementationBom(item: String) {
+    add("testImplementation", platform(item))
+}
+
+fun DependencyHandler.androidTestImplementationBom(item: String) {
+    add("androidTestImplementation", platform(item))
 }
