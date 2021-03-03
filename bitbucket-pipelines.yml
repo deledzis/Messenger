@@ -18,6 +18,8 @@ pipelines:
           #          - ls -la
           - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
           - unzip -o -qq android-sdk.zip -d android-sdk
+          - ls -la /opt/atlassian/pipelines/agent/build/android-sdk/
+          - ls -la /opt/atlassian/pipelines/agent/build/android-sdk/bin/
 
           # Define Android Home and add PATHs
           - export ANDROID_HOME="/opt/atlassian/pipelines/agent/build/android-sdk"
