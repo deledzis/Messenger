@@ -1,4 +1,39 @@
+# This is a sample build configuration for Java (Gradle).
+# Check our guides at https://confluence.atlassian.com/x/zd-5Mw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: java:8
+
 pipelines:
+  default:
+    - step:
+        caches:
+          - gradle
+          - android-sdk
+
+        script:
+          # Download and unzip android sdk
+          - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
+          - unzip -o -qq android-sdk.zip -d android-sdk
+
+          # Define Android Home and add PATHs
+          - export ANDROID_HOME="/opt/atlassian/pipelines/agent/build/android-sdk"
+          - export PATH="$ANDROID_HOME/bin:$ANDROID_HOME/lib:$ANDROID_HOME:$PATH"
+
+          # Download packages.
+          - yes | sdkmanager "platform-tools"
+          - yes | sdkmanager "platforms;android-30"
+          - yes | sdkmanager "build-tools;30.0.0"
+          - yes | sdkmanager "extras;android;m2repository"
+          - yes | sdkmanager "extras;google;m2repository"
+          - yes | sdkmanager "extras;google;instantapps"
+          - yes | sdkmanager --licenses
+
+          # Build apk
+          - chmod a+x ./gradlew
+          - ./gradlew assembleDebug
+
   branches:
     master:
       #      - parallel:
@@ -9,6 +44,8 @@ pipelines:
           image: bitbucketpipelines/android-ci-image
           script:
             - echo "$SIGNING_JKS_FILE" | base64 -d > upload-keystore.jks
+            - echo "$ANDROID_HOME"
+            - ls -la $ANDROID_HOME
             - yes | sdkmanager --licenses
             - ./gradlew assembleDebug
           artifacts:
@@ -18,3 +55,7 @@ pipelines:
           image: bitbucketpipelines/android-ci-image
           script:
             - ./gradlew test
+
+definitions:
+  caches:
+    android-sdk: android-sdk
