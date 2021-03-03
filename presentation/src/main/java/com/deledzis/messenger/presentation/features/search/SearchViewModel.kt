@@ -71,13 +71,7 @@ class SearchViewModel @Inject constructor(
 
     private fun handleGetChatMessagesResponse(data: GetChatMessagesResponse) {
         val messages = data.response.items
-        if (messages != null) {
-            handleGetChatMessagesOkResponse(messages)
-        }
-        stopLoading()
-    }
-
-    private fun handleGetChatMessagesOkResponse(messages: List<Message>?) {
         this.messages.value = messages
+        stopLoading()
     }
 }

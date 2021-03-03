@@ -121,16 +121,8 @@ class ChatViewModel @Inject constructor(
 
     private fun handleGetChatMessagesResponse(data: GetChatMessagesResponse) {
         val messages = data.response.items
-        if (messages != null) {
-            handleGetChatMessagesOkResponse(messages)
-        } else {
-            messagesError.value = R.string.error_get_messages
-        }
-        stopLoading()
-    }
-
-    private fun handleGetChatMessagesOkResponse(messages: List<Message>) {
         postMessages(messages)
+        stopLoading()
     }
 
     private fun handleSendMessageResponse(data: SendMessageResponse) {

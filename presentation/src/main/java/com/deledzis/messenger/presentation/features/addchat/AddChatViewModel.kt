@@ -88,13 +88,7 @@ class AddChatViewModel @Inject constructor(
 
     private fun handleGetUsersResponse(data: GetUsersResponse) {
         val users = data.response.items
-        if (users != null) {
-            handleGetUsersOkResponse(users)
-        }
-        stopLoading()
-    }
-
-    private fun handleGetUsersOkResponse(users: List<User>) {
         this.users.value = users
+        stopLoading()
     }
 }

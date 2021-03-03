@@ -9,7 +9,6 @@ import com.deledzis.messenger.domain.model.entity.Entity
 import com.deledzis.messenger.domain.model.entity.chats.Chat
 import com.deledzis.messenger.domain.model.response.chats.GetChatsResponse
 import com.deledzis.messenger.domain.usecase.chats.GetChatsUseCase
-import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.AssistedSavedStateViewModelFactory
 import com.deledzis.messenger.presentation.base.BaseViewModel
 import dagger.assisted.Assisted
@@ -57,15 +56,7 @@ class ChatsViewModel @AssistedInject constructor(
 
     private fun handleGetChatsResponse(data: GetChatsResponse) {
         val chats = data.response.items
-        if (chats != null) {
-            handleGetChatsOkResponse(chats)
-        } else {
-            chatsLoadingError.value = R.string.error_get_chats
-        }
-        stopLoading()
-    }
-
-    private fun handleGetChatsOkResponse(chats: List<Chat>) {
         this.chats.value = chats
+        stopLoading()
     }
 }

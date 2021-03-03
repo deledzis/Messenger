@@ -57,6 +57,7 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
     }
 
     protected open fun handleFailure(error: Error) {
+        stopLoading()
         Timber.e("Handle Failure: ${error.exception}")
         error.exception?.asHttpError?.let {
             if (it.isAuthError) {
