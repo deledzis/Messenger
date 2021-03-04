@@ -1,44 +1,41 @@
 pipelines:
   default:
-    - step:
-        caches:
-          - gradle
-        image: runmymind/docker-android-sdk
-        script:
-          # Accepting licenses.
-          - yes | sdkmanager "platform-tools"
-          - yes | sdkmanager "platforms;android-30"
-          - yes | sdkmanager "build-tools;30.0.0"
-          - yes | sdkmanager "extras;android;m2repository"
-          - yes | sdkmanager "extras;google;m2repository"
-          - yes | sdkmanager "extras;google;instantapps"
-          - yes | sdkmanager --licenses
-          # Build apk
-          - chmod a+x ./gradlew
-          - ./gradlew assembleDebug
-        artifacts:
-          - app/build/outputs/**
-    - step:
-        name: Test
-        image: bitbucketpipelines/android-ci-image
-        script:
-          - ./gradlew test
+    - parallel:
+        - step:
+            caches:
+              - gradle
+            name: Debug Build
+            image: runmymind/docker-android-sdk
+            script:
+              - chmod a+x ./gradlew
+              - ./gradlew assembleDebug
+            artifacts:
+              - app/build/outputs/**
+
+        - step:
+            name: Test with Coverage
+            image: runmymind/docker-android-sdk
+            script:
+              - ./gradlew test
+              - ./gradlew createDebugCoverageReport
 
   branches:
     master:
-      - step:
-          name: Build Debug
-          caches:
-            - gradle
-          image: bitbucketpipelines/android-ci-image
-          script:
-            - echo "$SIGNING_JKS_FILE" | base64 -d > upload-keystore.jks
-            - yes | sdkmanager --licenses
-            - ./gradlew assembleDebug
-          artifacts:
-            - app/build/outputs/**
-      - step:
-          name: Test
-          image: bitbucketpipelines/android-ci-image
-          script:
-            - ./gradlew test
+      - parallel:
+          - step:
+              name: Build Debug
+              caches:
+                - gradle
+              image: runmymind/docker-android-sdk
+              script:
+                - echo "$SIGNING_JKS_FILE" | base64 -d > upload-keystore.jks
+                - ./gradlew assembleDebug
+              artifacts:
+                - app/build/outputs/**
+
+          - step:
+              name: Test
+              image: runmymind/docker-android-sdk
+              script:
+                - ./gradlew test
+                - ./gradlew createDebugCoverageReport

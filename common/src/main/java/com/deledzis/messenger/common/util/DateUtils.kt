@@ -19,8 +19,14 @@ object DateUtils {
     val HOURS_FORMAT: SimpleDateFormat = SimpleDateFormat("HH", Locale("ru"))
     val MINUTES_FORMAT: SimpleDateFormat = SimpleDateFormat("mm", Locale("ru"))
 
-    fun getDate(year: Int, month: Int, day: Int, ignoreTime: Boolean = true): Date {
-        val date = Calendar.getInstance(TimeZone.getDefault()).apply {
+    fun getDate(
+        year: Int,
+        month: Int,
+        day: Int,
+        ignoreTime: Boolean = true,
+        timeZone: TimeZone = TimeZone.getDefault()
+    ): Date {
+        val date = Calendar.getInstance(timeZone).apply {
             set(Calendar.YEAR, year)
             set(Calendar.MONTH, month)
             set(Calendar.DAY_OF_MONTH, day)

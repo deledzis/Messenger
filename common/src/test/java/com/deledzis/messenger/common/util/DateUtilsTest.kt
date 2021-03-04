@@ -15,7 +15,8 @@ class DateUtilsTest {
             year = 2000,
             month = 5,
             day = 10,
-            ignoreTime = true
+            ignoreTime = true,
+            timeZone = TimeZone.getTimeZone("ru")
         )
         Assertions.assertEquals(960580800000L, dateFromDateUtils.time)
     }
@@ -26,7 +27,8 @@ class DateUtilsTest {
             year = 2020,
             month = 7,
             day = 13,
-            ignoreTime = false
+            ignoreTime = false,
+            timeZone = TimeZone.getTimeZone("ru")
         )
         Assertions.assertTrue(dateFromDateUtils.time - 1597266000000 <= ONE_DAY_MILLIS)
     }
@@ -38,7 +40,8 @@ class DateUtilsTest {
                 year = 1000000,
                 month = 123123,
                 day = 435345,
-                ignoreTime = false
+                ignoreTime = false,
+                timeZone = TimeZone.getTimeZone("ru")
             )
         }
     }
