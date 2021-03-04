@@ -112,14 +112,16 @@ object TestLibraries {
     const val jUnitTest: String = "org.junit.jupiter:junit-jupiter"
     const val assertJTest: String = "org.assertj:assertj-core:${Versions.assertj}"
     const val testNgTest: String = "org.testng:testng:${Versions.testNg}"
+    const val mockKTest: String = "io.mockk:mockk:${Versions.mockK}"
 
     /* Android test implementations */
     // Core
     const val androidCoreTest: String = "androidx.test:core:${Versions.androidTestCore}"
-
-    // AndroidJUnitRunner and JUnit Rules
     const val androidRunnerTest: String = "androidx.test:runner:${Versions.androidTestRunner}"
     const val androidRulesTest: String = "androidx.test:rules:${Versions.androidTestRules}"
+    const val mockKAndroidTest: String = "io.mockk:mockk-android:${Versions.mockK}"
+    const val robolectricTest: String = "org.robolectric:robolectric:${Versions.robolectricTest}"
+    const val mockitoTest: String = "org.mockito:mockito-core:${Versions.mockitoTest}"
 
     // Assertions
     const val androidJunitTest: String = "androidx.test.ext:junit:${Versions.androidTestExt}"
@@ -139,12 +141,6 @@ object TestLibraries {
         "androidx.test.espresso.idling:idling-concurrent:${Versions.espressoTest}"
     const val espressoIdlingResourceTest: String =
         "androidx.test.espresso:espresso-idling-resource:${Versions.espressoTest}"
-
-    // Robolectric
-    const val robolectricTest: String = "org.robolectric:robolectric:${Versions.robolectricTest}"
-
-    // Mockito
-    const val mockitoTest: String = "org.mockito:mockito-core:${Versions.mockitoTest}"
 }
 
 object BomLibraries {
