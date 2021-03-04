@@ -68,12 +68,14 @@ android {
         getByName("debug") {
             multiDexKeepFile = file("multidex-config.txt")
             isDebuggable = true
+            isTestCoverageEnabled = true
             isShrinkResources = false
             isMinifyEnabled = false
         }
         getByName("release") {
             multiDexKeepFile = file("multidex-config.txt")
             isDebuggable = false
+            isTestCoverageEnabled = true
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(
@@ -82,22 +84,6 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
         }
-        /*create("mockDebug") {
-            initWith(getByName("debug"))
-            versionNameSuffix = "-mock"
-            resValue("string", "api_version", "v1")
-            resValue("string", "base_url", "http://10.0.2.2:8080")
-        }
-        create("prodDebug") {
-            initWith(getByName("debug"))
-            resValue("string", "api_version", "v1")
-            resValue("string", "base_url", "https://spbstu-messenger.herokuapp.com")
-        }
-        create("prodRelease") {
-            initWith(getByName("release"))
-            resValue("string", "api_version", "v1")
-            resValue("string", "base_url", "https://spbstu-messenger.herokuapp.com")
-        }*/
     }
 
     buildFeatures {

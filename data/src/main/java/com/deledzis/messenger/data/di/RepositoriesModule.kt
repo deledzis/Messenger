@@ -30,7 +30,6 @@ class RepositoriesModule {
     internal fun provideAuthRepository(
         factory: AuthDataStoreFactory,
         authMapper: AuthMapper,
-        serverMessageResponseMapper: ServerMessageResponseMapper,
         networkManager: BaseNetworkManager
     ): AuthRepository {
         return AuthRepositoryImpl(

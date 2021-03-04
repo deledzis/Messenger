@@ -1,3 +1,5 @@
+image: uber/android-build-environment:latest
+
 pipelines:
   default:
     - parallel:
@@ -5,7 +7,7 @@ pipelines:
             caches:
               - gradle
             name: Debug Build
-            image: runmymind/docker-android-sdk
+            #            image: runmymind/docker-android-sdk
             script:
               - chmod a+x ./gradlew
               - ./gradlew assembleDebug
@@ -14,7 +16,7 @@ pipelines:
 
         - step:
             name: Test with Coverage
-            image: runmymind/docker-android-sdk
+            #            image: runmymind/docker-android-sdk
             script:
               - ./gradlew test
               - ./gradlew createDebugCoverageReport
@@ -26,7 +28,7 @@ pipelines:
               name: Build Debug
               caches:
                 - gradle
-              image: runmymind/docker-android-sdk
+              #              image: runmymind/docker-android-sdk
               script:
                 - echo "$SIGNING_JKS_FILE" | base64 -d > upload-keystore.jks
                 - ./gradlew assembleDebug
@@ -35,7 +37,7 @@ pipelines:
 
           - step:
               name: Test
-              image: runmymind/docker-android-sdk
+              #              image: runmymind/docker-android-sdk
               script:
                 - ./gradlew test
                 - ./gradlew createDebugCoverageReport
