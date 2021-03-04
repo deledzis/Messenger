@@ -5,6 +5,7 @@ object BuildPlugins {
     const val kotlin: String = "kotlin"
     const val kotlinAndroidPlugin: String = "kotlin-android"
     const val kotlinKaptPlugin: String = "kotlin-kapt"
+    const val jacocoPlugin: String = "jacoco"
 
     const val googleServicesPlugin: String = "com.google.gms.google-services"
     const val crashlyticsPlugin: String = "com.google.firebase.crashlytics"
@@ -110,6 +111,7 @@ object TestLibraries {
     /* Java test implementation */
     const val jUnitTest: String = "org.junit.jupiter:junit-jupiter"
     const val assertJTest: String = "org.assertj:assertj-core:${Versions.assertj}"
+    const val testNgTest: String = "org.testng:testng:${Versions.testNg}"
 
     /* Android test implementations */
     // Core

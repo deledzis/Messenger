@@ -19,7 +19,10 @@ object CacheModuleDependencies : ModuleDependencies() {
         add(Libraries.daggerAndroidKapt)
     }
 
-    override val testLibs: List<String> = emptyList()
+    override val testLibs: List<String> = arrayListOf<String>().apply {
+        add(TestLibraries.jUnitTest)
+        add(TestLibraries.assertJTest)
+    }
 
     override val androidTestLibs: List<String> = arrayListOf<String>().apply {
         add(TestLibraries.androidCoreTest)

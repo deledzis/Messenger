@@ -54,6 +54,7 @@ object Versions {
     // java test
     const val jUnitBom = "5.7.1"
     const val assertj = "3.19.0"
+    const val testNg = "6.9.6"
 
     // android test
     const val androidTestCore = "1.0.0"

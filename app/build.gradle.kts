@@ -6,6 +6,7 @@ plugins {
 
     id(BuildPlugins.kotlinAndroidPlugin)
     id(BuildPlugins.kotlinKaptPlugin)
+    id(BuildPlugins.jacocoPlugin)
 
     id(BuildPlugins.googleServicesPlugin)
     id(BuildPlugins.crashlyticsPlugin)
@@ -130,6 +131,7 @@ dependencies {
     api(AppModuleDependencies.apiLibs)
 
     //test libs
+    testImplementationBom(BomLibraries.junitBom)
     testImplementation(AppModuleDependencies.testLibs)
     androidTestImplementation(AppModuleDependencies.androidTestLibs)
 }
@@ -138,5 +140,15 @@ tasks.withType<Test> {
     useJUnitPlatform()
     testLogging {
         events("passed", "skipped", "failed")
+    }
+    finalizedBy(tasks.withType<JacocoReport>())
+}
+
+tasks.withType<JacocoReport> {
+    dependsOn(tasks.withType<Test>())
+    reports {
+        xml.isEnabled = false
+        csv.isEnabled = false
+        html.destination = file("${buildDir}/jacocoHtml")
     }
 }

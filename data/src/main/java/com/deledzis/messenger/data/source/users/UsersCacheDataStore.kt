@@ -12,7 +12,7 @@ import javax.inject.Inject
  * Implementation of the [UsersDataStore] interface to provide a means of communicating
  * with the local data source
  */
-open class UsersCacheDataStore @Inject constructor(
+class UsersCacheDataStore @Inject constructor(
     private val cache: CrudCache<UserEntity, String?>
 ) : UsersDataStore {
 

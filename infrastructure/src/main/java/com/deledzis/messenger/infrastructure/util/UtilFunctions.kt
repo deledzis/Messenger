@@ -49,7 +49,7 @@ fun <T> debounce(
     }
 }
 
-fun <T> LiveData<T>.asFlow() = channelFlow<T?> {
+fun <T> LiveData<T>.asFlow() = channelFlow {
     offer(value)
     val observer = Observer<T> { t -> offer(t) }
     observeForever(observer)

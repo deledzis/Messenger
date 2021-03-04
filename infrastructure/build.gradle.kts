@@ -3,6 +3,7 @@ plugins {
 
     id(BuildPlugins.kotlinAndroidPlugin)
     id(BuildPlugins.kotlinKaptPlugin)
+    id(BuildPlugins.jacocoPlugin)
 }
 
 android {
@@ -19,10 +20,6 @@ android {
         viewBinding = true
     }
 
-    dexOptions {
-        javaMaxHeapSize = "4g"
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -30,14 +27,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-
-    packagingOptions {
-        exclude("LICENSE.txt")
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/ASL2.0")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/LICENSE")
     }
 
     lintOptions {
@@ -71,6 +60,7 @@ dependencies {
     api(InfrastructureModuleDependencies.apiLibs)
 
     //test libs
+    testImplementationBom(BomLibraries.junitBom)
     testImplementation(InfrastructureModuleDependencies.testLibs)
     androidTestImplementation(InfrastructureModuleDependencies.androidTestLibs)
 }
@@ -79,5 +69,15 @@ tasks.withType<Test> {
     useJUnitPlatform()
     testLogging {
         events("passed", "skipped", "failed")
+    }
+    finalizedBy(tasks.withType<JacocoReport>())
+}
+
+tasks.withType<JacocoReport> {
+    dependsOn(tasks.withType<Test>())
+    reports {
+        xml.isEnabled = false
+        csv.isEnabled = false
+        html.destination = file("${buildDir}/jacocoHtml")
     }
 }
