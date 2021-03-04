@@ -1,6 +1,8 @@
-package com.deledzis.messenger.remote
+package com.deledzis.messenger.remote.di
 
 import com.deledzis.messenger.common.Constants
+import com.deledzis.messenger.remote.ApiService
+import com.deledzis.messenger.remote.di.NetworkModule
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
