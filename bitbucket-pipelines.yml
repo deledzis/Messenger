@@ -1,5 +1,3 @@
-image: runmymind/docker-android-sdk
-
 pipelines:
   default:
     - parallel:
@@ -7,6 +5,7 @@ pipelines:
             caches:
               - gradle
             name: Debug Build
+            image: uber/android-build-environment:latest
             script:
               - chmod a+x ./gradlew
               - ./gradlew assembleDebug
@@ -15,6 +14,7 @@ pipelines:
 
         - step:
             name: Test with Coverage
+            image: uber/android-build-environment:latest
             script:
               - ./gradlew test
   #              - ./gradlew createDebugCoverageReport
@@ -24,6 +24,7 @@ pipelines:
       - parallel:
           - step:
               name: Build Debug
+              image: uber/android-build-environment:latest
               caches:
                 - gradle
               script:
@@ -34,6 +35,7 @@ pipelines:
 
           - step:
               name: Test
+              image: uber/android-build-environment:latest
               script:
                 - ./gradlew test
 #                - ./gradlew createDebugCoverageReport
