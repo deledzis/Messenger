@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@0.2.1
+  android: circleci/android:api-30-alpha
 
 jobs:
   build:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - run:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
@@ -21,10 +21,10 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - run:
-          name: Run Build
-          command: ./gradlew build
+          name: Run Build Debug
+          command: ./gradlew assembleDebug # build
       - run:
           name: Run Tests
           command: ./gradlew lint test
