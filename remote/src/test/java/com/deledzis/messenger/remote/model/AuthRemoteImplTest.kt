@@ -2,9 +2,12 @@ package com.deledzis.messenger.remote.model
 
 import com.deledzis.messenger.remote.ApiService
 import com.deledzis.messenger.remote.AuthRemoteImpl
-import com.deledzis.messenger.remote.TestData
 import com.deledzis.messenger.remote.di.MockNetworkModule
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -14,24 +17,58 @@ class AuthRemoteImplTest {
 
     var authRemoteImpl: AuthRemoteImpl = AuthRemoteImpl(apiService)
 
-    @Test
-    fun loginTest() = runBlocking {
-
-        val authUser = authRemoteImpl.login(username = "Igor", password = "c123456789")
-        assertEquals(authUser, TestData.auth)
+    companion object {
+        const val testUsername: String = "Igor"
+        const val testNickname: String = "Igorek"
+        const val testPassword: String = "c123456789"
     }
 
     @Test
-    fun registerTest() = runBlocking {
+    fun loginTest() {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val authUser =
+                    authRemoteImpl.login(username = testUsername, password = testPassword)
 
-        val authUser = authRemoteImpl.register(username = "Igor", nickname = "Igorek", password = "c123456789")
-        assertEquals(authUser.username, "Igor")
+                assertEquals(testUsername, authUser.username)
+                assertEquals(testNickname, authUser.nickname)
+                Assertions.assertTrue(authUser.accessToken.isNotEmpty())
+            }
+        }
     }
 
     @Test
-    fun updateUserDataTest() = runBlocking {
+    fun registerTest() {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val authUser = authRemoteImpl.register(
+                    username = testUsername,
+                    nickname = testNickname,
+                    password = testPassword
+                )
 
-        val authUser = authRemoteImpl.updateUserData(username = "Igor", nickname = "Igorek", password = "c123456789", newPassword = null)
-        assertEquals(authUser.username, "Igor")
+                assertEquals(testUsername, authUser.username)
+                assertEquals(testNickname, authUser.nickname)
+                Assertions.assertTrue(authUser.accessToken.isNotEmpty())
+            }
+        }
+    }
+
+    @Test
+    fun updateUserDataTest() {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val authUser = authRemoteImpl.updateUserData(
+                    username = testUsername,
+                    nickname = testNickname,
+                    password = testPassword,
+                    newPassword = null
+                )
+
+                assertEquals(testUsername, authUser.username)
+                assertEquals(testNickname, authUser.nickname)
+                Assertions.assertTrue(authUser.accessToken.isNotEmpty())
+            }
+        }
     }
 }

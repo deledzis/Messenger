@@ -10,6 +10,7 @@ import com.deledzis.messenger.data.model.users.UserEntity
 import com.deledzis.messenger.data.model.users.UsersEntity
 
 class TestData {
+
     companion object {
         val auth = AuthEntity(
             id = 1,
@@ -17,6 +18,7 @@ class TestData {
             nickname = "Igorek",
             accessToken = "123"
         )
+
         val chats = ChatsEntity(
             items = listOf(
                 ChatEntity(
@@ -89,6 +91,5 @@ class TestData {
                 )
             )
         )
-
     }
 }

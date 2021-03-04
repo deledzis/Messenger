@@ -58,10 +58,10 @@ object Versions {
     const val mockK = "1.10.6"
 
     // android test
-    const val androidTestCore = "1.0.0"
-    const val androidTestRunner = "1.1.0"
-    const val androidTestRules = "1.1.0"
-    const val androidTestExt = "1.0.0"
+    const val androidTestCore = "2.1.0"
+    const val androidTestRunner = "1.3.0"
+    const val androidTestRules = "1.3.0"
+    const val androidTestExt = "1.3.0"
     const val googleTruth = "0.42"
     const val espressoTest = "3.3.0"
     const val robolectricTest = "4.4"

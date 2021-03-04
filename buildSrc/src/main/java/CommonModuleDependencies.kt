@@ -14,12 +14,4 @@ object CommonModuleDependencies : ModuleDependencies() {
         add(Libraries.roomCompilerKapt)
         add(Libraries.daggerCompilerKapt)
     }
-
-    override val testLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.jUnitTest)
-        add(TestLibraries.assertJTest)
-        add(TestLibraries.mockitoTest)
-    }
-
-    override val androidTestLibs: List<String> = emptyList()
 }

@@ -14,11 +14,4 @@ object DataModuleDependencies : ModuleDependencies() {
     override val kaptLibs: List<String> = arrayListOf<String>().apply {
         add(Libraries.daggerCompilerKapt)
     }
-
-    override val testLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.jUnitTest)
-        add(TestLibraries.assertJTest)
-    }
-
-    override val androidTestLibs: List<String> = emptyList()
 }

@@ -37,19 +37,4 @@ object PresentationModuleDependencies : ModuleDependencies() {
         add(Libraries.daggerCompilerKapt)
         add(Libraries.daggerAndroidKapt)
     }
-
-    override val testLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.jUnitTest)
-        add(TestLibraries.assertJTest)
-    }
-
-    override val androidTestLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.androidCoreTest)
-        add(TestLibraries.androidRunnerTest)
-        add(TestLibraries.androidRulesTest)
-        add(TestLibraries.androidJunitTest)
-        add(TestLibraries.espressoCoreTest)
-        add(TestLibraries.robolectricTest)
-        add(TestLibraries.mockitoTest)
-    }
 }

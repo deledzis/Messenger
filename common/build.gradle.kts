@@ -23,7 +23,7 @@ dependencies {
     //test libs
     testImplementationBom(BomLibraries.junitBom)
     testImplementation(CommonModuleDependencies.testLibs)
-    androidTestImplementation(CommonModuleDependencies.androidTestLibs)
+//    androidTestImplementation(CommonModuleDependencies.androidTestLibs)
 }
 
 tasks.withType<Test> {

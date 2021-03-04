@@ -116,7 +116,8 @@ object TestLibraries {
 
     /* Android test implementations */
     // Core
-    const val androidCoreTest: String = "androidx.test:core:${Versions.androidTestCore}"
+    const val androidCoreTest: String =
+        "androidx.arch.core:core-testing:${Versions.androidTestCore}"
     const val androidRunnerTest: String = "androidx.test:runner:${Versions.androidTestRunner}"
     const val androidRulesTest: String = "androidx.test:rules:${Versions.androidTestRules}"
     const val mockKAndroidTest: String = "io.mockk:mockk-android:${Versions.mockK}"
@@ -124,7 +125,6 @@ object TestLibraries {
     const val mockitoTest: String = "org.mockito:mockito-core:${Versions.mockitoTest}"
 
     // Assertions
-    const val androidJunitTest: String = "androidx.test.ext:junit:${Versions.androidTestExt}"
     const val androidTruthTest: String = "androidx.test.ext:truth:${Versions.androidTestExt}"
     const val googleTruthTest: String = "com.google.truth:truth:${Versions.googleTruth}"
 

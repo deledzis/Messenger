@@ -1,11 +1,15 @@
 package com.deledzis.messenger.remote.model
 
 import com.deledzis.messenger.remote.ApiService
-import com.deledzis.messenger.remote.AuthRemoteImpl
 import com.deledzis.messenger.remote.ChatsRemoteImpl
 import com.deledzis.messenger.remote.TestData
 import com.deledzis.messenger.remote.di.MockNetworkModule
-import kotlinx.coroutines.runBlocking
+import io.mockk.InternalPlatformDsl.toArray
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -16,15 +20,27 @@ class ChatsRemoteImplTest {
     var chatsRemoteImpl: ChatsRemoteImpl = ChatsRemoteImpl(apiService)
 
     @Test
-    fun getChatsTest() = runBlocking {
-        val chats = chatsRemoteImpl.getChats()
-        assertEquals(chats, TestData.chats)
+    fun getChatsTest() {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val chats = chatsRemoteImpl.getChats()
+                assertEquals(chats.items.size, TestData.chats.items.size)
+                assertArrayEquals(chats.items.toTypedArray(), TestData.chats.items.toArray())
+            }
+        }
     }
 
     @Test
-    fun addChatTest() = runBlocking {
-        val chat = chatsRemoteImpl.addChat(TestData.chat.interlocutorId)
-        assertEquals(chat, TestData.chat)
+    fun addChatTest() {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val chat = chatsRemoteImpl.addChat(TestData.chat.interlocutorId)
+                assertEquals(chat.id, TestData.chat.id)
+                assertEquals(chat.title, TestData.chat.title)
+                assertEquals(chat.interlocutorId, TestData.chat.interlocutorId)
+                assertEquals(chat.lastMessage, TestData.chat.lastMessage)
+            }
+        }
     }
 
 }
