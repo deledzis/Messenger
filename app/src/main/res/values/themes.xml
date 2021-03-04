@@ -1,27 +1,5 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Messenger" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/white</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/accent</item>
-        <item name="colorSecondaryVariant">@color/accent</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <item name="actionMenuTextColor">@color/text</item>
-        <item name="actionMenuTextAppearance">@style/ActionMenuTextAppearance</item>
-        <item name="colorControlActivated">@color/blue_700</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
-        <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialogTheme</item>
-        <item name="android:alertDialogTheme">@style/AlertDialogTheme.Light</item>
-        <item name="materialAlertDialogTheme">@style/AlertDialogTheme.Light</item>
-        <item name="snackbarStyle">@style/ErrorSnackbar</item>
-    </style>
-
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <style name="Theme.Messenger.Launcher">
         <item name="colorPrimaryDark">@color/white</item>
         <item name="android:windowBackground">@drawable/launch_screen</item>

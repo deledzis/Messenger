@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Messenger</string>
+
+    <string name="default_notification_channel_id">general</string>
+    <string name="default_notification_channel_name">Общий</string>
+    <string name="default_notification_channel_description">Канал для подписки на уведомления</string>
+
+    <!-- Labels -->
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="name">Имя</string>
+    <string name="new_password">Новый пароль</string>
+
+    <!-- Screens related string (headers etc) -->
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="register">Регистрация</string>
+
+    <string name="dialogs">Диалоги</string>
+    <string name="dialogs_empty_title">У вас пока нет диалогов 😔</string>
+    <string name="dialogs_empty_message">Нажмите кнопку ниже, чтобы добавить новый диалог</string>
+    <string name="dialogs_empty_button">Начать общаться</string>
+
+    <string name="chat_empty_title">Здесь пока ничего нет 😔</string>
+    <string name="chat_empty_message">Начните общение, отправив сообщение 💬</string>
+
+    <string name="add_chat">Выберите собеседника</string>
+    <string name="add_chat_init_title">Начните вводить имя</string>
+    <string name="add_chat_init_message">чтобы произвести поиск по доступным собеседникам</string>
+    <string name="add_chat_empty_title">Ничего не найдено 😔</string>
+    <string name="add_chat_empty_message">Попробуйте изменить запрос</string>
+
+    <string name="search">Поиск сообщений</string>
+    <string name="search_init_title">Начните вводить запрос</string>
+    <string name="search_init_message">чтобы произвести поиск по сообщениям в выбранном диалоге</string>
+    <string name="search_empty_title">Ничего не найдено 😔</string>
+    <string name="search_empty_message">Попробуйте изменить запрос</string>
+
+    <string name="settings">Настройки</string>
+    <string name="settings_need_password_disclaimer">Для сохранения изменений необходимо указать действительный текущий пароль</string>
+
+    <!-- Action strings (usually for buttons) -->
+    <string name="action_login">Войти</string>
+    <string name="action_to_register">Регистрация</string>
+    <string name="action_register">Зарегистрироваться</string>
+    <string name="action_to_login">Вход</string>
+    <string name="action_retry">Повторить</string>
+    <string name="action_logout">Выйти</string>
+
+    <!-- Placeholders for edit texts -->
+    <string name="placeholder_send_message">Введите сообщение…</string>
+    <string name="placeholder_search">Поиск</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_logout">Подтвердите выход из аккаунта\n\n</string>
+    <string name="dialog_btn_cancel">Отмена</string>
+    <string name="dialog_btn_exit">Выйти</string>
+</resources>

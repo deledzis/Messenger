@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.deledzis.messenger",
+  "variantName": "processProductionReleaseResources",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 1,
+      "versionName": "0.3.1.396-prod",
+      "outputFile": "messenger_v0.3.1.396-prod_15.12.2020_release.apk"
+    }
+  ]
+}

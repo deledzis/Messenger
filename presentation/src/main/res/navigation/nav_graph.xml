@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/chatsFragment">
+
+    <fragment
+        android:id="@+id/chatsFragment"
+        android:name="com.deledzis.messenger.presentation.features.chats.ChatsFragment"
+        android:label="ChatsFragment">
+
+        <action
+            android:id="@+id/action_chatsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+
+        <action
+            android:id="@+id/action_chatsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+
+        <action
+            android:id="@+id/action_chatsFragment_to_addChatFragment"
+            app:destination="@id/addChatFragment" />
+
+        <action
+            android:id="@+id/action_chatsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.deledzis.messenger.presentation.features.login.LoginFragment"
+        android:label="LoginFragment">
+
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.deledzis.messenger.presentation.features.register.RegisterFragment"
+        android:label="RegisterFragment">
+
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/addChatFragment"
+        android:name="com.deledzis.messenger.presentation.features.addchat.AddChatFragment"
+        android:label="AddChatFragment">
+
+        <action
+            android:id="@+id/action_addChatFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.deledzis.messenger.presentation.features.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.deledzis.messenger.presentation.features.chat.ChatFragment"
+        android:label="ChatFragment">
+
+        <argument
+            android:name="chatId"
+            app:argType="integer" />
+
+        <argument
+            android:name="chatTitle"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_chatFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.deledzis.messenger.presentation.features.search.SearchFragment"
+        android:label="SearchFragment">
+
+        <argument
+            android:name="chatId"
+            app:argType="integer" />
+
+    </fragment>
+
+</navigation>
