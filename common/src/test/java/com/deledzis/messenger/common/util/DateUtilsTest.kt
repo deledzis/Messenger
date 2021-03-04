@@ -18,7 +18,7 @@ class DateUtilsTest {
             ignoreTime = true,
             timeZone = TimeZone.getTimeZone("ru")
         )
-        Assertions.assertEquals(960580800000L, dateFromDateUtils.time)
+        Assertions.assertEquals(960595200000, dateFromDateUtils.time)
     }
 
     @Test
