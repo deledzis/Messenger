@@ -5,7 +5,9 @@ pipelines:
           - gradle
         image: runmymind/docker-android-sdk
         script:
-          - ls -la /opt/atlassian/pipelines/agent/build/android-sdk/
+          - pwd
+          - ls -la .
+          - ls -la android-sdk
           # Accepting licenses.
           - yes | sdkmanager "platform-tools"
           - yes | sdkmanager "platforms;android-30"
