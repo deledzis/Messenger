@@ -5,10 +5,7 @@ import com.deledzis.messenger.remote.ChatsRemoteImpl
 import com.deledzis.messenger.remote.TestData
 import com.deledzis.messenger.remote.di.MockNetworkModule
 import io.mockk.InternalPlatformDsl.toArray
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -21,25 +18,21 @@ class ChatsRemoteImplTest {
 
     @Test
     fun getChatsTest() {
-        GlobalScope.launch {
-            withContext(Dispatchers.IO) {
-                val chats = chatsRemoteImpl.getChats()
-                assertEquals(chats.items.size, TestData.chats.items.size)
-                assertArrayEquals(chats.items.toTypedArray(), TestData.chats.items.toArray())
-            }
+        runBlocking {
+            val chats = chatsRemoteImpl.getChats()
+            assertEquals(chats.items.size, TestData.chats.items.size)
+            assertArrayEquals(chats.items.toTypedArray(), TestData.chats.items.toArray())
         }
     }
 
     @Test
     fun addChatTest() {
-        GlobalScope.launch {
-            withContext(Dispatchers.IO) {
-                val chat = chatsRemoteImpl.addChat(TestData.chat.interlocutorId)
-                assertEquals(chat.id, TestData.chat.id)
-                assertEquals(chat.title, TestData.chat.title)
-                assertEquals(chat.interlocutorId, TestData.chat.interlocutorId)
-                assertEquals(chat.lastMessage, TestData.chat.lastMessage)
-            }
+        runBlocking {
+            val chat = chatsRemoteImpl.addChat(TestData.chat.interlocutorId)
+            assertEquals(chat.id, TestData.chat.id)
+            assertEquals(chat.title, TestData.chat.title)
+            assertEquals(chat.interlocutorId, TestData.chat.interlocutorId)
+            assertEquals(chat.lastMessage, TestData.chat.lastMessage)
         }
     }
 
