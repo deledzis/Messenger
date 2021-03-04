@@ -12,6 +12,7 @@ import com.deledzis.messenger.domain.model.entity.messages.Message
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentSearchBinding
+import timber.log.Timber
 import javax.inject.Inject
 
 class SearchFragment @Inject constructor() :
@@ -49,6 +50,7 @@ class SearchFragment @Inject constructor() :
     }
 
     override fun bindObservers() {
+        viewModel.searchTextDebounced.observe(viewLifecycleOwner, { Timber.v("search: $it") })
         viewModel.messages.observe(viewLifecycleOwner, ::messagesObserver)
     }
 

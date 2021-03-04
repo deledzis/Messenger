@@ -37,6 +37,8 @@ class AddChatViewModel @Inject constructor(
     val users: MutableLiveData<List<User>> = MutableLiveData<List<User>>()
     val addedChat: MutableLiveData<Chat> = MutableLiveData<Chat>()
 
+    private var lastUser: User? = null
+
     override suspend fun resolve(value: Response<Entity, Error>) {
         value.handleResult(
             stateBlock = ::handleState,
@@ -71,8 +73,15 @@ class AddChatViewModel @Inject constructor(
     }
 
     fun addChat(user: User) {
+        lastUser = user
         startLoading()
         addChatUseCase(params = AddChatRequest(interlocutorId = user.id ?: return))
+    }
+
+    fun retry() {
+        lastUser?.run {
+            addChat(this)
+        }
     }
 
     private fun handleAddChatResponse(data: AddChatResponse) {

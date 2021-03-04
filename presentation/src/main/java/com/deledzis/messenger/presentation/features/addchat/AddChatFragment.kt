@@ -13,6 +13,7 @@ import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentAddChatBinding
 import com.deledzis.messenger.presentation.features.chats.ChatsFragmentDirections
+import timber.log.Timber
 import javax.inject.Inject
 
 class AddChatFragment @Inject constructor() :
@@ -50,6 +51,7 @@ class AddChatFragment @Inject constructor() :
     }
 
     override fun bindObservers() {
+        viewModel.searchTextDebounced.observe(viewLifecycleOwner, { Timber.v("search: $it") })
         viewModel.users.observe(viewLifecycleOwner, ::usersObserver)
         viewModel.addedChat.observe(viewLifecycleOwner, ::chatObserver)
     }
@@ -65,7 +67,7 @@ class AddChatFragment @Inject constructor() :
             startSnackbar(
                 text = getString(R.string.error_add_chat),
                 indefinite = true,
-                retryAction = null
+                retryAction = { viewModel.retry() }
             )
         }
     }
