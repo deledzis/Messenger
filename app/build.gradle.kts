@@ -67,6 +67,7 @@ android {
         getByName("debug") {
             multiDexKeepFile = file("multidex-config.txt")
             isDebuggable = true
+            isTestCoverageEnabled = true
             isShrinkResources = false
             isMinifyEnabled = false
         }

@@ -7,15 +7,15 @@ pipelines:
         script:
           - pwd
           - ls -la .
-          - ls -la android-sdk
+          #          - ls -la android-sdk
           # Accepting licenses.
-          - yes | sdkmanager "platform-tools"
-          - yes | sdkmanager "platforms;android-30"
-          - yes | sdkmanager "build-tools;30.0.0"
-          - yes | sdkmanager "extras;android;m2repository"
-          - yes | sdkmanager "extras;google;m2repository"
-          - yes | sdkmanager "extras;google;instantapps"
-          - yes | sdkmanager --licenses
+          #          - yes | sdkmanager "platform-tools"
+          #          - yes | sdkmanager "platforms;android-30"
+          #          - yes | sdkmanager "build-tools;30.0.0"
+          #          - yes | sdkmanager "extras;android;m2repository"
+          #          - yes | sdkmanager "extras;google;m2repository"
+          #          - yes | sdkmanager "extras;google;instantapps"
+          #          - yes | sdkmanager --licenses
           # Build apk
           - chmod a+x ./gradlew
           - ./gradlew assembleDebug
@@ -23,9 +23,10 @@ pipelines:
           - app/build/outputs/**
     - step:
         name: Test
-        image: bitbucketpipelines/android-ci-image
+        image: runmymind/docker-android-sdk
         script:
           - ./gradlew test
+          - ./gradlew createDebugCoverageReport
 
   branches:
     master:
@@ -45,3 +46,4 @@ pipelines:
           image: bitbucketpipelines/android-ci-image
           script:
             - ./gradlew test
+            - ./gradlew createDebugCoverageReport
