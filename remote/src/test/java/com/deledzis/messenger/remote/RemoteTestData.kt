@@ -9,7 +9,7 @@ import com.deledzis.messenger.data.model.messages.MessagesEntity
 import com.deledzis.messenger.data.model.users.UserEntity
 import com.deledzis.messenger.data.model.users.UsersEntity
 
-class TestData {
+class RemoteTestData {
 
     companion object {
         val auth = AuthEntity(

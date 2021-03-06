@@ -1,14 +1,6 @@
 package com.deledzis.messenger.remote.di
 
-import com.deledzis.messenger.data.model.ServerMessageResponseEntity
-import com.deledzis.messenger.data.model.auth.AuthEntity
-import com.deledzis.messenger.data.model.chats.ChatEntity
-import com.deledzis.messenger.data.model.chats.ChatsEntity
-import com.deledzis.messenger.data.model.messages.MessageEntity
-import com.deledzis.messenger.data.model.messages.MessagesEntity
-import com.deledzis.messenger.data.model.users.UserEntity
-import com.deledzis.messenger.data.model.users.UsersEntity
-import com.deledzis.messenger.remote.TestData
+import com.deledzis.messenger.remote.RemoteTestData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.*
@@ -28,37 +20,37 @@ class FakeInterceptor : Interceptor {
                     && original.method.toUpperCase(Locale.getDefault()) == "POST"
                     || original.url.encodedPath.contains("/users")
                     && original.method.toUpperCase(Locale.getDefault()) == "PUT" -> {
-                fakeMessage = toJson(TestData.auth)
+                fakeMessage = toJson(RemoteTestData.auth)
             }
 
             Regex("/chats$").containsMatchIn(original.url.encodedPath)
                     && original.method.toUpperCase(Locale.getDefault()) == "GET" -> {
-                fakeMessage = toJson(TestData.chats)
+                fakeMessage = toJson(RemoteTestData.chats)
             }
 
             original.url.encodedPath.contains("/chats")
                     && original.method.toUpperCase(Locale.getDefault()) == "POST" -> {
-                fakeMessage = toJson(TestData.chat)
+                fakeMessage = toJson(RemoteTestData.chat)
             }
 
             Regex("/chats/\\d+").containsMatchIn(original.url.encodedPath)
                     && original.method.toUpperCase(Locale.getDefault()) == "POST" -> {
-                fakeMessage = toJson(TestData.serverMessageResponse)
+                fakeMessage = toJson(RemoteTestData.serverMessageResponse)
             }
 
             Regex("/chats/\\d+").containsMatchIn(original.url.encodedPath)
                     && original.method.toUpperCase(Locale.getDefault()) == "GET" -> {
-                fakeMessage = toJson(TestData.messages)
+                fakeMessage = toJson(RemoteTestData.messages)
             }
 
             Regex("/users/\\d+").containsMatchIn(original.url.encodedPath)
                     && original.method.toUpperCase(Locale.getDefault()) == "GET" -> {
-                fakeMessage = toJson(TestData.user)
+                fakeMessage = toJson(RemoteTestData.user)
             }
 
             original.url.encodedPath.contains("/users")
                     && original.method.toUpperCase(Locale.getDefault()) == "GET" -> {
-                fakeMessage = toJson(TestData.users)
+                fakeMessage = toJson(RemoteTestData.users)
             }
 
         }
