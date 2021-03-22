@@ -28,9 +28,9 @@ object Libraries {
     /* Kotlin dependencies */
     const val kotlinStdLib: String =
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
-    const val coroutinesCore: String =
+    const val coroutinesCoreLib: String =
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutine}"
-    const val coroutinesAndroid: String =
+    const val coroutinesAndroidLib: String =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutineAndroid}"
 
     /* AndroidX dependencies */
@@ -44,6 +44,8 @@ object Libraries {
         "androidx.constraintlayout:constraintlayout:${Versions.constraint}"
     const val lifecycleExtLib: String =
         "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleExt}"
+    const val lifecycleRuntimeLib: String =
+        "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleRuntimeData}"
     const val lifecycleLiveDataLib: String =
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycleLiveData}"
     const val lifecycleVmLib: String =
@@ -113,6 +115,9 @@ object TestLibraries {
     const val assertJTest: String = "org.assertj:assertj-core:${Versions.assertj}"
     const val testNgTest: String = "org.testng:testng:${Versions.testNg}"
     const val mockKTest: String = "io.mockk:mockk:${Versions.mockK}"
+    const val mockitoTest: String = "org.mockito:mockito-core:${Versions.mockitoTest}"
+    const val coroutinesTest: String =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinCoroutineTest}"
 
     /* Android test implementations */
     // Core
@@ -122,7 +127,6 @@ object TestLibraries {
     const val androidRulesTest: String = "androidx.test:rules:${Versions.androidTestRules}"
     const val mockKAndroidTest: String = "io.mockk:mockk-android:${Versions.mockK}"
     const val robolectricTest: String = "org.robolectric:robolectric:${Versions.robolectricTest}"
-    const val mockitoTest: String = "org.mockito:mockito-core:${Versions.mockitoTest}"
 
     // Assertions
     const val androidTruthTest: String = "androidx.test.ext:truth:${Versions.androidTestExt}"

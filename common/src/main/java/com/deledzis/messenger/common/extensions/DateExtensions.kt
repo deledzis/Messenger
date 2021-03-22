@@ -85,8 +85,6 @@ fun Date.getBigger(other: Date): Date = if (this > other) this else other
 
 fun Date.getLower(other: Date): Date = if (this < other) this else other
 
-fun Date.afterToday(): Boolean = this.after(DateUtils.getCurrentDate())
-
 @Suppress("SimpleDateFormat")
 fun Date.convertWithTimeZone(
     timePattern: String = "yyyy-MM-dd'T'HH:mm:ss",
@@ -98,8 +96,6 @@ fun Date.convertWithTimeZone(
     isoFormat.timeZone = TimeZone.getDefault()
     return isoFormat.parse(oldDate)
 }
-
-fun Date.copy(): Date = Date(time)
 
 fun Date.formatForChat(): String = when {
     this.isToday() -> "Сегодня"

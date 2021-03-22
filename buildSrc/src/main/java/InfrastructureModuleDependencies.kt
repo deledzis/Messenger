@@ -1,7 +1,7 @@
 object InfrastructureModuleDependencies : ModuleDependencies() {
     override val implementationLibs: List<String> = arrayListOf<String>().apply {
         add(Libraries.kotlinStdLib)
-        add(Libraries.coroutinesCore)
+        add(Libraries.coroutinesCoreLib)
         add(Libraries.coreKtxLib)
         add(Libraries.materialLib)
         add(Libraries.glideLib)

@@ -3,14 +3,13 @@ package com.deledzis.messenger.common.util
 import com.deledzis.messenger.common.extensions.hours
 import com.deledzis.messenger.common.extensions.minutes
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.text.SimpleDateFormat
 import java.util.*
 
 class DateUtilsTest {
 
-    @Disabled
+    /*@Disabled
     @Test
     fun `getDate from year, month, day, ignoring time`() {
         val dateFromDateUtils = DateUtils.getDate(
@@ -19,13 +18,13 @@ class DateUtilsTest {
             day = 10,
             ignoreTime = true,
         )
-//        println(dateFromDateUtils.time)
-//        println(dateFromDateUtils.formatDate())
-//        println(DateUtils.getDate("2000-06-10T00:00:00.000000")?.time)
-//        Assertions.assertEquals(DateUtils.getDate("2000-06-10T00:00:00.000000")?.time, dateFromDateUtils.time)
-//        Assertions.assertTrue(dateFromDateUtils.time - 960595200000 <= ONE_DAY_MILLIS)
-        Assertions.assertEquals(960595200000, dateFromDateUtils.time)
-    }
+        println(dateFromDateUtils.time)
+        println(dateFromDateUtils.formatDate())
+        println(DateUtils.getDate("2000-06-10T00:00:00.000000")?.time)
+        Assertions.assertEquals(DateUtils.getDate("2000-06-10T00:00:00.000000")?.time, dateFromDateUtils.time)
+        Assertions.assertTrue(dateFromDateUtils.time - 960595200000 <= ONE_DAY_MILLIS)
+        Assertions.assertEquals(960580800000, dateFromDateUtils.time)
+    }*/
 
     @Test
     fun `getDate from year, month, day, considering time`() {

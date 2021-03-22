@@ -4,8 +4,10 @@ abstract class ModuleDependencies {
     abstract val kaptLibs: List<String>
     open val testLibs: List<String> = arrayListOf<String>().apply {
         add(TestLibraries.jUnitTest)
+        add(TestLibraries.coroutinesTest)
         add(TestLibraries.assertJTest)
         add(TestLibraries.mockKTest)
+        add(TestLibraries.mockitoTest)
         add(TestLibraries.googleTruthTest)
     }
     open val androidTestLibs: List<String> = arrayListOf<String>().apply {
@@ -14,7 +16,6 @@ abstract class ModuleDependencies {
         add(TestLibraries.androidRulesTest)
         add(TestLibraries.espressoCoreTest)
         add(TestLibraries.robolectricTest)
-        add(TestLibraries.mockitoTest)
         add(TestLibraries.mockKAndroidTest)
         add(TestLibraries.androidTruthTest)
     }

@@ -11,16 +11,18 @@ object Versions {
     // Kotlin
     const val kotlinCoroutineAndroid = "1.4.1"
     const val kotlinCoroutine = "1.4.1"
+    const val kotlinCoroutineTest = "1.4.3"
 
     // Android
     const val multidex = "2.0.1"
     const val appCompat = "1.2.0"
     const val fragment = "1.3.0"
     const val archLifecycle = "1.1.1"
-    const val lifecycle = "2.3.0"
+    const val lifecycle = "2.2.0"
     const val lifecycleExt = "2.2.0"
-    const val lifecycleLiveData = "2.3.0"
-    const val lifecycleViewModel = "2.3.0"
+    const val lifecycleRuntimeData = "2.2.0"
+    const val lifecycleLiveData = "2.2.0"
+    const val lifecycleViewModel = "2.2.0"
     const val coreKtx = "1.3.2"
     const val constraint = "2.0.4"
     const val recyclerView = "1.1.0"

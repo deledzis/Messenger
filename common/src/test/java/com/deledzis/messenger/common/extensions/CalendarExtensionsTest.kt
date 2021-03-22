@@ -9,7 +9,7 @@ class CalendarExtensionsTest {
     @Test
     fun `calendar fromDate returns the same date`() {
         val calendar: Calendar = Calendar.getInstance()
-        val date: Date = Date()
+        val date = Date()
         val calendarFromDate = calendar.from(date)
 
         Assertions.assertEquals(date, calendarFromDate.time)

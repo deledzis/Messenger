@@ -1,7 +1,7 @@
 object PresentationModuleDependencies : ModuleDependencies() {
     override val implementationLibs: List<String> = arrayListOf<String>().apply {
         add(Libraries.kotlinStdLib)
-        add(Libraries.coroutinesCore)
+        add(Libraries.coroutinesCoreLib)
         add(Libraries.archLifecycleLib)
         add(Libraries.appCompatLib)
         add(Libraries.coreKtxLib)

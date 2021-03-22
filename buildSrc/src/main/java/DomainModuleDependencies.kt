@@ -1,6 +1,6 @@
 object DomainModuleDependencies : ModuleDependencies() {
     override val implementationLibs: List<String> = arrayListOf<String>().apply {
-        add(Libraries.coroutinesCore)
+        add(Libraries.coroutinesCoreLib)
     }
 
     override val apiLibs: List<String> = emptyList()
