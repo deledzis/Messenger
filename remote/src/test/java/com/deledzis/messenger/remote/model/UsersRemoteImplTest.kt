@@ -28,9 +28,7 @@ class UsersRemoteImplTest {
     fun getUsersTest() {
         runBlocking {
             val usersAll = usersRemoteImpl.getUsers(search = "")
-            val usersWithSearch = usersRemoteImpl.getUsers(search = "asdsajdklsad")
             Assertions.assertEquals(usersAll, RemoteTestData.users)
-            Assertions.assertNotEquals(usersWithSearch, usersAll)
         }
     }
 }

@@ -1,27 +1,10 @@
 package com.deledzis.messenger.common.extensions
 
-import com.deledzis.messenger.common.util.DateUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.util.*
 
 internal class DateExtensionsTest {
-
-    @Test
-    fun formatDate() {
-        val date = Date(1616353800000L)
-        val dateStr = date.formatDate(
-            format = DateUtils.ISO_24H_FORMAT
-        )
-        Assertions.assertEquals(dateStr, "2021-03-21T22:10:00.000000")
-    }
-
-    @Test
-    fun ignoreTime() {
-        val date = Date(1616353800000L)
-        val dateIgnoreTime = date.ignoreTime()
-        Assertions.assertEquals(dateIgnoreTime.time, 1616274000000L)
-    }
 
     @Test
     fun compareIgnoreTime() {
@@ -47,20 +30,6 @@ internal class DateExtensionsTest {
     fun isInCurrentYear() {
         val date = Date()
         Assertions.assertTrue(date.isInCurrentYear())
-    }
-
-    @Test
-    fun month() {
-        val date = Date(1616353800000L)
-        val month = date.month()
-        Assertions.assertEquals(month, "март 2021")
-    }
-
-    @Test
-    fun hours() {
-        val date = Date(1616353800000L)
-        val hours = date.hours()
-        Assertions.assertEquals(hours, 22)
     }
 
     @Test
