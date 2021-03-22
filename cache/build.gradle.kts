@@ -13,6 +13,7 @@ android {
     defaultConfig {
         minSdkVersion(AppConfig.minSdk)
         targetSdkVersion(AppConfig.targetSdk)
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner" // Не работает с вариантом в AppConfig
 
         kapt {
             arguments {
