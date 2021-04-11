@@ -3,20 +3,23 @@ package com.deledzis.messenger
 import androidx.test.platform.app.InstrumentationRegistry
 import com.deledzis.messenger.cache.di.CacheModule
 import com.deledzis.messenger.common.usecase.Response
+import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.data.di.RepositoriesModule
+import com.deledzis.messenger.data.model.ServerMessageResponseEntity
 import com.deledzis.messenger.di.component.DaggerTestAppComponent
 import com.deledzis.messenger.di.module.TestAppModule
 import com.deledzis.messenger.domain.model.entity.auth.Auth
 import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.domain.repository.AuthRepository
 import com.deledzis.messenger.infrastructure.di.UtilsModule
+import com.deledzis.messenger.remote.ApiService
 import com.deledzis.messenger.remote.di.NetworkModule
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class AuthRepositoryIntegrationTest {
@@ -26,6 +29,9 @@ class AuthRepositoryIntegrationTest {
 
     @Inject
     lateinit var userData: BaseUserData
+
+    @Inject
+    lateinit var api : ApiService
 
     @Before
     fun setUp() {
@@ -61,7 +67,7 @@ class AuthRepositoryIntegrationTest {
     @Test
     fun register() {
         runBlocking {
-            userDataImpl.saveAuthUser(null)
+            userData.saveAuthUser(null)
             val result = repository.register(
                 username = "username3",
                 nickname = "nickname3",
@@ -73,7 +79,7 @@ class AuthRepositoryIntegrationTest {
             assertThat(data.nickname).isEqualTo("nickname3")
             val id = data.id
             val accessToken = data.accessToken
-            userDataImpl.saveAuthUser(Auth(id, "username3", "nickname3", accessToken))
+            userData.saveAuthUser(Auth(id, "username3", "nickname3", accessToken))
 
             //for user deletion
             val response : Response<ServerMessageResponseEntity, Error> = try {
@@ -86,7 +92,7 @@ class AuthRepositoryIntegrationTest {
             assertThat(response is Response.Success).isTrue()
             assertThat((response as Response.Success).successData.errorCode).isEqualTo(0)
             assertThat((response as Response.Success).successData.message).isEqualTo("deleted")
-            userDataImpl.saveAuthUser(null)
+            userData.saveAuthUser(null)
         }
     }
 
