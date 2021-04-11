@@ -30,7 +30,7 @@ android {
 
     defaultConfig {
         applicationId = "com.deledzis.messenger"
-        testApplicationId = "com.deledzis.messenger"
+        testApplicationId = "com.deledzis.messenger.test"
 
         minSdkVersion(AppConfig.minSdk)
         targetSdkVersion(AppConfig.targetSdk)

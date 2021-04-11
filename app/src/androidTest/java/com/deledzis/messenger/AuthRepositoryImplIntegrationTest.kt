@@ -1,70 +1,70 @@
 package com.deledzis.messenger
 
+import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
-import com.deledzis.messenger.common.Constants
+import com.deledzis.messenger.cache.di.CacheModule
+import com.deledzis.messenger.cache.mapper.UserMapper
+import com.deledzis.messenger.cache.preferences.user.UserStore
 import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.data.di.TokenInterceptor
-import com.deledzis.messenger.di.component.DaggerApplicationComponent
-import com.deledzis.messenger.domain.model.BaseNetworkManager
-import com.deledzis.messenger.domain.repository.AuthRepository
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.deledzis.messenger.data.mapper.auth.AuthMapper
+import com.deledzis.messenger.data.repository.auth.AuthRepositoryImpl
+import com.deledzis.messenger.data.source.auth.AuthDataStoreFactory
+import com.deledzis.messenger.data.source.auth.AuthRemoteDataStore
+import com.deledzis.messenger.domain.model.entity.auth.Auth
+import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.logging.HttpLoggingInterceptor
 import org.junit.After
 import org.junit.Before
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import com.deledzis.messenger.infrastructure.services.NetworkManager
+import com.deledzis.messenger.remote.di.NetworkModule
+import kotlinx.coroutines.runBlocking
+
 
 class AuthRepositoryIntegrationTest {
     companion object {
         private const val REQUEST_TIMEOUT = 60
+        private const val PREF_APP_PACKAGE_NAME = "com.deledzis.messenger.testpreferences"
     }
 
-    private val testDispatcher = TestCoroutineDispatcher()
-    @Inject
-    lateinit var repository: AuthRepository
+    lateinit var repository: AuthRepositoryImpl
+    lateinit var userDataImpl : BaseUserData
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(testDispatcher)
-        val app : App = InstrumentationRegistry.getInstrumentation().newApplication() as App
-        DaggerApplicationComponent.factory().create(app)
+        val context = InstrumentationRegistry.getInstrumentation().context
+        val sharedPreferences = context.getSharedPreferences(PREF_APP_PACKAGE_NAME, Context.MODE_PRIVATE)
+        val userStore = UserStore(sharedPreferences)
+        userDataImpl = CacheModule().provideUserStore(userStore, UserMapper())
+        val networkModule = NetworkModule()
+        val gson = networkModule.provideGson()
+        val interceptor = networkModule.provideRequestHeadersInterceptor()
+        val httpLoggingInterceptor = networkModule.provideHttpLoggingInterceptor()
+        val tokenInterceptor = TokenInterceptor(userDataImpl)
+        val okHttpClientBuilder = networkModule.provideOkHttpClient(httpLoggingInterceptor, interceptor, tokenInterceptor)
+        val retrofit = networkModule.provideRetrofit(gson, okHttpClientBuilder)
+        val api = networkModule.provideApiInterface(retrofit)
+        val authRemote = networkModule.provideAuthRemote(api)
+        val remoteDataStore = AuthRemoteDataStore(authRemote)
+        val networkManager = NetworkManager(context)
+        val authMapper = AuthMapper()
+        val authFactory = AuthDataStoreFactory(remoteDataStore)
+        repository = AuthRepositoryImpl(authFactory, authMapper, networkManager)
     }
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
     fun login() {
-        runBlockingTest {
-//            Mockito.`when`(repository.login(Mockito.anyString(), Mockito.anyString())).then {
-//                return@then Response.Success(
-//                    LoginResponse(
-//                        Auth(
-//                            id = 0,
-//                            username = "username",
-//                            nickname = "nickname",
-//                            accessToken = "accessToken"
-//                        )
-//                    )
-//                )
-//            }
+        runBlocking {
             val result = repository.login(
                 username = "username",
                 password = "password"
@@ -78,90 +78,56 @@ class AuthRepositoryIntegrationTest {
 
     @Test
     fun register() {
-        runBlockingTest {
-//            repository = Mockito.mock(AuthRepository::class.java)
-//            Mockito.`when`(
-//                repository.register(
-//                    Mockito.anyString(),
-//                    Mockito.anyString(),
-//                    Mockito.anyString()
-//                )
-//            ).then {
-//                return@then Response.Success(
-//                    RegisterResponse(
-//                        Auth(
-//                            id = 0,
-//                            username = "username",
-//                            nickname = "nickname",
-//                            accessToken = "accessToken"
-//                        )
-//                    )
-//                )
-//            }
+        runBlocking {
             val result = repository.register(
-                username = "username",
-                nickname = "nickname",
-                password = "password"
+                username = "username2",
+                nickname = "nickname2",
+                password = "password2"
             )
             assertThat(result is Response.Success).isTrue()
             val data = (result as Response.Success).successData.response
-            assertThat(data.username).isEqualTo("username")
-            assertThat(data.nickname).isEqualTo("nickname")
+            assertThat(data.username).isEqualTo("username2")
+            assertThat(data.nickname).isEqualTo("nickname2")
         }
     }
 
     @Test
     fun updateUserData() {
-        runBlockingTest {
-//            repository = Mockito.mock(AuthRepository::class.java)
-//            Mockito.`when`(
-//                repository.updateUserData(
-//                    username = "username",
-//                    nickname = "nickname",
-//                    password = "password",
-//                    newPassword = "newpassword"
-//                )
-//            ).then {
-//                return@then Response.Failure(Error.NetworkConnectionError())
-//            }
-            val result = repository.updateUserData(
+        runBlocking {
+            userDataImpl.saveAuthUser(null)
+            val result = repository.login(
+                username = "username",
+                password = "password"
+            )
+            assertThat(result is Response.Success).isTrue()
+            val id = (result as Response.Success).successData.response.id
+            val accessToken = (result as Response.Success).successData.response.accessToken
+            userDataImpl.saveAuthUser(Auth(id, "username", "password", accessToken))
+            val result1 = repository.updateUserData(
                 username = "username",
                 nickname = "nickname",
                 password = "password",
                 newPassword = "newpassword"
             )
-            assertThat(result is Response.Failure).isTrue()
-
-//            Mockito.`when`(
-//                repository.updateUserData(
-//                    username = "username1",
-//                    nickname = "nickname1",
-//                    password = "password1",
-//                    newPassword = "newpassword1"
-//                )
-//            ).then {
-//                return@then Response.Success(
-//                    UpdateUserDataResponse(
-//                        Auth(
-//                            id = 0,
-//                            username = "username1",
-//                            nickname = "nickname1",
-//                            accessToken = "newAccessToken"
-//                        )
-//                    )
-//                )
-//            }
+            assertThat(result1 is Response.Success).isTrue()
             val result2 = repository.updateUserData(
-                username = "username1",
-                nickname = "nickname1",
-                password = "password1",
-                newPassword = "newpassword1"
+                username = "username",
+                nickname = "nickname",
+                password = "newpassword",
+                newPassword = "password"
             )
             assertThat(result2 is Response.Success).isTrue()
             val data = (result2 as Response.Success).successData.response
-            assertThat(data.username).isEqualTo("username1")
-            assertThat(data.nickname).isEqualTo("nickname1")
-            assertThat(data.accessToken).isEqualTo("newAccessToken")
+            assertThat(data.username).isEqualTo("username")
+            assertThat(data.nickname).isEqualTo("nickname")
+            val result3 = repository.updateUserData(
+                username = "username1",
+                nickname = "nickname1",
+                password = "newpassword1",
+                newPassword = "password1"
+            )
+            assertThat(result3 is Response.Failure).isTrue()
+            userDataImpl.saveAuthUser(null)
         }
     }
 }
