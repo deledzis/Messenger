@@ -13,6 +13,12 @@ fun DependencyHandler.kapt(list: List<String>) {
     }
 }
 
+fun DependencyHandler.kaptTest(list: List<String>) {
+    list.forEach { dependency ->
+        add("kaptTest", dependency)
+    }
+}
+
 fun DependencyHandler.implementation(list: List<String>) {
     list.forEach { dependency ->
         add("implementation", dependency)

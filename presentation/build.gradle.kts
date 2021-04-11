@@ -15,6 +15,8 @@ android {
     defaultConfig {
         minSdkVersion(AppConfig.minSdk)
         targetSdkVersion(AppConfig.targetSdk)
+
+        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
     }
 
     buildFeatures {
@@ -65,6 +67,8 @@ dependencies {
     testImplementationBom(BomLibraries.junitBom)
     testImplementation(PresentationModuleDependencies.testLibs)
     androidTestImplementation(PresentationModuleDependencies.androidTestLibs)
+//    kaptAndroidTest(PresentationModuleDependencies.kaptAndroidTestLibs)
+
 }
 
 tasks.withType<Test> {

@@ -15,8 +15,12 @@ abstract class ModuleDependencies {
         add(TestLibraries.androidRunnerTest)
         add(TestLibraries.androidRulesTest)
         add(TestLibraries.espressoCoreTest)
-        add(TestLibraries.robolectricTest)
+//        add(TestLibraries.robolectricTest)
         add(TestLibraries.mockKAndroidTest)
         add(TestLibraries.androidTruthTest)
+        add(TestLibraries.androidJUnitTest)
+        add(TestLibraries.fragmentTest)
+        add(TestLibraries.coroutinesTest)
+        add(TestLibraries.assertJTest)
     }
 }

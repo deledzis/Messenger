@@ -20,15 +20,13 @@ class UserDataTest {
     lateinit var context: Context
     lateinit var userStore: UserStore
     lateinit var userData: UserData
-    lateinit var analytics: FirebaseAnalytics
 
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
         sharedPreferences = context.getSharedPreferences(PREF_APP_PACKAGE_NAME_TEST, Context.MODE_PRIVATE)
-        analytics = FirebaseAnalytics.getInstance(context)
         userStore = UserStore(sharedPreferences)
-        userData = UserData(userStore, UserMapper(), analytics)
+        userData = UserData(userStore, UserMapper())
     }
 
     @Test

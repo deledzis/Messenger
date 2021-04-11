@@ -24,11 +24,5 @@ abstract class ApplicationModule {
         fun provideContext(application: Application): Context {
             return application.applicationContext
         }
-
-        @Singleton
-        @Provides
-        fun provideAnalytics(context: Context): FirebaseAnalytics {
-            return FirebaseAnalytics.getInstance(context)
-        }
     }
 }

@@ -19,9 +19,6 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
 
-    @Inject
-    lateinit var analytics: FirebaseAnalytics
-
     private val job = Job()
     protected abstract val receiveChannel: ReceiveChannel<Response<Entity, Error>>
 
@@ -80,15 +77,6 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
         Timber.e("Error $exception")
     }
 
-    protected fun logEvent(name: String, params: Array<Pair<String, String>>) {
-        Timber.i("[Analytics::$name] $params")
-        analytics.logEvent(name) {
-            params.forEach {
-                param(it.first, it.second)
-
-            }
-        }
-    }
 
     override fun onCleared() {
         Timber.d("onCleared: $this")

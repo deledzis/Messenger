@@ -8,11 +8,22 @@ object AppModuleDependencies : ModuleDependencies() {
         add(Libraries.analyticsLib)
         add(Libraries.performanceLib)
         add(Libraries.timberLib)
+        add(Libraries.coroutinesCoreLib)
+        add(Libraries.coroutinesAndroidLib)
+        add(Libraries.lifecycleExtLib)
+        add(Libraries.lifecycleRuntimeLib)
+        add(Libraries.lifecycleLiveDataLib)
+        add(Libraries.lifecycleVmLib)
+        add(Libraries.vmSavedStateLib)
     }
 
     override val apiLibs: List<String> = arrayListOf<String>().apply {
         add(Libraries.daggerApi)
         add(Libraries.daggerAndroidApi)
+        add(Libraries.okhttpApi)
+        add(Libraries.okhttpInterceptorApi)
+        add(Libraries.retrofitApi)
+        add(Libraries.retrofitGsonApi)
     }
 
     override val kaptLibs: List<String> = arrayListOf<String>().apply {

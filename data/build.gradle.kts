@@ -19,9 +19,11 @@ dependencies {
     api(DataModuleDependencies.apiLibs)
     kapt(DataModuleDependencies.kaptLibs)
 
+
     //test libs
     testImplementationBom(BomLibraries.junitBom)
     testImplementation(DataModuleDependencies.testLibs)
+    kaptTest(DataModuleDependencies.kaptLibs)
 }
 
 tasks.withType<Test> {

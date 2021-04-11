@@ -127,9 +127,11 @@ object TestLibraries {
     const val androidRulesTest: String = "androidx.test:rules:${Versions.androidTestRules}"
     const val mockKAndroidTest: String = "io.mockk:mockk-android:${Versions.mockK}"
     const val robolectricTest: String = "org.robolectric:robolectric:${Versions.robolectricTest}"
+    const val fragmentTest: String = "androidx.fragment:fragment-testing:${Versions.fragment}"
 
     // Assertions
-    const val androidTruthTest: String = "androidx.test.ext:truth:${Versions.androidTestExt}"
+    const val androidJUnitTest: String = "androidx.test.ext:junit:${Versions.androidTestJUnitExt}"
+    const val androidTruthTest: String = "androidx.test.ext:truth:${Versions.androidTestTruthExt}"
     const val googleTruthTest: String = "com.google.truth:truth:${Versions.googleTruth}"
 
     // Espresso dependencies

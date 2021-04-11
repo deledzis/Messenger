@@ -36,7 +36,14 @@ android {
         versionCode = project.generateVersionCode("version.properties")
         versionName = project.generateVersionName("version.properties")
 
-        testInstrumentationRunner = AppConfig.androidTestInstrumentation
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    packagingOptions {
+        exclude("**/attach_hotspot_windows.dll")
+        exclude("META-INF/licenses/**")
+        exclude("META-INF/AL2.0")
+        exclude("META-INF/LGPL2.1")
     }
 
     /*flavorDimensions.add("version")
