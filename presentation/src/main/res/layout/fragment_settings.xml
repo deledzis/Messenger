@@ -136,7 +136,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
+                    android:layout_marginTop="@dimen/size_32dp"
                     android:text="@string/login"
                     android:textColor="@color/text_label" />
 
@@ -238,6 +238,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:layout_marginBottom="@dimen/size_32dp"
                     android:enabled="@{!viewModel.loading}"
                     android:onClick="@{controller::onLogoutClicked}"
                     android:text="@string/action_logout"
