@@ -25,6 +25,11 @@ import org.junit.Test
 import com.deledzis.messenger.infrastructure.services.NetworkManager
 import com.deledzis.messenger.remote.di.NetworkModule
 import kotlinx.coroutines.runBlocking
+import retrofit2.HttpException
+import com.deledzis.messenger.common.usecase.Error
+import com.deledzis.messenger.data.model.ServerMessageResponseEntity
+import com.deledzis.messenger.data.model.auth.AuthEntity
+import com.deledzis.messenger.remote.ApiService
 
 
 class AuthRepositoryIntegrationTest {
@@ -35,6 +40,7 @@ class AuthRepositoryIntegrationTest {
 
     lateinit var repository: AuthRepositoryImpl
     lateinit var userDataImpl : BaseUserData
+    lateinit var api: ApiService
 
     @Before
     fun setUp() {
@@ -49,7 +55,7 @@ class AuthRepositoryIntegrationTest {
         val tokenInterceptor = TokenInterceptor(userDataImpl)
         val okHttpClientBuilder = networkModule.provideOkHttpClient(httpLoggingInterceptor, interceptor, tokenInterceptor)
         val retrofit = networkModule.provideRetrofit(gson, okHttpClientBuilder)
-        val api = networkModule.provideApiInterface(retrofit)
+        api = networkModule.provideApiInterface(retrofit)
         val authRemote = networkModule.provideAuthRemote(api)
         val remoteDataStore = AuthRemoteDataStore(authRemote)
         val networkManager = NetworkManager(context)
@@ -79,15 +85,32 @@ class AuthRepositoryIntegrationTest {
     @Test
     fun register() {
         runBlocking {
+            userDataImpl.saveAuthUser(null)
             val result = repository.register(
-                username = "username2",
-                nickname = "nickname2",
-                password = "password2"
+                username = "username3",
+                nickname = "nickname3",
+                password = "password3"
             )
             assertThat(result is Response.Success).isTrue()
             val data = (result as Response.Success).successData.response
-            assertThat(data.username).isEqualTo("username2")
-            assertThat(data.nickname).isEqualTo("nickname2")
+            assertThat(data.username).isEqualTo("username3")
+            assertThat(data.nickname).isEqualTo("nickname3")
+            val id = data.id
+            val accessToken = data.accessToken
+            userDataImpl.saveAuthUser(Auth(id, "username3", "nickname3", accessToken))
+
+            //for user deletion
+            val response : Response<ServerMessageResponseEntity, Error> = try {
+                val apiResult = api.deleteUser()
+                Response.Success(successData= apiResult)
+            } catch (e: Exception) {
+                if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+                else Response.Failure(Error.NetworkError())
+            }
+            assertThat(response is Response.Success).isTrue()
+            assertThat((response as Response.Success).successData.errorCode).isEqualTo(0)
+            assertThat((response as Response.Success).successData.message).isEqualTo("deleted")
+            userDataImpl.saveAuthUser(null)
         }
     }
 

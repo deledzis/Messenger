@@ -75,4 +75,7 @@ interface ApiService {
         @Path("id") chatId: Int,
         @Body request: AddMessageRequest
     ): ServerMessageResponseEntity
+
+    @DELETE("users")
+    suspend fun deleteUser(): ServerMessageResponseEntity
 }
