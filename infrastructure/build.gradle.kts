@@ -15,6 +15,13 @@ android {
         targetSdkVersion(AppConfig.targetSdk)
     }
 
+    buildTypes {
+        getByName("debug") {
+            isMinifyEnabled = false
+            isTestCoverageEnabled = true
+        }
+    }
+
     buildFeatures {
         dataBinding = true
         viewBinding = true
@@ -82,11 +89,11 @@ tasks.withType<Test> {
     finalizedBy(tasks.withType<JacocoReport>())
 }
 
-tasks.withType<JacocoReport> {
-    dependsOn(tasks.withType<Test>())
-    reports {
-        xml.isEnabled = false
-        csv.isEnabled = false
-        html.destination = file("${buildDir}/jacocoHtml")
-    }
-}
+//tasks.withType<JacocoReport> {
+//    dependsOn(tasks.withType<Test>())
+//    reports {
+//        xml.isEnabled = false
+//        csv.isEnabled = false
+//        html.destination = file("${buildDir}/jacocoHtml")
+//    }
+//}

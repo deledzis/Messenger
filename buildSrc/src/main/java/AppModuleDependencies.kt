@@ -6,7 +6,7 @@ object AppModuleDependencies : ModuleDependencies() {
         add(Libraries.navUiKtxLib)
         add(Libraries.crashlyticsLib)
         add(Libraries.analyticsLib)
-        add(Libraries.performanceLib)
+//        add(Libraries.performanceLib)
         add(Libraries.timberLib)
         add(Libraries.coroutinesCoreLib)
         add(Libraries.coroutinesAndroidLib)
@@ -29,5 +29,9 @@ object AppModuleDependencies : ModuleDependencies() {
     override val kaptLibs: List<String> = arrayListOf<String>().apply {
         add(Libraries.daggerCompilerKapt)
         add(Libraries.daggerAndroidKapt)
+    }
+
+    val kaptTestLibs: List<String> = arrayListOf<String>().apply {
+        add(Libraries.daggerCompilerKapt)
     }
 }

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class UserEntityMapperTest {
-    val userMapper = UserEntityMapper()
+    private val userMapper = UserEntityMapper()
 
     @Test
     fun userEntityToCachedUserTest() {

@@ -6,13 +6,13 @@ plugins {
 
     id(BuildPlugins.kotlinAndroidPlugin)
     id(BuildPlugins.kotlinKaptPlugin)
-    id(BuildPlugins.jacocoPlugin)
 
     id(BuildPlugins.googleServicesPlugin)
     id(BuildPlugins.crashlyticsPlugin)
-    id(BuildPlugins.perfMonitorPlugin)
     id(BuildPlugins.navigationSafeArgsPlugin)
 }
+
+apply(from = "${project.rootDir}/jacoco.gradle")
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // keystore.properties file, in the rootProject folder.
@@ -30,6 +30,8 @@ android {
 
     defaultConfig {
         applicationId = "com.deledzis.messenger"
+        testApplicationId = "com.deledzis.messenger"
+
         minSdkVersion(AppConfig.minSdk)
         targetSdkVersion(AppConfig.targetSdk)
         multiDexEnabled = true
@@ -127,30 +129,6 @@ dependencies {
     testImplementationBom(BomLibraries.junitBom)
     testImplementation(AppModuleDependencies.testLibs)
     androidTestImplementation(AppModuleDependencies.androidTestLibs)
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-    testLogging {
-        showCauses = true
-        showExceptions = true
-        showStackTraces = true
-        showStandardStreams = true
-        events("started", "passed", "skipped", "failed", "standardOut", "standardError")
-    }
-    afterSuite(KotlinClosure2({ desc: TestDescriptor, result: TestResult ->
-        if (desc.parent == null) { // will match the outermost suite
-            println("Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)")
-        }
-    }))
-    finalizedBy(tasks.withType<JacocoReport>())
-}
-
-tasks.withType<JacocoReport> {
-    dependsOn(tasks.withType<Test>())
-    reports {
-        xml.isEnabled = false
-        csv.isEnabled = false
-        html.destination = file("${buildDir}/jacocoHtml")
-    }
+    kaptTest(AppModuleDependencies.kaptTestLibs)
+    kaptAndroidTest(AppModuleDependencies.kaptTestLibs)
 }

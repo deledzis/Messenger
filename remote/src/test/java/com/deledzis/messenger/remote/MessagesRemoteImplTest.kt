@@ -1,8 +1,5 @@
-package com.deledzis.messenger.remote.model
+package com.deledzis.messenger.remote
 
-import com.deledzis.messenger.remote.ApiService
-import com.deledzis.messenger.remote.MessagesRemoteImpl
-import com.deledzis.messenger.remote.RemoteTestData
 import com.deledzis.messenger.remote.di.MockNetworkModule
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals

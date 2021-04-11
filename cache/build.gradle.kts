@@ -13,13 +13,20 @@ android {
     defaultConfig {
         minSdkVersion(AppConfig.minSdk)
         targetSdkVersion(AppConfig.targetSdk)
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner" // Не работает с вариантом в AppConfig
+        testInstrumentationRunner = AppConfig.androidTestInstrumentation
 
         kapt {
             arguments {
                 arg("room.schemaLocation", "$projectDir/schemas")
                 arg("room.incremental", "true")
             }
+        }
+    }
+
+    buildTypes {
+        getByName("debug") {
+            isMinifyEnabled = false
+            isTestCoverageEnabled = true
         }
     }
 
@@ -36,6 +43,10 @@ android {
         unitTests {
             isIncludeAndroidResources = true
         }
+    }
+
+    jacoco {
+        buildToolsVersion = "0.7.9"
     }
 }
 
@@ -74,11 +85,40 @@ tasks.withType<Test> {
     finalizedBy(tasks.withType<JacocoReport>())
 }
 
-tasks.withType<JacocoReport> {
-    dependsOn(tasks.withType<Test>())
-    reports {
-        xml.isEnabled = false
-        csv.isEnabled = false
-        html.destination = file("${buildDir}/jacocoHtml")
-    }
-}
+//tasks.withType<JacocoReport> {
+//    dependsOn(tasks.withType<Test>())
+//    reports {
+//        xml.isEnabled = false
+//        csv.isEnabled = false
+//        html.destination = file("${buildDir}/jacocoHtml")
+//    }
+//    println("Build dir: $buildDir")
+//    classDirectories.setFrom(
+//        files(
+//            fileTree("$buildDir/tmp/kotlin-classes/debug/").exclude(
+//                "**/db/dao/**",
+//                "**/db/model/**",
+//                "**/db/util/**",
+//                "**/db/Database**",
+//                "**/di/**"
+//            ),
+//            fileTree("$buildDir/intermediates/javac/debug/classes").exclude(
+//                "**/db/dao/**",
+//                "**/db/model/**",
+//                "**/db/util/**",
+//                "**/db/Database**",
+//                "**/di/**"
+//            )
+//        )
+//    )
+//    executionData.setFrom(
+//        fileTree(
+//            mapOf(
+//                "dir" to buildDir,
+//                "include" to listOf(
+//                    "jacoco/*.exec"
+//                )
+//            )
+//        )
+//    )
+//}

@@ -1,7 +1,11 @@
 abstract class ModuleDependencies {
+
     abstract val implementationLibs: List<String>
+
     abstract val apiLibs: List<String>
+
     abstract val kaptLibs: List<String>
+
     open val testLibs: List<String> = arrayListOf<String>().apply {
         add(TestLibraries.jUnitTest)
         add(TestLibraries.coroutinesTest)
@@ -10,6 +14,7 @@ abstract class ModuleDependencies {
         add(TestLibraries.mockitoTest)
         add(TestLibraries.googleTruthTest)
     }
+
     open val androidTestLibs: List<String> = arrayListOf<String>().apply {
         add(TestLibraries.androidCoreTest)
         add(TestLibraries.androidRunnerTest)
@@ -23,4 +28,9 @@ abstract class ModuleDependencies {
         add(TestLibraries.coroutinesTest)
         add(TestLibraries.assertJTest)
     }
+
+    open val androidTestUtil: List<String> = arrayListOf<String>().apply {
+        add(TestLibraries.androidxOrchestrator)
+    }
+
 }

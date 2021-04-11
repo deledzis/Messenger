@@ -6,6 +6,7 @@ object Versions {
     const val crashlytics = "2.5.0"
     const val perfMonitor = "1.3.4"
     const val navigationSafeArgsPlugin = "2.3.2"
+    const val jacoco = "0.8.6"
 
     /* Libraries */
     // Kotlin
@@ -55,6 +56,7 @@ object Versions {
     /* Testing */
     // java test
     const val jUnitBom = "5.7.1"
+    const val jUnitExt = "1.1.1"
     const val assertj = "3.19.0"
     const val testNg = "6.9.6"
     const val mockK = "1.10.6"
@@ -62,6 +64,7 @@ object Versions {
     // android test
     const val androidTestCore = "2.1.0"
     const val androidTestRunner = "1.3.0"
+    const val androidTestOrchestrator = "1.3.0"
     const val androidTestRules = "1.3.0"
     const val androidTestTruthExt = "1.3.0"
     const val androidTestJUnitExt = "1.1.2"

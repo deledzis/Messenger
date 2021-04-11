@@ -15,8 +15,20 @@ android {
     defaultConfig {
         minSdkVersion(AppConfig.minSdk)
         targetSdkVersion(AppConfig.targetSdk)
+        testInstrumentationRunner = AppConfig.androidTestInstrumentation
+    }
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+    buildTypes {
+        getByName("debug") {
+            isMinifyEnabled = false
+            isTestCoverageEnabled = true
+        }
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 
     buildFeatures {
@@ -67,8 +79,7 @@ dependencies {
     testImplementationBom(BomLibraries.junitBom)
     testImplementation(PresentationModuleDependencies.testLibs)
     androidTestImplementation(PresentationModuleDependencies.androidTestLibs)
-//    kaptAndroidTest(PresentationModuleDependencies.kaptAndroidTestLibs)
-
+    androidTestUtil(PresentationModuleDependencies.androidTestLibs)
 }
 
 tasks.withType<Test> {
@@ -88,11 +99,11 @@ tasks.withType<Test> {
     finalizedBy(tasks.withType<JacocoReport>())
 }
 
-tasks.withType<JacocoReport> {
-    dependsOn(tasks.withType<Test>())
-    reports {
-        xml.isEnabled = false
-        csv.isEnabled = false
-        html.destination = file("${buildDir}/jacocoHtml")
-    }
-}
+//tasks.withType<JacocoReport> {
+//    dependsOn(tasks.withType<Test>())
+//    reports {
+//        xml.isEnabled = false
+//        csv.isEnabled = false
+//        html.destination = file("${buildDir}/jacocoHtml")
+//    }
+//}

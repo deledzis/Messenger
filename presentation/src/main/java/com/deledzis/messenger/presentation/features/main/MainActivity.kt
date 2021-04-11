@@ -31,6 +31,15 @@ class MainActivity : BaseActivity<UserViewModel>() {
         setTheme(R.style.Theme_Messenger)
         paintStatusBar(R.color.accent)
 
+        super.onCreate(savedInstanceState)
+
+        if (!isTaskRoot) {
+            finish()
+            return
+        }
+
+        dataBinding.lifecycleOwner = this
+
         if (Build.VERSION.SDK_INT in Build.VERSION_CODES.M until Build.VERSION_CODES.R) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -41,15 +50,6 @@ class MainActivity : BaseActivity<UserViewModel>() {
                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
             )
         }
-
-        super.onCreate(savedInstanceState)
-
-        if (!isTaskRoot) {
-            finish()
-            return
-        }
-
-        dataBinding.lifecycleOwner = this
 
         createNotificationsChannels()
     }

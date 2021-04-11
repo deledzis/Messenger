@@ -43,11 +43,11 @@ tasks.withType<Test> {
     finalizedBy(tasks.withType<JacocoReport>())
 }
 
-tasks.withType<JacocoReport> {
-    dependsOn(tasks.withType<Test>())
-    reports {
-        xml.isEnabled = true
-        csv.isEnabled = true
-        html.destination = file("${buildDir}/jacocoHtml")
-    }
-}
+//tasks.withType<JacocoReport> {
+//    dependsOn(tasks.withType<Test>())
+//    reports {
+//        xml.isEnabled = true
+//        csv.isEnabled = true
+//        html.destination = file("${buildDir}/jacocoHtml")
+//    }
+//}

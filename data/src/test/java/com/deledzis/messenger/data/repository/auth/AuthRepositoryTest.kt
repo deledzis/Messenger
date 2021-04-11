@@ -3,7 +3,6 @@ package com.deledzis.messenger.data.repository.auth
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.domain.model.entity.auth.Auth
-import com.deledzis.messenger.domain.model.response.auth.LoginResponse
 import com.deledzis.messenger.domain.model.response.auth.RegisterResponse
 import com.deledzis.messenger.domain.model.response.auth.UpdateUserDataResponse
 import com.deledzis.messenger.domain.repository.AuthRepository
@@ -29,6 +28,7 @@ internal class AuthRepositoryTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        val component =
     }
 
     @After
@@ -40,19 +40,6 @@ internal class AuthRepositoryTest {
     @Test
     fun login() {
         runBlockingTest {
-            repository = Mockito.mock(AuthRepository::class.java)
-            Mockito.`when`(repository.login(Mockito.anyString(), Mockito.anyString())).then {
-                return@then Response.Success(
-                    LoginResponse(
-                        Auth(
-                            id = 0,
-                            username = "username",
-                            nickname = "nickname",
-                            accessToken = "accessToken"
-                        )
-                    )
-                )
-            }
             val result = repository.login(
                 username = "username",
                 password = "password"

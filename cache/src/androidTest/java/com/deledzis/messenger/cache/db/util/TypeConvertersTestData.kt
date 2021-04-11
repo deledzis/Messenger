@@ -1,12 +1,11 @@
 package com.deledzis.messenger.cache.db.util
 
-import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
 class TypeConvertersTestData {
     companion object {
-        val dateDate: Date = Date(1616371200000L)
+        val dateDate: Date = Date(1616360400000)
         val dateString = SimpleDateFormat("dd.MM.yyyy", Locale("ru")).format(dateDate)
         val listOfInts = listOf(1, 2, 3, 4, 5)
         val listOfIntsString = "[1,2,3,4,5]"

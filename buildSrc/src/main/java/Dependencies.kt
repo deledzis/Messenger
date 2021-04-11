@@ -11,6 +11,7 @@ object BuildPlugins {
     const val crashlyticsPlugin: String = "com.google.firebase.crashlytics"
     const val perfMonitorPlugin: String = "com.google.firebase.firebase-perf"
     const val navigationSafeArgsPlugin: String = "androidx.navigation.safeargs.kotlin"
+    const val androidReportingPlugin: String = "android-reporting"
 }
 
 object AppPlugins {
@@ -22,6 +23,7 @@ object AppPlugins {
     const val perfMonitor: String = "com.google.firebase:perf-plugin:${Versions.perfMonitor}"
     const val navigationSafeArgs: String =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigationSafeArgsPlugin}"
+    const val jacoco: String = "org.jacoco:org.jacoco.core:${Versions.jacoco}"
 }
 
 object Libraries {
@@ -128,6 +130,8 @@ object TestLibraries {
     const val mockKAndroidTest: String = "io.mockk:mockk-android:${Versions.mockK}"
     const val robolectricTest: String = "org.robolectric:robolectric:${Versions.robolectricTest}"
     const val fragmentTest: String = "androidx.fragment:fragment-testing:${Versions.fragment}"
+    const val androidxOrchestrator: String =
+        "androidx.test:orchestrator:${Versions.androidTestOrchestrator}"
 
     // Assertions
     const val androidJUnitTest: String = "androidx.test.ext:junit:${Versions.androidTestJUnitExt}"
