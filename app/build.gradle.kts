@@ -12,7 +12,7 @@ plugins {
     id(BuildPlugins.navigationSafeArgsPlugin)
 }
 
-apply(from = "${project.rootDir}/jacoco.gradle")
+//apply(from = "${project.rootDir}/jacoco.gradle")
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // keystore.properties file, in the rootProject folder.
@@ -34,11 +34,12 @@ android {
 
         minSdkVersion(AppConfig.minSdk)
         targetSdkVersion(AppConfig.targetSdk)
-        multiDexEnabled = true
+        multiDexEnabled = false
         versionCode = project.generateVersionCode("version.properties")
         versionName = project.generateVersionName("version.properties")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner = "com.deledzis.messenger.runner.MultiDexJUnitRunner"
     }
 
     packagingOptions {
@@ -49,19 +50,22 @@ android {
     }
 
     /*flavorDimensions.add("version")
-    productFlavors {
-        create("mock") {
-            dimension = "version"
-            versionNameSuffix = "-mock"
-            resValue("string", "api_version", "v1")
-            resValue("string", "base_url", "http://10.0.2.2:8080")
-        }
-        create("production") {
-            dimension = "version"
-            versionNameSuffix = "-prod"
-            resValue("string", "api_version", "v1")
-            resValue("string", "base_url", "https://spbstu-messenger.herokuapp.com")
-        }
+    productFlavors.register("mock").configure {
+        dimension = "version"
+        versionNameSuffix = "-mock"
+        resValue("string", "api_version", "v1")
+        resValue("string", "base_url", "http://10.0.2.2:8080")
+    }
+    productFlavors.register("local").configure {
+        dimension = "version"
+        versionNameSuffix = "-test"
+        resValue("string", "api_version", "v1")
+        resValue("string", "base_url", "http://0.0.0.0:8080")
+    }
+    productFlavors.register("prod").configure {
+        dimension = "version"
+        resValue("string", "api_version", "v1")
+        resValue("string", "base_url", "https://spbstu-messenger.herokuapp.com")
     }*/
 
     signingConfigs {
@@ -75,14 +79,14 @@ android {
 
     buildTypes {
         getByName("debug") {
-            multiDexKeepFile = file("multidex-config.txt")
+//            multiDexKeepFile = file("multidex-config.txt")
             isDebuggable = true
             isTestCoverageEnabled = true
             isShrinkResources = false
             isMinifyEnabled = false
         }
         getByName("release") {
-            multiDexKeepFile = file("multidex-config.txt")
+//            multiDexKeepFile = file("multidex-config.txt")
             isDebuggable = false
             isTestCoverageEnabled = true
             isShrinkResources = true
@@ -107,6 +111,26 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+        }
+    }
+}
+
+android.applicationVariants.all {
+    if (buildType.name == "debug") {
+        val aptOutputDir = File(buildDir, "generated/source/apt/${unitTestVariant.dirName}")
+        this.unitTestVariant.addJavaSourceFoldersToModel(aptOutputDir)
+        tasks.getByName("assembleDebug") {
+            finalizedBy(
+                tasks.getByName("assembleDebugUnitTest"),
+                tasks.getByName("assembleAndroidTest")
+            )
+        }
     }
 }
 

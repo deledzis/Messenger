@@ -28,7 +28,7 @@ internal class AuthRepositoryTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        val component =
+//        val component =
     }
 
     @After

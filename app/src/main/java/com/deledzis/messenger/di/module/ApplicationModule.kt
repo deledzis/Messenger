@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.deledzis.messenger.App
-import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
