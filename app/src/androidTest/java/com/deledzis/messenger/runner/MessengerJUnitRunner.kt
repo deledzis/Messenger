@@ -8,7 +8,7 @@ import androidx.multidex.MultiDex
 import androidx.test.runner.AndroidJUnitRunner
 import com.deledzis.messenger.App
 
-class MultiDexJUnitRunner : AndroidJUnitRunner() {
+class MessengerJUnitRunner : AndroidJUnitRunner() {
 
     override fun onCreate(arguments: Bundle?) {
         MultiDex.install(targetContext)

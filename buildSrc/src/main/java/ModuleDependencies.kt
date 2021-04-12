@@ -25,6 +25,7 @@ abstract class ModuleDependencies {
         add(TestLibraries.androidTruthTest)
         add(TestLibraries.androidJUnitTest)
         add(TestLibraries.fragmentTest)
+        add(TestLibraries.navTestLib)
         add(TestLibraries.coroutinesTest)
         add(TestLibraries.assertJTest)
     }

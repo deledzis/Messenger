@@ -6,17 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.deledzis.messenger.OpenForTesting
 import com.deledzis.messenger.domain.model.entity.auth.Auth
 import com.deledzis.messenger.infrastructure.extensions.hideSoftKeyboard
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentLoginBinding
 import com.deledzis.messenger.presentation.features.main.UserViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
-class LoginFragment @Inject constructor() :
+@OpenForTesting
+open class LoginFragment @Inject constructor() :
     BaseFragment<LoginViewModel, FragmentLoginBinding>(layoutId = R.layout.fragment_login),
     LoginActionsHandler {
 
@@ -25,13 +30,22 @@ class LoginFragment @Inject constructor() :
 
     override val viewModel: LoginViewModel by viewModels()
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var navController: NavController? = null
+        set(value) {
+            Timber.e("Value: $value")
+            field = value
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
+        Timber.e("ON CREATE VIEW")
         dataBinding.viewModel = viewModel
+        dataBinding.controller = this
 
         return dataBinding.root
     }
@@ -55,6 +69,7 @@ class LoginFragment @Inject constructor() :
     }
 
     override fun onRegisterClicked(view: View) {
+        Timber.e("HEREEE")
         hideSoftKeyboard()
         val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
         findNavController().navigate(action)

@@ -45,6 +45,7 @@
     <string name="action_to_login">Вход</string>
     <string name="action_retry">Повторить</string>
     <string name="action_logout">Выйти</string>
+    <string name="action_delete_account">Удалить аккаунт</string>
 
     <!-- Placeholders for edit texts -->
     <string name="placeholder_send_message">Введите сообщение…</string>
@@ -54,4 +55,7 @@
     <string name="dialog_logout">Подтвердите выход из аккаунта\n\n</string>
     <string name="dialog_btn_cancel">Отмена</string>
     <string name="dialog_btn_exit">Выйти</string>
+
+    <string name="dialog_delete_account">Действительно удалить аккаунт?\n\n</string>
+    <string name="dialog_btn_delete">Удалить</string>
 </resources>

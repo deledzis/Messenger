@@ -5,6 +5,7 @@ object PresentationModuleDependencies : ModuleDependencies() {
         add(Libraries.archLifecycleLib)
         add(Libraries.appCompatLib)
         add(Libraries.coreKtxLib)
+        add(Libraries.activityKtxLib)
         add(Libraries.constraintLib)
         add(Libraries.lifecycleExtLib)
         add(Libraries.lifecycleLiveDataLib)

@@ -115,4 +115,14 @@ class SettingsFragment @Inject constructor() :
             userViewModel.handleLogout()
         }
     }
+
+    override fun onDeleteAccountClicked(view: View) {
+        requireContext().showDialog(
+            messageId = R.string.dialog_delete_account,
+            positiveBtnId = R.string.dialog_btn_delete,
+            negativeBtnId = R.string.dialog_btn_cancel
+        ) {
+            userViewModel.deleteAccount()
+        }
+    }
 }

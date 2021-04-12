@@ -2,6 +2,7 @@ package com.deledzis.messenger.presentation.features.chats
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.deledzis.messenger.OpenForTesting
 import com.deledzis.messenger.common.extensions.mergeChannels
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
@@ -17,6 +18,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.channels.ReceiveChannel
 import timber.log.Timber
 
+@OpenForTesting
 class ChatsViewModel @AssistedInject constructor(
     private val getChatsUseCase: GetChatsUseCase,
     @Assisted private val savedStateHandle: SavedStateHandle

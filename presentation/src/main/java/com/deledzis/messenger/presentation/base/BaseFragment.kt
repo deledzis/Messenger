@@ -28,9 +28,7 @@ import javax.inject.Inject
 
 abstract class BaseFragment<out T : ViewModel, B : ViewDataBinding>(
     @LayoutRes protected val layoutId: Int
-) : Fragment(),
-    LifecycleOwner,
-    SwipeRefreshLayout.OnRefreshListener {
+) : Fragment(), LifecycleOwner, SwipeRefreshLayout.OnRefreshListener {
 
     protected lateinit var dataBinding: B
     protected abstract val viewModel: T

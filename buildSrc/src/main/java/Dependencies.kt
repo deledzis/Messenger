@@ -5,6 +5,7 @@ object BuildPlugins {
     const val kotlin: String = "kotlin"
     const val kotlinAndroidPlugin: String = "kotlin-android"
     const val kotlinKaptPlugin: String = "kotlin-kapt"
+    const val kotlinAllOpenPlugin: String = "kotlin-allopen"
     const val jacocoPlugin: String = "jacoco"
 
     const val googleServicesPlugin: String = "com.google.gms.google-services"
@@ -17,6 +18,7 @@ object BuildPlugins {
 object AppPlugins {
     const val buildGradle: String = "com.android.tools.build:gradle:${Versions.gradle}"
     const val kotlinGradle: String = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+    const val kotlinAllOpen: String = "org.jetbrains.kotlin:kotlin-allopen:${Versions.kotlin}"
     const val googleServices: String = "com.google.gms:google-services:${Versions.googleServices}"
     const val crashlytics: String =
         "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlytics}"
@@ -38,6 +40,7 @@ object Libraries {
     /* AndroidX dependencies */
     const val multidexLib: String = "androidx.multidex:multidex:${Versions.multidex}"
     const val coreKtxLib: String = "androidx.core:core-ktx:${Versions.coreKtx}"
+    const val activityKtxLib: String = "androidx.activity:activity-ktx:${Versions.activityKtx}"
     const val materialLib: String = "com.google.android.material:material:${Versions.material}"
     const val archLifecycleLib: String =
         "android.arch.lifecycle:extensions:${Versions.archLifecycle}"
@@ -109,6 +112,9 @@ object Libraries {
 
     /* Logging dependencies */
     const val timberLib: String = "com.jakewharton.timber:timber:${Versions.timber}"
+
+    const val espressoContribLib: String =
+        "androidx.test.espresso:espresso-contrib:${Versions.espressoTest}"
 }
 
 object TestLibraries {
@@ -151,6 +157,9 @@ object TestLibraries {
         "androidx.test.espresso.idling:idling-concurrent:${Versions.espressoTest}"
     const val espressoIdlingResourceTest: String =
         "androidx.test.espresso:espresso-idling-resource:${Versions.espressoTest}"
+
+    const val navTestLib: String =
+        "androidx.navigation:navigation-testing:${Versions.navigation}"
 }
 
 object BomLibraries {

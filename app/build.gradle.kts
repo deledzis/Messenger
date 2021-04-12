@@ -6,10 +6,15 @@ plugins {
 
     id(BuildPlugins.kotlinAndroidPlugin)
     id(BuildPlugins.kotlinKaptPlugin)
+    id(BuildPlugins.kotlinAllOpenPlugin)
 
     id(BuildPlugins.googleServicesPlugin)
     id(BuildPlugins.crashlyticsPlugin)
     id(BuildPlugins.navigationSafeArgsPlugin)
+}
+
+allOpen {
+    annotation("OpenForTesting")
 }
 
 //apply(from = "${project.rootDir}/jacoco.gradle")
@@ -38,8 +43,8 @@ android {
         versionCode = project.generateVersionCode("version.properties")
         versionName = project.generateVersionName("version.properties")
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//        testInstrumentationRunner = "com.deledzis.messenger.runner.MultiDexJUnitRunner"
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.deledzis.messenger.runner.MessengerJUnitRunner"
     }
 
     packagingOptions {
@@ -99,6 +104,14 @@ android {
         }
     }
 
+    sourceSets {
+        this.getByName("main") {
+            res {
+                setSrcDirs(listOf("src/main/res", "src/androidTest/res"))
+            }
+        }
+    }
+
     buildFeatures {
         viewBinding = true
         dataBinding = true
@@ -148,6 +161,7 @@ dependencies {
     implementation(AppModuleDependencies.implementationLibs)
     kapt(AppModuleDependencies.kaptLibs)
     api(AppModuleDependencies.apiLibs)
+    debugImplementation(TestLibraries.fragmentTest)
 
     //test libs
     testImplementationBom(BomLibraries.junitBom)

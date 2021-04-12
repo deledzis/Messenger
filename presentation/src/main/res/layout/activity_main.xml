@@ -15,6 +15,7 @@
             android:name="com.deledzis.messenger.presentation.base.InjectingNavHostFragment"
             android:layout_width="@dimen/size_0dp"
             android:layout_height="@dimen/size_0dp"
+            android:focusableInTouchMode="true"
             app:defaultNavHost="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

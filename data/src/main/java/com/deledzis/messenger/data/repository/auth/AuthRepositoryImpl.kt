@@ -2,9 +2,11 @@ package com.deledzis.messenger.data.repository.auth
 
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
+import com.deledzis.messenger.data.mapper.ServerMessageResponseMapper
 import com.deledzis.messenger.data.mapper.auth.AuthMapper
 import com.deledzis.messenger.data.source.auth.AuthDataStoreFactory
 import com.deledzis.messenger.domain.model.BaseNetworkManager
+import com.deledzis.messenger.domain.model.response.auth.DeleteAccountResponse
 import com.deledzis.messenger.domain.model.response.auth.LoginResponse
 import com.deledzis.messenger.domain.model.response.auth.RegisterResponse
 import com.deledzis.messenger.domain.model.response.auth.UpdateUserDataResponse
@@ -17,6 +19,7 @@ import com.deledzis.messenger.domain.repository.AuthRepository
 class AuthRepositoryImpl(
     private val factory: AuthDataStoreFactory,
     private val authMapper: AuthMapper,
+    private val serverMessageResponseMapper: ServerMessageResponseMapper,
     private val networkManager: BaseNetworkManager
 ) : AuthRepository {
 
@@ -91,6 +94,28 @@ class AuthRepositoryImpl(
                 successBlock = {
                     response = Response.Success(
                         UpdateUserDataResponse(response = authMapper.mapFromEntity(it))
+                    )
+                },
+                failureBlock = { response = Response.Failure(it) }
+            )
+            response
+        } else {
+            Response.Failure(Error.NetworkConnectionError())
+        }
+    }
+
+    override suspend fun deleteAccount(username: String): Response<DeleteAccountResponse, Error> {
+        return if (networkManager.isConnectedToInternet()) {
+            val result = factory.retrieveDataStore().deleteAccount(username = username)
+            var response: Response<DeleteAccountResponse, Error> =
+                Response.Failure(Error.NetworkError())
+            result.handleResult(
+                stateBlock = { response = it },
+                successBlock = {
+                    response = Response.Success(
+                        DeleteAccountResponse(
+                            response = serverMessageResponseMapper.mapFromEntity(it)
+                        )
                     )
                 },
                 failureBlock = { response = Response.Failure(it) }

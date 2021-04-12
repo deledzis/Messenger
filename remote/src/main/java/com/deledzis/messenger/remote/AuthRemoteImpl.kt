@@ -1,9 +1,11 @@
 package com.deledzis.messenger.remote
 
+import com.deledzis.messenger.data.model.ServerMessageResponseEntity
 import com.deledzis.messenger.data.model.auth.AuthEntity
 import com.deledzis.messenger.data.repository.auth.AuthRemote
 import com.deledzis.messenger.remote.model.auth.AuthUserRequest
 import com.deledzis.messenger.remote.model.auth.RegisterUserRequest
+import com.deledzis.messenger.remote.model.user.DeleteUserRequest
 import com.deledzis.messenger.remote.model.user.UpdateUserRequest
 
 class AuthRemoteImpl(private val apiService: ApiService) : AuthRemote {
@@ -41,4 +43,7 @@ class AuthRemoteImpl(private val apiService: ApiService) : AuthRemote {
             newPassword = newPassword
         )
     )
+
+    override suspend fun deleteAccount(username: String): ServerMessageResponseEntity =
+        apiService.deleteAccount(request = DeleteUserRequest(username = username))
 }
