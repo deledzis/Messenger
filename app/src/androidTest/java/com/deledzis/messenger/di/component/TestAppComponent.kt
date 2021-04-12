@@ -3,6 +3,7 @@ package com.deledzis.messenger.di.component
 import com.deledzis.messenger.AuthRepositoryIntegrationTest
 import com.deledzis.messenger.ChatsRepositoryIntegrationTest
 import com.deledzis.messenger.MessagesRepositoryIntegrationTest
+import com.deledzis.messenger.UsersRepositoryIntegrationTest
 import com.deledzis.messenger.cache.di.CacheModule
 import com.deledzis.messenger.data.di.RepositoriesModule
 import com.deledzis.messenger.di.module.TestAppModule
@@ -30,5 +31,6 @@ interface TestAppComponent {
     fun into(authRepositoryIntegrationTest: AuthRepositoryIntegrationTest)
     fun into(chatsRepositoryIntegrationTest: ChatsRepositoryIntegrationTest)
     fun into(messagesRepositoryIntegrationTest: MessagesRepositoryIntegrationTest)
+    fun into(usersRepositoryIntegrationTest: UsersRepositoryIntegrationTest)
 
 }
