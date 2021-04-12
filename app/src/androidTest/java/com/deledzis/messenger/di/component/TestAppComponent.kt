@@ -1,6 +1,10 @@
 package com.deledzis.messenger.di.component
 
 import com.deledzis.messenger.AuthRepositoryIntegrationTest
+import com.deledzis.messenger.ChatsRepositoryIntegrationTest
+import com.deledzis.messenger.MessagesRepositoryIntegrationTest
+import com.deledzis.messenger.UsersRepositoryIntegrationTest
+import com.deledzis.messenger.RepositoriesIntegrationTest
 import com.deledzis.messenger.cache.di.CacheModule
 import com.deledzis.messenger.data.di.RepositoriesModule
 import com.deledzis.messenger.di.module.TestAppModule
@@ -32,6 +36,10 @@ import javax.inject.Singleton
 interface TestAppComponent {
 
     fun into(test: AuthRepositoryIntegrationTest)
+    fun into(test: ChatsRepositoryIntegrationTest)
+    fun into(test: MessagesRepositoryIntegrationTest)
+    fun into(test: UsersRepositoryIntegrationTest)
+    fun into(test: RepositoriesIntegrationTest)
     fun into(test: LoginSuccessLogoutTest)
     fun into(test: LoginFailRegisterTest)
 
