@@ -9,6 +9,7 @@ import com.deledzis.messenger.di.module.TestAppModule
 import com.deledzis.messenger.domain.model.entity.auth.Auth
 import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.domain.repository.AuthRepository
+import com.deledzis.messenger.domain.repository.ChatsRepository
 import com.deledzis.messenger.domain.repository.UsersRepository
 import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.deledzis.messenger.remote.di.NetworkModule
@@ -25,6 +26,9 @@ class UsersRepositoryIntegrationTest {
 
     @Inject
     lateinit var usersRepository: UsersRepository
+
+    @Inject
+    lateinit var chatsRepository: ChatsRepository
 
     @Inject
     lateinit var userData: BaseUserData
@@ -59,13 +63,25 @@ class UsersRepositoryIntegrationTest {
             val accessToken = result.successData.response.accessToken
             userData.saveAuthUser(Auth(id, "username", "password", accessToken))
 
-            val result1 = usersRepository.getUser(1)
+            val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
-            val data = (result1 as Response.Success).successData.response
-            assertThat(data.id).isEqualTo(1)
+            val data1 = (result1 as Response.Success).successData.response
+            assertThat(data1.items).isNotNull()
+            assertThat(data1.items).isNotEmpty()
 
-            val result2 = usersRepository.getUser(999999)
-            assertThat(result2 is Response.Failure).isTrue()
+            val result4 = usersRepository.getUsers("")
+            assertThat(result4 is Response.Success).isTrue()
+            val data4 = (result4 as Response.Success).successData.response
+            assertThat(data4.items).isNotNull()
+            assertThat(data4.items).isNotEmpty()
+
+            val result2 = usersRepository.getUser(1)
+            assertThat(result2 is Response.Success).isTrue()
+            val data2 = (result2 as Response.Success).successData.response
+            assertThat(data2.id).isEqualTo(1)
+
+            val result3 = usersRepository.getUser(999999)
+            assertThat(result3 is Response.Failure).isTrue()
             userData.saveAuthUser(null)
         }
     }
@@ -82,6 +98,12 @@ class UsersRepositoryIntegrationTest {
             val id = (result as Response.Success).successData.response.id
             val accessToken = result.successData.response.accessToken
             userData.saveAuthUser(Auth(id, "username", "password", accessToken))
+
+            val result3 = chatsRepository.getChats()
+            assertThat(result3 is Response.Success).isTrue()
+            val data3 = (result3 as Response.Success).successData.response
+            assertThat(data3.items).isNotNull()
+            assertThat(data3.items).isNotEmpty()
 
             val result1 = usersRepository.getUsers("")
             assertThat(result1 is Response.Success).isTrue()

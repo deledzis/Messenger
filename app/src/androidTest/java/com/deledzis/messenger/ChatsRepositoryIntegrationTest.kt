@@ -30,9 +30,6 @@ class ChatsRepositoryIntegrationTest {
     @Inject
     lateinit var userData: BaseUserData
 
-    @Inject
-    lateinit var api : ApiService
-
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
@@ -63,13 +60,19 @@ class ChatsRepositoryIntegrationTest {
             val accessToken = result.successData.response.accessToken
             userData.saveAuthUser(Auth(id, "username", "password", accessToken))
 
-            val result1 = chatsRepository.addChat(999999)
-            assertThat(result1 is Response.Failure).isTrue()
+            val result1 = chatsRepository.getChats()
+            assertThat(result1 is Response.Success).isTrue()
+            val data = (result1 as Response.Success).successData.response
+            assertThat(data.items).isNotNull()
+            assertThat(data.items).isNotEmpty()
 
-            val result2 = chatsRepository.addChat(1)
-            assertThat(result2 is Response.Success).isTrue()
-            val data = (result2 as Response.Success).successData.response
-            assertThat(data.interlocutorId).isEqualTo(1)
+            val result2 = chatsRepository.addChat(999999)
+            assertThat(result2 is Response.Failure).isTrue()
+
+            val result3 = chatsRepository.addChat(1)
+            assertThat(result3 is Response.Success).isTrue()
+            val data1 = (result3 as Response.Success).successData.response
+            assertThat(data1.interlocutorId).isEqualTo(1)
             userData.saveAuthUser(null)
         }
     }
