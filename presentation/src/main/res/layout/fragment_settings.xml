@@ -15,6 +15,7 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/fragment_settings_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
@@ -120,7 +121,8 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
+            android:id="@+id/settings_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
@@ -247,9 +249,24 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:rippleColor="@color/red" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_delete_account"
+                    style="@style/TextButton.Red.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="@dimen/size_32dp"
+                    android:enabled="@{!viewModel.loading}"
+                    android:onClick="@{controller::onDeleteAccountClicked}"
+                    android:text="@string/action_delete_account"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="@color/red" />
+
             </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

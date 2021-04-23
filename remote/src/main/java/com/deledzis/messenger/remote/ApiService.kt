@@ -11,6 +11,7 @@ import com.deledzis.messenger.remote.model.auth.AuthUserRequest
 import com.deledzis.messenger.remote.model.auth.RegisterUserRequest
 import com.deledzis.messenger.remote.model.chats.AddChatRequest
 import com.deledzis.messenger.remote.model.messages.AddMessageRequest
+import com.deledzis.messenger.remote.model.user.DeleteUserRequest
 import com.deledzis.messenger.remote.model.user.UpdateUserRequest
 import retrofit2.http.*
 
@@ -30,6 +31,12 @@ interface ApiService {
     suspend fun login(
         @Body request: AuthUserRequest
     ): AuthEntity
+
+    // Удалить аккаунт
+    @POST("users/delete")
+    suspend fun deleteAccount(
+        @Body request: DeleteUserRequest
+    ): ServerMessageResponseEntity
 
     //Изменение данных пользователя
     @PUT("users")

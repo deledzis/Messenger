@@ -1,4 +1,4 @@
-package com.deledzis.messenger
+package com.deledzis.messenger.integration
 
 import androidx.test.platform.app.InstrumentationRegistry
 import com.deledzis.messenger.cache.di.CacheModule

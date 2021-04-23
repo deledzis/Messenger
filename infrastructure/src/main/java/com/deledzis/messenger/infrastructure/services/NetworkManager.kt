@@ -7,8 +7,8 @@ import android.os.Build
 import com.deledzis.messenger.domain.model.BaseNetworkManager
 
 @Suppress("DEPRECATION")
-class NetworkManager(private var context: Context) :
-    BaseNetworkManager {
+class NetworkManager(private var context: Context) : BaseNetworkManager {
+
     override fun isConnectedToInternet(): Boolean {
         var result = false
         val cm = context.getSystemService(
@@ -38,4 +38,5 @@ class NetworkManager(private var context: Context) :
         }
         return result
     }
+
 }

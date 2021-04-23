@@ -1,6 +1,7 @@
 object AppModuleDependencies : ModuleDependencies() {
     override val implementationLibs: List<String> = arrayListOf<String>().apply {
         add(Libraries.kotlinStdLib)
+        add(Libraries.activityKtxLib)
         add(Libraries.multidexLib)
         add(Libraries.navFragmentLib)
         add(Libraries.navUiKtxLib)
@@ -15,6 +16,7 @@ object AppModuleDependencies : ModuleDependencies() {
         add(Libraries.lifecycleLiveDataLib)
         add(Libraries.lifecycleVmLib)
         add(Libraries.vmSavedStateLib)
+        add(Libraries.espressoContribLib)
     }
 
     override val apiLibs: List<String> = arrayListOf<String>().apply {

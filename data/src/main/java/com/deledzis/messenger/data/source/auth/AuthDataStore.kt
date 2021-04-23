@@ -2,6 +2,7 @@ package com.deledzis.messenger.data.source.auth
 
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
+import com.deledzis.messenger.data.model.ServerMessageResponseEntity
 import com.deledzis.messenger.data.model.auth.AuthEntity
 
 /**
@@ -28,5 +29,7 @@ interface AuthDataStore {
         password: String?,
         newPassword: String?
     ): Response<AuthEntity, Error>
+
+    suspend fun deleteAccount(username: String): Response<ServerMessageResponseEntity, Error>
 
 }

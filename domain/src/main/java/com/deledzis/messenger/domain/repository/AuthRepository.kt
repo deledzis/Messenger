@@ -2,6 +2,7 @@ package com.deledzis.messenger.domain.repository
 
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
+import com.deledzis.messenger.domain.model.response.auth.DeleteAccountResponse
 import com.deledzis.messenger.domain.model.response.auth.LoginResponse
 import com.deledzis.messenger.domain.model.response.auth.RegisterResponse
 import com.deledzis.messenger.domain.model.response.auth.UpdateUserDataResponse
@@ -25,4 +26,6 @@ interface AuthRepository {
         password: String?,
         newPassword: String?
     ): Response<UpdateUserDataResponse, Error>
+
+    suspend fun deleteAccount(username: String): Response<DeleteAccountResponse, Error>
 }

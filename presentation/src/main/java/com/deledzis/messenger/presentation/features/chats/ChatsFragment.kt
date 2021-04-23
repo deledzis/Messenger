@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.deledzis.messenger.OpenForTesting
 import com.deledzis.messenger.common.Constants
 import com.deledzis.messenger.common.Constants.CHATS_PERIODIC_DELAY
 import com.deledzis.messenger.domain.model.entity.auth.Auth
@@ -19,11 +22,13 @@ import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentChatsBinding
 import com.deledzis.messenger.presentation.features.main.UserViewModel
+import timber.log.Timber
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@OpenForTesting
 class ChatsFragment @Inject constructor() :
     BaseFragment<ChatsViewModel, FragmentChatsBinding>(layoutId = R.layout.fragment_chats),
     ChatsActionsHandler,
@@ -38,6 +43,13 @@ class ChatsFragment @Inject constructor() :
 
     @Inject
     lateinit var userData: BaseUserData
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var navController: NavController? = null
+        set(value) {
+            Timber.e("Value: $value")
+            field = value
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,

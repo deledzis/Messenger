@@ -2,6 +2,7 @@ package com.deledzis.messenger.presentation.features.chats
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.deledzis.messenger.domain.model.entity.chats.Chat
@@ -39,6 +40,7 @@ class ChatsAdapter(private val controller: ChatItemActionsHandler, private val u
         holder.bind(chats[position])
     }
 
+    @VisibleForTesting()
     inner class ViewHolder(private val binding: ItemChatBinding) :
         RecyclerView.ViewHolder(binding.root) {
 

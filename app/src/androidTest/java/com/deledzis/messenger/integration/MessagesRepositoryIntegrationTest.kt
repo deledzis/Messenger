@@ -1,4 +1,4 @@
-package com.deledzis.messenger
+package com.deledzis.messenger.integration
 
 import androidx.test.platform.app.InstrumentationRegistry
 import com.deledzis.messenger.cache.di.CacheModule
@@ -15,7 +15,6 @@ import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.deledzis.messenger.presentation.base.BaseViewModel.Companion.asHttpError
 import com.deledzis.messenger.remote.ApiService
 import com.deledzis.messenger.remote.di.NetworkModule
-import com.google.common.truth.ExpectFailure.assertThat
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.After

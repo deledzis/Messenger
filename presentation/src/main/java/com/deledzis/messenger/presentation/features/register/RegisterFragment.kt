@@ -32,6 +32,7 @@ class RegisterFragment @Inject constructor() :
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         dataBinding.viewModel = viewModel
+        dataBinding.controller = this
 
         return dataBinding.root
     }

@@ -6,4 +6,6 @@ interface SettingsActionsHandler {
     fun onCancelClicked(view: View)
 
     fun onLogoutClicked(view: View)
+
+    fun onDeleteAccountClicked(view: View)
 }

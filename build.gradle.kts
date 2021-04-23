@@ -9,6 +9,7 @@ buildscript {
     dependencies {
         classpath(AppPlugins.buildGradle)
         classpath(AppPlugins.kotlinGradle)
+        classpath(AppPlugins.kotlinAllOpen)
         classpath(AppPlugins.googleServices)
         classpath(AppPlugins.crashlytics)
         classpath(AppPlugins.navigationSafeArgs)
