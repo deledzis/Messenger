@@ -6,6 +6,7 @@ import com.deledzis.messenger.data.mapper.ServerMessageResponseMapper
 import com.deledzis.messenger.data.mapper.messages.MessagesMapper
 import com.deledzis.messenger.data.source.messages.MessagesDataStoreFactory
 import com.deledzis.messenger.domain.model.BaseNetworkManager
+import com.deledzis.messenger.domain.model.response.messages.DeleteMessageResponse
 import com.deledzis.messenger.domain.model.response.messages.GetChatMessagesResponse
 import com.deledzis.messenger.domain.model.response.messages.SendMessageResponse
 import com.deledzis.messenger.domain.repository.MessagesRepository
@@ -76,4 +77,27 @@ class MessagesRepositoryImpl(
             Response.Failure(Error.NetworkConnectionError())
         }
     }
+
+    override suspend fun deleteMessage(messageId: Int): Response<DeleteMessageResponse, Error> {
+        return if (networkManager.isConnectedToInternet()) {
+            val result = factory.retrieveDataStore().deleteMessage(messageId)
+            var response: Response<DeleteMessageResponse, Error> =
+                Response.Failure(Error.NetworkError())
+            result.handleResult(
+                stateBlock = { response = it },
+                successBlock = {
+                    response = Response.Success(
+                        DeleteMessageResponse(
+                            response = serverMessageResponseMapper.mapFromEntity(it)
+                        )
+                    )
+                },
+                failureBlock = { response = Response.Failure(it) }
+            )
+            response
+        } else {
+            Response.Failure(Error.NetworkConnectionError())
+        }
+    }
+
 }

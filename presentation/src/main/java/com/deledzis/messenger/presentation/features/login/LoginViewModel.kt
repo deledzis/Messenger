@@ -1,7 +1,6 @@
 package com.deledzis.messenger.presentation.features.login
 
 import androidx.lifecycle.MutableLiveData
-import com.deledzis.messenger.OpenForTesting
 import com.deledzis.messenger.common.extensions.mergeChannels
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
@@ -17,7 +16,6 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import timber.log.Timber
 import javax.inject.Inject
 
-@OpenForTesting
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     userData: BaseUserData

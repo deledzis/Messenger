@@ -1,4 +1,4 @@
-package com.deledzis.messenger.data.di
+package com.deledzis.messenger.di.module
 
 import com.deledzis.messenger.data.mapper.ServerMessageResponseMapper
 import com.deledzis.messenger.data.mapper.auth.AuthMapper
@@ -16,23 +16,19 @@ import com.deledzis.messenger.data.source.chats.ChatsDataStoreFactory
 import com.deledzis.messenger.data.source.messages.MessagesDataStoreFactory
 import com.deledzis.messenger.data.source.users.UsersDataStoreFactory
 import com.deledzis.messenger.domain.model.BaseNetworkManager
-import com.deledzis.messenger.domain.repository.AuthRepository
-import com.deledzis.messenger.domain.repository.ChatsRepository
-import com.deledzis.messenger.domain.repository.MessagesRepository
-import com.deledzis.messenger.domain.repository.UsersRepository
 import dagger.Module
 import dagger.Provides
 
 @Module
-class RepositoriesModule {
+internal class TestRepositoriesModule {
 
     @Provides
-    internal fun provideAuthRepository(
+    internal fun provideAuthRepositoryImpl(
         factory: AuthDataStoreFactory,
         authMapper: AuthMapper,
         serverMessageResponseMapper: ServerMessageResponseMapper,
         networkManager: BaseNetworkManager
-    ): AuthRepository {
+    ): AuthRepositoryImpl {
         return AuthRepositoryImpl(
             factory = factory,
             authMapper = authMapper,
@@ -42,12 +38,12 @@ class RepositoriesModule {
     }
 
     @Provides
-    internal fun provideMessagesRepository(
+    internal fun provideMessagesRepositoryImpl(
         factory: MessagesDataStoreFactory,
         itemsMapper: MessagesMapper,
         serverMessageResponseMapper: ServerMessageResponseMapper,
         networkManager: BaseNetworkManager
-    ): MessagesRepository {
+    ): MessagesRepositoryImpl {
         return MessagesRepositoryImpl(
             factory = factory,
             itemsMapper = itemsMapper,
@@ -57,13 +53,13 @@ class RepositoriesModule {
     }
 
     @Provides
-    internal fun provideChatsRepository(
+    internal fun provideChatsRepositoryImpl(
         factory: ChatsDataStoreFactory,
         itemMapper: ChatMapper,
         itemsMapper: ChatsMapper,
         serverMessageResponseMapper: ServerMessageResponseMapper,
         networkManager: BaseNetworkManager
-    ): ChatsRepository {
+    ): ChatsRepositoryImpl {
         return ChatsRepositoryImpl(
             factory,
             itemMapper,
@@ -74,12 +70,12 @@ class RepositoriesModule {
     }
 
     @Provides
-    internal fun provideUsersRepository(
+    internal fun provideUsersRepositoryImpl(
         factory: UsersDataStoreFactory,
         itemMapper: UserMapper,
         itemsMapper: UsersMapper,
         networkManager: BaseNetworkManager
-    ): UsersRepository {
+    ): UsersRepositoryImpl {
         return UsersRepositoryImpl(
             factory = factory,
             itemMapper = itemMapper,
@@ -87,4 +83,5 @@ class RepositoriesModule {
             networkManager = networkManager
         )
     }
+
 }

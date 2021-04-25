@@ -20,10 +20,7 @@ class MessagesRemoteDataStore @Inject constructor(private val remote: MessagesRe
         search: String
     ): Response<MessagesEntity, Error> {
         return try {
-            val response = remote.getChatMessages(
-                chatId = chatId,
-                search = search
-            )
+            val response = remote.getChatMessages(chatId, search)
             Response.Success(successData = response)
         } catch (e: Exception) {
             if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
@@ -37,11 +34,23 @@ class MessagesRemoteDataStore @Inject constructor(private val remote: MessagesRe
         content: String
     ): Response<ServerMessageResponseEntity, Error> {
         return try {
-            val response = remote.sendMessage(
-                chatId = chatId,
-                type = type,
-                content = content
-            )
+            val response = remote.sendMessage(chatId, type, content)
+            if (response.errorCode == 0) {
+                Response.Success(successData = response)
+            } else {
+                Response.Failure(Error.ResponseError(errorCode = response.errorCode))
+            }
+        } catch (e: Exception) {
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
+        }
+    }
+
+    override suspend fun deleteMessage(
+        messageId: Int
+    ): Response<ServerMessageResponseEntity, Error> {
+        return try {
+            val response = remote.deleteMessage(messageId)
             if (response.errorCode == 0) {
                 Response.Success(successData = response)
             } else {

@@ -10,7 +10,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.deledzis.messenger.OpenForTesting
 import com.deledzis.messenger.domain.model.entity.auth.Auth
 import com.deledzis.messenger.infrastructure.extensions.hideSoftKeyboard
 import com.deledzis.messenger.presentation.R
@@ -20,7 +19,6 @@ import com.deledzis.messenger.presentation.features.main.UserViewModel
 import timber.log.Timber
 import javax.inject.Inject
 
-@OpenForTesting
 open class LoginFragment @Inject constructor() :
     BaseFragment<LoginViewModel, FragmentLoginBinding>(layoutId = R.layout.fragment_login),
     LoginActionsHandler {

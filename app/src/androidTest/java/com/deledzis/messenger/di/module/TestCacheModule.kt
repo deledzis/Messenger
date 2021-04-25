@@ -1,4 +1,4 @@
-package com.deledzis.messenger.cache.di
+package com.deledzis.messenger.di.module
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,15 +13,14 @@ import com.deledzis.messenger.cache.preferences.user.UserData
 import com.deledzis.messenger.cache.preferences.user.UserStore
 import com.deledzis.messenger.data.model.users.UserEntity
 import com.deledzis.messenger.data.repository.CrudCache
-import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class CacheModule {
+class TestCacheModule {
     companion object {
-        private const val PREF_APP_PACKAGE_NAME = "com.deledzis.messenger.preferences"
+        private const val PREF_APP_PACKAGE_NAME = "com.deledzis.messenger.preferences.test"
 
         @get:Synchronized
         var database: Database? = null
@@ -44,7 +43,7 @@ class CacheModule {
                 database = Room.databaseBuilder(
                     context,
                     Database::class.java,
-                    "spbstu_messenger.db"
+                    "spbstu_messenger_test.db"
                 )
                     .fallbackToDestructiveMigration()
                     .build()
@@ -55,10 +54,10 @@ class CacheModule {
 
     @Singleton
     @Provides
-    fun provideUserData(
+    fun provideUserDataImpl(
         userStore: UserStore,
         userMapper: UserMapper
-    ): BaseUserData {
+    ): UserData {
         return UserData(
             userStore = userStore,
             userMapper = userMapper

@@ -2,6 +2,7 @@ package com.deledzis.messenger.domain.repository
 
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
+import com.deledzis.messenger.domain.model.response.messages.DeleteMessageResponse
 import com.deledzis.messenger.domain.model.response.messages.GetChatMessagesResponse
 import com.deledzis.messenger.domain.model.response.messages.SendMessageResponse
 
@@ -22,5 +23,7 @@ interface MessagesRepository {
         type: Int,
         content: String
     ): Response<SendMessageResponse, Error>
+
+    suspend fun deleteMessage(messageId: Int): Response<DeleteMessageResponse, Error>
 
 }

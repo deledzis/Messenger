@@ -13,11 +13,7 @@ plugins {
     id(BuildPlugins.navigationSafeArgsPlugin)
 }
 
-allOpen {
-    annotation("OpenForTesting")
-}
-
-//apply(from = "${project.rootDir}/jacoco.gradle")
+apply(from = "${project.rootDir}/jacoco.gradle")
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // keystore.properties file, in the rootProject folder.

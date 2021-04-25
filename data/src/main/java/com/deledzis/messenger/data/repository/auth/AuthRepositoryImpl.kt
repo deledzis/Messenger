@@ -36,9 +36,7 @@ class AuthRepositoryImpl(
                     response =
                         Response.Success(LoginResponse(response = authMapper.mapFromEntity(it)))
                 },
-                failureBlock = {
-                    response = Response.Failure(it)
-                }
+                failureBlock = { response = Response.Failure(it) }
             )
             response
         } else {
@@ -57,14 +55,12 @@ class AuthRepositoryImpl(
                 nickname = nickname,
                 password = password
             )
-            var response: Response<RegisterResponse, Error> =
-                Response.Failure(Error.NetworkError())
+            var response: Response<RegisterResponse, Error> = Response.Failure(Error.NetworkError())
             result.handleResult(
                 stateBlock = { response = it },
                 successBlock = {
-                    response = Response.Success(
-                        RegisterResponse(response = authMapper.mapFromEntity(it))
-                    )
+                    response =
+                        Response.Success(RegisterResponse(response = authMapper.mapFromEntity(it)))
                 },
                 failureBlock = { response = Response.Failure(it) }
             )

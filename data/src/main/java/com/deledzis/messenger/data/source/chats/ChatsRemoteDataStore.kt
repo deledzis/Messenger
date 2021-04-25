@@ -2,6 +2,7 @@ package com.deledzis.messenger.data.source.chats
 
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
+import com.deledzis.messenger.data.model.ServerMessageResponseEntity
 import com.deledzis.messenger.data.model.chats.ChatEntity
 import com.deledzis.messenger.data.model.chats.ChatsEntity
 import com.deledzis.messenger.data.repository.chats.ChatsRemote
@@ -28,6 +29,16 @@ class ChatsRemoteDataStore @Inject constructor(private val remote: ChatsRemote) 
     override suspend fun addChat(interlocutorId: Int): Response<ChatEntity, Error> {
         return try {
             val response = remote.addChat(interlocutorId = interlocutorId)
+            Response.Success(successData = response)
+        } catch (e: Exception) {
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
+        }
+    }
+
+    override suspend fun deleteChat(chatId: Int): Response<ServerMessageResponseEntity, Error> {
+        return try {
+            val response = remote.deleteChat(chatId)
             Response.Success(successData = response)
         } catch (e: Exception) {
             if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))

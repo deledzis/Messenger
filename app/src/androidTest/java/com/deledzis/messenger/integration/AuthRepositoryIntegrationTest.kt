@@ -1,53 +1,45 @@
 package com.deledzis.messenger.integration
 
 import androidx.test.platform.app.InstrumentationRegistry
-import com.deledzis.messenger.cache.di.CacheModule
-import com.deledzis.messenger.common.usecase.Error
+import com.deledzis.messenger.cache.preferences.user.UserData
 import com.deledzis.messenger.common.usecase.Response
-import com.deledzis.messenger.data.di.RepositoriesModule
-import com.deledzis.messenger.data.model.ServerMessageResponseEntity
+import com.deledzis.messenger.data.repository.auth.AuthRepositoryImpl
 import com.deledzis.messenger.di.component.DaggerTestAppComponent
 import com.deledzis.messenger.di.module.TestAppModule
+import com.deledzis.messenger.di.module.TestCacheModule
+import com.deledzis.messenger.di.module.TestNetworkModule
+import com.deledzis.messenger.di.module.TestRepositoriesModule
 import com.deledzis.messenger.domain.model.entity.auth.Auth
-import com.deledzis.messenger.domain.model.entity.user.BaseUserData
-import com.deledzis.messenger.domain.repository.AuthRepository
 import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.deledzis.messenger.remote.ApiService
-import com.deledzis.messenger.remote.di.NetworkModule
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class AuthRepositoryIntegrationTest {
 
     @Inject
-    lateinit var repository: AuthRepository
+    lateinit var repository: AuthRepositoryImpl
 
     @Inject
-    lateinit var userData: BaseUserData
+    lateinit var userData: UserData
 
     @Inject
-    lateinit var api : ApiService
+    lateinit var api: ApiService
 
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
         val component = DaggerTestAppComponent.builder()
-            .cacheModule(CacheModule())
-            .networkModule(NetworkModule())
-            .repositoriesModule(RepositoriesModule())
+            .testCacheModule(TestCacheModule())
+            .testNetworkModule(TestNetworkModule())
+            .testRepositoriesModule(TestRepositoriesModule())
             .utilsModule(UtilsModule())
             .testAppModule(TestAppModule(context))
             .build()
         component.into(this)
-    }
-
-    @After
-    fun tearDown() {
     }
 
     @Test
@@ -64,34 +56,45 @@ class AuthRepositoryIntegrationTest {
         }
     }
 
+    /*@Test
+    fun loginAndDelete() {
+        runBlocking {
+            val loginResult = repository.login(
+                username = "test",
+                password = "testtest"
+            )
+            assertThat(loginResult is Response.Success).isTrue()
+            val data = (loginResult as Response.Success).successData.response
+            assertThat(data.username).isEqualTo("test")
+            userData.saveAuthUser(data)
+
+            val deleteResult = repository.deleteAccount(username = "")
+            assertThat(deleteResult is Response.Success).isTrue()
+            assertThat((deleteResult as Response.Success).successData.response.errorCode).isEqualTo(0)
+            assertThat(deleteResult.successData.response.message).isEqualTo("deleted")
+            userData.saveAuthUser(null)
+        }
+    }*/
+
     @Test
     fun register() {
         runBlocking {
-            userData.saveAuthUser(null)
-            val result = repository.register(
-                username = "username3",
-                nickname = "nickname3",
-                password = "password3"
+            val registerResult = repository.register(
+                username = "test",
+                nickname = null,
+                password = "testtest"
             )
-            assertThat(result is Response.Success).isTrue()
-            val data = (result as Response.Success).successData.response
-            assertThat(data.username).isEqualTo("username3")
-            assertThat(data.nickname).isEqualTo("nickname3")
-            val id = data.id
-            val accessToken = data.accessToken
-            userData.saveAuthUser(Auth(id, "username3", "nickname3", accessToken))
+            assertThat(registerResult is Response.Success).isTrue()
+            val data = (registerResult as Response.Success).successData.response
+            assertThat(data.username).isEqualTo("test")
+            userData.saveAuthUser(data)
 
-            //for user deletion
-            val response : Response<ServerMessageResponseEntity, Error> = try {
-                val apiResult = api.deleteUser()
-                Response.Success(successData= apiResult)
-            } catch (e: Exception) {
-                if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
-                else Response.Failure(Error.NetworkError())
-            }
-            assertThat(response is Response.Success).isTrue()
-            assertThat((response as Response.Success).successData.errorCode).isEqualTo(0)
-            assertThat(response.successData.message).isEqualTo("deleted")
+            val deleteResult = repository.deleteAccount(username = "")
+            assertThat(deleteResult is Response.Success).isTrue()
+            assertThat((deleteResult as Response.Success).successData.response.errorCode).isEqualTo(
+                0
+            )
+            assertThat(deleteResult.successData.response.message).isEqualTo("deleted")
             userData.saveAuthUser(null)
         }
     }

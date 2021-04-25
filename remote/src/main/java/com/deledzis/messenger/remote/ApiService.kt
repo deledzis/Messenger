@@ -69,6 +69,12 @@ interface ApiService {
         @Body request: AddChatRequest
     ): ChatEntity
 
+    // Удалить чат
+    @POST("chats/delete/{id}")
+    suspend fun deleteChat(
+        @Path("id") chatId: Int
+    ): ServerMessageResponseEntity
+
     // Чат с фильтром сообщений
     @GET("chats/{id}")
     suspend fun getChatMessages(
@@ -83,6 +89,9 @@ interface ApiService {
         @Body request: AddMessageRequest
     ): ServerMessageResponseEntity
 
-    @DELETE("users")
-    suspend fun deleteUser(): ServerMessageResponseEntity
+    // Удалить сообщение
+    @POST("chats/delete-message/{id}")
+    suspend fun deleteMessage(
+        @Path("id") messageId: Int
+    ): ServerMessageResponseEntity
 }

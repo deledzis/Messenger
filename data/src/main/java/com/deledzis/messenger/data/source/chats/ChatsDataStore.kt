@@ -2,6 +2,7 @@ package com.deledzis.messenger.data.source.chats
 
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
+import com.deledzis.messenger.data.model.ServerMessageResponseEntity
 import com.deledzis.messenger.data.model.chats.ChatEntity
 import com.deledzis.messenger.data.model.chats.ChatsEntity
 
@@ -15,5 +16,7 @@ interface ChatsDataStore {
     suspend fun getChats(): Response<ChatsEntity, Error>
 
     suspend fun addChat(interlocutorId: Int): Response<ChatEntity, Error>
+
+    suspend fun deleteChat(chatId: Int): Response<ServerMessageResponseEntity, Error>
 
 }

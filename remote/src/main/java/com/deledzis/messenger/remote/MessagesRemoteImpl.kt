@@ -19,4 +19,8 @@ class MessagesRemoteImpl(private val apiService: ApiService) : MessagesRemote {
             chatId = chatId,
             request = AddMessageRequest(type = type, content = content)
         )
+
+    override suspend fun deleteMessage(messageId: Int): ServerMessageResponseEntity =
+        apiService.deleteMessage(messageId)
+
 }

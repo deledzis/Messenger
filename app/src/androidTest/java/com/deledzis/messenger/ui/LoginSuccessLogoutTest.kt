@@ -14,13 +14,13 @@ import androidx.test.internal.runner.junit4.statement.UiThreadStatement
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.deledzis.messenger.R
-import com.deledzis.messenger.cache.di.CacheModule
-import com.deledzis.messenger.data.di.RepositoriesModule
 import com.deledzis.messenger.di.component.DaggerTestAppComponent
 import com.deledzis.messenger.di.module.TestAppModule
+import com.deledzis.messenger.di.module.TestCacheModule
+import com.deledzis.messenger.di.module.TestNetworkModule
+import com.deledzis.messenger.di.module.TestRepositoriesModule
 import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.deledzis.messenger.presentation.features.main.MainActivity
-import com.deledzis.messenger.remote.di.NetworkModule
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -40,9 +40,9 @@ class LoginSuccessLogoutTest {
     fun setup() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
         val component = DaggerTestAppComponent.builder()
-            .cacheModule(CacheModule())
-            .networkModule(NetworkModule())
-            .repositoriesModule(RepositoriesModule())
+            .testCacheModule(TestCacheModule())
+            .testNetworkModule(TestNetworkModule())
+            .testRepositoriesModule(TestRepositoriesModule())
             .utilsModule(UtilsModule())
             .testAppModule(TestAppModule(context))
             .build()
@@ -63,10 +63,10 @@ class LoginSuccessLogoutTest {
 
         // GIVEN
         onView(withId(R.id.tie_username))
-            .perform(typeText("test"), closeSoftKeyboard())
+            .perform(typeText("username"), closeSoftKeyboard())
         Thread.sleep(50)
         onView(withId(R.id.tie_password))
-            .perform(typeText("testtest"), closeSoftKeyboard())
+            .perform(typeText("password"), closeSoftKeyboard())
         onView(withId(R.id.login_button))
             .perform(click())
         Thread.sleep(2000)

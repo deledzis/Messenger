@@ -12,7 +12,6 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.deledzis.messenger.OpenForTesting
 import com.deledzis.messenger.common.Constants
 import com.deledzis.messenger.common.Constants.CHATS_PERIODIC_DELAY
 import com.deledzis.messenger.domain.model.entity.auth.Auth
@@ -28,7 +27,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-@OpenForTesting
 class ChatsFragment @Inject constructor() :
     BaseFragment<ChatsViewModel, FragmentChatsBinding>(layoutId = R.layout.fragment_chats),
     ChatsActionsHandler,

@@ -1,11 +1,11 @@
-package com.deledzis.messenger.remote.di
+package com.deledzis.messenger.di.module
 
 import com.deledzis.messenger.common.Constants
-import com.deledzis.messenger.data.di.TokenInterceptor
 import com.deledzis.messenger.data.repository.auth.AuthRemote
 import com.deledzis.messenger.data.repository.chats.ChatsRemote
 import com.deledzis.messenger.data.repository.messages.MessagesRemote
 import com.deledzis.messenger.data.repository.users.UsersRemote
+import com.deledzis.messenger.di.TestTokenInterceptor
 import com.deledzis.messenger.remote.*
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-class NetworkModule {
+open class TestNetworkModule {
 
     @Singleton
     @Provides
@@ -39,7 +39,7 @@ class NetworkModule {
     fun provideOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         interceptor: Interceptor,
-        tokenInterceptor: TokenInterceptor
+        tokenInterceptor: TestTokenInterceptor
     ): OkHttpClient.Builder {
         return OkHttpClient.Builder()
             .addInterceptor(tokenInterceptor)
