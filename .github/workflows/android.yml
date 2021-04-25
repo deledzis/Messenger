@@ -24,8 +24,12 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew assembleDebug # build
-      - name: Run Tests
+      - name: Run unit tests
         run: ./gradlew test
+      - name: Android Emulator Runner
+        uses: ReactiveCircus/android-emulator-runner@v2.15.0
+        with:
+          script: ./gradlew clean totalTestCoverage --stacktrace
       - name: Cache
         uses: actions/cache@v2.1.5
         with:
