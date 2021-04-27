@@ -12,6 +12,7 @@ import com.deledzis.messenger.di.module.TestRepositoriesModule
 import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.deledzis.messenger.remote.ApiService
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -76,6 +77,8 @@ class AuthRepositoryIntegrationTest {
     @Test
     fun test1_login() {
         runBlocking {
+            delay(1000)
+
             val result1 = repository.login(
                 username = "test1",
                 password = "testtest"
@@ -122,6 +125,8 @@ class AuthRepositoryIntegrationTest {
     @Test
     fun test3_updateUserData() {
         runBlocking {
+            delay(1000)
+
             val result1 = repository.login(
                 username = "test",
                 password = "testtest"
@@ -190,6 +195,8 @@ class AuthRepositoryIntegrationTest {
     @Test
     fun test4_deleteAccount() {
         runBlocking {
+            delay(1000)
+
             val result1 = repository.register(
                 username = "test_test_test",
                 nickname = null,

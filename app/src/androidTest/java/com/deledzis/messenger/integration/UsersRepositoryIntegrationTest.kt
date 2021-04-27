@@ -13,6 +13,7 @@ import com.deledzis.messenger.di.module.TestNetworkModule
 import com.deledzis.messenger.di.module.TestRepositoriesModule
 import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -78,6 +79,8 @@ class UsersRepositoryIntegrationTest {
     @Test
     fun test1_getUser() {
         runBlocking {
+            delay(1000)
+
             val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
             val data1 = (result1 as Response.Success).successData.response
@@ -102,6 +105,8 @@ class UsersRepositoryIntegrationTest {
     @Test
     fun test2_getUsers() {
         runBlocking {
+            delay(1000)
+
             val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
             val data1 = (result1 as Response.Success).successData.response

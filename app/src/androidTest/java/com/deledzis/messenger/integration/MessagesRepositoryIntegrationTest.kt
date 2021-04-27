@@ -15,6 +15,7 @@ import com.deledzis.messenger.domain.model.entity.messages.Message
 import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.deledzis.messenger.remote.ApiService
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -83,6 +84,8 @@ class MessagesRepositoryIntegrationTest {
     @Test
     fun test1_getChatMessages() {
         runBlocking {
+            delay(1000)
+
             val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
             val data = (result1 as Response.Success).successData.response
@@ -115,6 +118,8 @@ class MessagesRepositoryIntegrationTest {
     @Test
     fun test2_sendMessageToChat() {
         runBlocking {
+            delay(1000)
+
             val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
             val data = (result1 as Response.Success).successData.response
@@ -159,6 +164,8 @@ class MessagesRepositoryIntegrationTest {
     @Test
     fun test3_deleteMessage() {
         runBlocking {
+            delay(1000)
+
             val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
             val data = (result1 as Response.Success).successData.response

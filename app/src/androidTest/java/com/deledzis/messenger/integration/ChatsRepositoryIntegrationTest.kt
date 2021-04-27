@@ -79,6 +79,8 @@ class ChatsRepositoryIntegrationTest {
     @Test
     fun test1_getChats() {
         runBlocking {
+            delay(1000)
+
             val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
             val data = (result1 as Response.Success).successData.response
@@ -107,6 +109,8 @@ class ChatsRepositoryIntegrationTest {
     @Test
     fun test2_addChat1() {
         runBlocking {
+            delay(1000)
+
             val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
             val data1 = (result1 as Response.Success).successData.response
@@ -131,8 +135,10 @@ class ChatsRepositoryIntegrationTest {
     }
 
     @Test
-    fun test2_addChat999999() {
+    fun test3_addChat999999() {
         runBlocking {
+            delay(1000)
+
             val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
             val data1 = (result1 as Response.Success).successData.response
@@ -153,8 +159,10 @@ class ChatsRepositoryIntegrationTest {
     }
 
     @Test
-    fun test2_deleteChat() {
+    fun test4_deleteChat() {
         runBlocking {
+            delay(1000)
+
             val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
             val data1 = (result1 as Response.Success).successData.response
