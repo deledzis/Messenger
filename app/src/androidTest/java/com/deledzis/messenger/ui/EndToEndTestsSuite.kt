@@ -1,8 +1,6 @@
 package com.deledzis.messenger.ui
 
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
-
+/*
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
     LoginSuccessLogoutTest::class,
@@ -10,4 +8,4 @@ import org.junit.runners.Suite
     RegisterFailLoginLogoutTest::class,
     RegisterSuccessDeleteAccountTest::class
 )
-class EndToEndTestsSuite
+class EndToEndTestsSuite*/

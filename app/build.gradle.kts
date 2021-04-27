@@ -31,7 +31,7 @@ android {
 
     defaultConfig {
         applicationId = "com.deledzis.messenger"
-        testApplicationId = "com.deledzis.messenger.test"
+//        testApplicationId = "com.deledzis.messenger.test"
 
         minSdkVersion(AppConfig.minSdk)
         targetSdkVersion(AppConfig.targetSdk)
@@ -165,4 +165,23 @@ dependencies {
     androidTestImplementation(AppModuleDependencies.androidTestLibs)
     kaptTest(AppModuleDependencies.kaptTestLibs)
     kaptAndroidTest(AppModuleDependencies.kaptTestLibs)
+}
+
+tasks.withType<Test> {
+    exclude("**/ui/LoginFailThenSuccessTest**")
+    exclude("**/ui/LoginSuccessLogoutTest**")
+    exclude("**/ui/RegisterFailLoginLogoutTest**")
+    exclude("**/ui/RegisterSuccessDeleteAccountTest**")
+    testLogging {
+        showCauses = true
+        showExceptions = true
+        showStackTraces = true
+        showStandardStreams = true
+        events("started", "passed", "skipped", "failed", "standardOut", "standardError")
+    }
+    afterSuite(KotlinClosure2({ desc: TestDescriptor, result: TestResult ->
+        if (desc.parent == null) { // will match the outermost suite
+            println("Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)")
+        }
+    }))
 }

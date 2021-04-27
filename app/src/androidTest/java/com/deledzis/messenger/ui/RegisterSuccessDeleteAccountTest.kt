@@ -61,7 +61,7 @@ class RegisterSuccessDeleteAccountTest {
     }
 
     @Test
-    fun loginSuccessThenLogout() {
+    fun registerSuccessDeleteAccountTest() {
         // GIVEN
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         UiThreadStatement.runOnUiThread {

@@ -61,7 +61,7 @@ class RegisterFailLoginLogoutTest {
     }
 
     @Test
-    fun loginSuccessThenLogout() {
+    fun registerFailLoginLogoutTest() {
         // GIVEN
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         UiThreadStatement.runOnUiThread {
@@ -138,6 +138,8 @@ class RegisterFailLoginLogoutTest {
 
         // GIVEN
         onView(withId(R.id.btn_logout))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
         onView(ViewMatchers.withText("Выйти"))
