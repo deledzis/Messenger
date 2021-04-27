@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class Test6_OpenChatSearchMessagesSuccessTest {
+class Test7_OpenChatSearchMessagesFailTest {
 
     @Rule
     @JvmField
@@ -60,7 +60,7 @@ class Test6_OpenChatSearchMessagesSuccessTest {
     }
 
     @Test
-    fun openChatSearchMessagesSuccessTest() {
+    fun openChatSearchMessagesFailTest() {
         // GIVEN
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         UiThreadStatement.runOnUiThread {
@@ -124,11 +124,11 @@ class Test6_OpenChatSearchMessagesSuccessTest {
 
         // GIVEN
         onView(withId(R.id.tie_search))
-            .perform(typeText("test"), closeSoftKeyboard())
+            .perform(typeText("some_long_text"), closeSoftKeyboard())
 
         // VERIFY
         Thread.sleep(3000)
-        onView(withText("Вы: test"))
+        onView(withText("Ничего не найдено \uD83D\uDE14"))
             .check(matches(isDisplayed()))
 
         // GIVEN

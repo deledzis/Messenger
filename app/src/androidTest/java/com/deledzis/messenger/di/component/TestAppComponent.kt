@@ -43,5 +43,8 @@ interface TestAppComponent {
     fun into(test: Test4_RegisterSuccessDeleteAccountTest)
     fun into(test: Test5_GetChatsOpenChatSendMessageTest)
     fun into(test: Test6_OpenChatSearchMessagesSuccessTest)
+    fun into(test: Test7_OpenChatSearchMessagesFailTest)
+    fun into(test: Test8_SettingsUpdateUsernameNicknameSuccessTest)
+    fun into(test: Test9_SettingsUpdatePasswordFailTest)
 
 }

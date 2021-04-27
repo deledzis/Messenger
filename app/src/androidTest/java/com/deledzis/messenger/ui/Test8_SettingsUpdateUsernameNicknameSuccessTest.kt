@@ -5,7 +5,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -20,7 +19,6 @@ import com.deledzis.messenger.di.module.TestCacheModule
 import com.deledzis.messenger.di.module.TestNetworkModule
 import com.deledzis.messenger.di.module.TestRepositoriesModule
 import com.deledzis.messenger.infrastructure.di.UtilsModule
-import com.deledzis.messenger.presentation.features.chats.ChatsAdapter
 import com.deledzis.messenger.presentation.features.main.MainActivity
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
@@ -32,7 +30,7 @@ import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class Test6_OpenChatSearchMessagesSuccessTest {
+class Test8_SettingsUpdateUsernameNicknameSuccessTest {
 
     @Rule
     @JvmField
@@ -60,7 +58,7 @@ class Test6_OpenChatSearchMessagesSuccessTest {
     }
 
     @Test
-    fun openChatSearchMessagesSuccessTest() {
+    fun settingsUpdateUsernameNicknameSuccessTest() {
         // GIVEN
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         UiThreadStatement.runOnUiThread {
@@ -89,72 +87,31 @@ class Test6_OpenChatSearchMessagesSuccessTest {
             .check(matches(isDisplayed()))
         assertThat(navController.currentDestination?.id).isEqualTo(R.id.chatsFragment)
 
-        /**
-         * From the chats screen open first chat, go to search screen
-         **/
         // GIVEN
-        onView(withId(R.id.rv_chats))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<ChatsAdapter.ViewHolder>(
-                    0,
-                    click()
-                )
-            )
-
-        // VERIFY
-        Thread.sleep(5000)
-        onView(withId(R.id.fragment_chat_root))
-            .check(matches(isDisplayed()))
-
-        // GIVEN
-        onView(withId(R.id.ic_search))
-            .check(matches(isEnabled()))
-            .perform(click())
-
-        /**
-         * From the search screen start searching for "test" messages,
-         * then return back to chats screen
-         **/
-        // VERIFY
-        Thread.sleep(500)
-        onView(withId(R.id.fragment_search_root))
-            .check(matches(isDisplayed()))
-        onView(withText("Начните вводить запрос"))
-            .check(matches(isDisplayed()))
-
-        // GIVEN
-        onView(withId(R.id.tie_search))
-            .perform(typeText("test"), closeSoftKeyboard())
-
-        // VERIFY
-        Thread.sleep(3000)
-        onView(withText("Вы: test"))
-            .check(matches(isDisplayed()))
-
-        // GIVEN
-        onView(withId(R.id.ic_back))
-            .check(matches(isEnabled()))
+        onView(withId(R.id.ic_settings))
             .perform(click())
 
         // VERIFY
-        Thread.sleep(500)
-        onView(withId(R.id.fragment_chat_root))
+        Thread.sleep(1000)
+        onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
-        Thread.sleep(2500)
 
         // GIVEN
-        onView(withId(R.id.ic_back))
+        onView(withId(R.id.tie_username))
+            .perform(clearText(), typeText("username_1"), closeSoftKeyboard())
+        onView(withId(R.id.tie_nickname))
+            .perform(clearText(), typeText("nickname_1"), closeSoftKeyboard())
+        onView(withId(R.id.tie_password))
+            .perform(typeText("password"), closeSoftKeyboard())
+        onView(withId(R.id.save_container))
             .check(matches(isEnabled()))
             .perform(click())
+        Thread.sleep(1000)
 
-        /**
-         * From the chats screen go to settings screen and logout
-         **/
         // VERIFY
-        Thread.sleep(500)
+        Thread.sleep(1000)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
-        Thread.sleep(2500)
 
         // GIVEN
         onView(withId(R.id.ic_settings))
@@ -162,6 +119,35 @@ class Test6_OpenChatSearchMessagesSuccessTest {
 
         // VERIFY
         Thread.sleep(1000)
+        onView(withId(R.id.fragment_settings_root))
+            .check(matches(isDisplayed()))
+        onView(withText("username_1"))
+            .check(matches(isDisplayed()))
+        onView(withText("nickname_1"))
+            .check(matches(isDisplayed()))
+
+        // GIVEN
+        onView(withId(R.id.tie_username))
+            .perform(clearText(), typeText("username"), closeSoftKeyboard())
+        onView(withId(R.id.tie_nickname))
+            .perform(clearText())
+        onView(withId(R.id.tie_password))
+            .perform(typeText("password"), closeSoftKeyboard())
+        onView(withId(R.id.save_container))
+            .check(matches(isEnabled()))
+            .perform(click())
+
+        // VERIFY
+        Thread.sleep(1000)
+        onView(withId(R.id.fragment_chats_root))
+            .check(matches(isDisplayed()))
+
+        // GIVEN
+        onView(withId(R.id.ic_settings))
+            .perform(click())
+
+        // VERIFY
+        Thread.sleep(500)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -178,7 +164,6 @@ class Test6_OpenChatSearchMessagesSuccessTest {
         //VERIFY
         onView(withId(R.id.fragment_login_root))
             .check(matches(isDisplayed()))
-
     }
 
 }

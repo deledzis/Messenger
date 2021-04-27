@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,8 +15,6 @@ import com.deledzis.messenger.infrastructure.extensions.showDialog
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentSettingsBinding
-import com.deledzis.messenger.presentation.features.main.UserViewModel
-import timber.log.Timber
 import javax.inject.Inject
 
 class SettingsFragment @Inject constructor() :
@@ -62,7 +59,7 @@ class SettingsFragment @Inject constructor() :
 
     private fun updateStatusObserver(auth: Auth?) {
         userViewModel.saveUser(auth)
-        if (auth == null) {
+        if (auth != null) {
             findNavController().popBackStack()
         }
     }
