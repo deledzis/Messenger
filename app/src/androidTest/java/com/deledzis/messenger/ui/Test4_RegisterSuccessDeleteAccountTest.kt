@@ -5,9 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement
@@ -32,7 +30,7 @@ import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class RegisterSuccessDeleteAccountTest {
+class Test4_RegisterSuccessDeleteAccountTest {
 
     @Rule
     @JvmField
@@ -133,7 +131,7 @@ class RegisterSuccessDeleteAccountTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(ViewMatchers.withText("Удалить"))
+        onView(withText("Удалить"))
             .perform(click())
         Thread.sleep(500)
 

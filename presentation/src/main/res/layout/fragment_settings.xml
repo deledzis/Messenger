@@ -152,6 +152,7 @@
                         android:id="@+id/tie_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
                         android:inputType="textEmailAddress"
                         android:text="@={viewModel.username}" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -175,6 +176,7 @@
                         android:id="@+id/tie_nickname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
                         android:inputType="textEmailAddress"
                         android:text="@={viewModel.nickname}" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -198,6 +200,7 @@
                         android:id="@+id/tie_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
                         android:inputType="textPassword"
                         android:text="@={viewModel.password}" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -221,6 +224,7 @@
                         android:id="@+id/tie_new_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
                         android:inputType="textPassword"
                         android:text="@={viewModel.newPassword}" />
                 </com.google.android.material.textfield.TextInputLayout>

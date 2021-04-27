@@ -5,9 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement
@@ -28,11 +26,12 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import timber.log.Timber
 import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class LoginFailThenSuccessTest {
+class Test2_LoginSuccessLogoutTest {
 
     @Rule
     @JvmField
@@ -61,7 +60,7 @@ class LoginFailThenSuccessTest {
     }
 
     @Test
-    fun loginFailThenSuccessTest() {
+    fun loginSuccessLogoutTest() {
         // GIVEN
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         UiThreadStatement.runOnUiThread {
@@ -69,8 +68,7 @@ class LoginFailThenSuccessTest {
         }
 
         /**
-         * Starting from login screen, entering wrong credentials, login fails
-         * then entering correct credentials, login succeeds
+         * Starting from login screen, entering correct credentials, login succeeds
          **/
         // VERIFY
         onView(withId(R.id.login_button))
@@ -81,35 +79,20 @@ class LoginFailThenSuccessTest {
             .perform(typeText("username"), closeSoftKeyboard())
         Thread.sleep(500)
         onView(withId(R.id.tie_password))
-            .perform(typeText("password_wrong"), closeSoftKeyboard())
-        onView(withId(R.id.login_button))
-            .perform(click())
-        Thread.sleep(7500)
-
-        // VERIFY
-        onView(withId(R.id.fragment_login_root))
-            .check(matches(isDisplayed()))
-
-        // GIVEN
-        onView(withId(R.id.tie_username))
-            .perform(clearText())
-            .perform(typeText("username"), closeSoftKeyboard())
-        Thread.sleep(500)
-        onView(withId(R.id.tie_password))
-            .perform(clearText())
             .perform(typeText("password"), closeSoftKeyboard())
         onView(withId(R.id.login_button))
             .perform(click())
-        Thread.sleep(7500)
+        Thread.sleep(15000)
 
-        /**
-         * Chats screen appears, move to settings, do logout, login screen appears then
-         **/
         // VERIFY
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
         assertThat(navController.currentDestination?.id).isEqualTo(R.id.chatsFragment)
 
+        /**
+         * From the chats screen moving to settings screen, open logout dialog, agreeing to logout
+         * login screen appears
+         **/
         // GIVEN
         onView(withId(R.id.ic_settings))
             .perform(click())
@@ -118,6 +101,7 @@ class LoginFailThenSuccessTest {
         Thread.sleep(1000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
+        Timber.e("Current destination: ${navController.currentDestination?.displayName}")
 
         // GIVEN
         onView(withId(R.id.btn_logout))
@@ -125,7 +109,7 @@ class LoginFailThenSuccessTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(ViewMatchers.withText("Выйти"))
+        onView(withText("Выйти"))
             .perform(click())
         Thread.sleep(500)
 

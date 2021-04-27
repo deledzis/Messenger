@@ -5,9 +5,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement
@@ -21,6 +20,7 @@ import com.deledzis.messenger.di.module.TestCacheModule
 import com.deledzis.messenger.di.module.TestNetworkModule
 import com.deledzis.messenger.di.module.TestRepositoriesModule
 import com.deledzis.messenger.infrastructure.di.UtilsModule
+import com.deledzis.messenger.presentation.features.chats.ChatsAdapter
 import com.deledzis.messenger.presentation.features.main.MainActivity
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
@@ -28,12 +28,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import timber.log.Timber
 import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class LoginSuccessLogoutTest {
+class Test5_GetChatsOpenChatSendMessageTest {
 
     @Rule
     @JvmField
@@ -62,7 +61,7 @@ class LoginSuccessLogoutTest {
     }
 
     @Test
-    fun loginSuccessLogoutTest() {
+    fun getChatsOpenChatSendMessageTest() {
         // GIVEN
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         UiThreadStatement.runOnUiThread {
@@ -84,7 +83,7 @@ class LoginSuccessLogoutTest {
             .perform(typeText("password"), closeSoftKeyboard())
         onView(withId(R.id.login_button))
             .perform(click())
-        Thread.sleep(15000)
+        Thread.sleep(7500)
 
         // VERIFY
         onView(withId(R.id.fragment_chats_root))
@@ -92,8 +91,84 @@ class LoginSuccessLogoutTest {
         assertThat(navController.currentDestination?.id).isEqualTo(R.id.chatsFragment)
 
         /**
-         * From the chats screen moving to settings screen, open logout dialog, agreeing to logout
-         * login screen appears
+         * From the chats screen open first chat, sending new message,
+         * then returning back to chats screen
+         **/
+        // GIVEN
+        onView(withId(R.id.rv_chats))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition<ChatsAdapter.ViewHolder>(
+                    0,
+                    click()
+                )
+            )
+
+        // VERIFY
+        Thread.sleep(5000)
+        onView(withId(R.id.fragment_chat_root))
+            .check(matches(isDisplayed()))
+
+        // GIVEN
+        onView(withId(R.id.login_edit_text))
+            .perform(typeText("from ui test"), closeSoftKeyboard())
+        onView(withId(R.id.send_container))
+            .check(matches(isDisplayed()))
+            .perform(click())
+        Thread.sleep(1500)
+        onView(withId(R.id.ic_back))
+            .check(matches(isEnabled()))
+            .perform(click())
+
+        /**
+         * From the chats screen open first chat, find new message,
+         * long click and delete it, then return to chats screen
+         **/
+        // VERIFY
+        Thread.sleep(500)
+        onView(withId(R.id.fragment_chats_root))
+            .check(matches(isDisplayed()))
+        Thread.sleep(2500)
+
+        // GIVEN
+        onView(withText("Вы: from ui test"))
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.rv_chats))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition<ChatsAdapter.ViewHolder>(
+                    0,
+                    click()
+                )
+            )
+
+        // VERIFY
+        Thread.sleep(5000)
+        onView(withId(R.id.fragment_chat_root))
+            .check(matches(isDisplayed()))
+
+        // GIVEN
+        onView(withText("from ui test"))
+            .check(matches(isDisplayed()))
+            .perform(longClick())
+        Thread.sleep(500)
+        onView(withText("Удалить"))
+            .perform(click())
+        Thread.sleep(1500)
+        onView(withId(R.id.ic_back))
+            .check(matches(isEnabled()))
+            .perform(click())
+
+        /**
+         * From the chats screen open first chat, sending new message,
+         * then returning back to chats screen
+         **/
+        // VERIFY
+        Thread.sleep(500)
+        onView(withId(R.id.fragment_chats_root))
+            .check(matches(isDisplayed()))
+        Thread.sleep(2500)
+
+        /**
+         * From the chats screen go to settings screen and logout
          **/
         // GIVEN
         onView(withId(R.id.ic_settings))
@@ -103,7 +178,6 @@ class LoginSuccessLogoutTest {
         Thread.sleep(1000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
-        Timber.e("Current destination: ${navController.currentDestination?.displayName}")
 
         // GIVEN
         onView(withId(R.id.btn_logout))
@@ -111,7 +185,7 @@ class LoginSuccessLogoutTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(ViewMatchers.withText("Выйти"))
+        onView(withText("Выйти"))
             .perform(click())
         Thread.sleep(500)
 

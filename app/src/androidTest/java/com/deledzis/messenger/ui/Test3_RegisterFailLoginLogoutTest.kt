@@ -5,9 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement
@@ -32,7 +30,7 @@ import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class RegisterFailLoginLogoutTest {
+class Test3_RegisterFailLoginLogoutTest {
 
     @Rule
     @JvmField
@@ -142,7 +140,7 @@ class RegisterFailLoginLogoutTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(ViewMatchers.withText("Выйти"))
+        onView(withText("Выйти"))
             .perform(click())
         Thread.sleep(500)
 

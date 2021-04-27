@@ -101,6 +101,7 @@
                             android:drawablePadding="12dp"
                             android:drawableTint="@color/gray_400"
                             android:hint="@string/placeholder_search"
+                            android:importantForAutofill="no"
                             android:inputType="textEmailAddress"
                             android:text="@={viewModel.searchText}" />
 

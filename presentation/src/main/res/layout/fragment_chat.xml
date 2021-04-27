@@ -232,6 +232,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/placeholder_send_message"
+                    android:importantForAutofill="no"
                     android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
                     android:maxLines="6"
                     android:minLines="1"
