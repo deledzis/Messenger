@@ -11,6 +11,7 @@ import com.deledzis.messenger.domain.model.entity.messages.Message
 import com.deledzis.messenger.domain.model.request.messages.GetChatMessagesRequest
 import com.deledzis.messenger.domain.model.response.messages.GetChatMessagesResponse
 import com.deledzis.messenger.domain.usecase.messages.GetChatMessagesUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.infrastructure.util.debounce
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
@@ -30,7 +31,7 @@ class SearchViewModel @Inject constructor(
     val searchText = MutableLiveData<String>()
     val searchTextDebounced: MediatorLiveData<String> = MediatorLiveData<String>()
     val messages = MutableLiveData<List<Message>>()
-    val getChatMessagesError = MutableLiveData<Int>()
+    val getChatMessagesError = SingleEventLiveData<Int>()
 
     private var chatId: Int? = null
 
@@ -53,11 +54,10 @@ class SearchViewModel @Inject constructor(
         super.handleFailure(error)
         error.exception?.asHttpError?.let {
             when {
-                it.isGeneralError -> getChatMessagesError.value = R.string.error_api_400
-                it.isAuthError -> getChatMessagesError.value = R.string.error_api_406
-                it.isInterlocutorNotFoundError -> getChatMessagesError.value =
-                    R.string.error_api_407
-                it.isChatNotFoundError -> getChatMessagesError.value = R.string.error_api_408
+                it.isGeneralError -> getChatMessagesError.postValue(R.string.error_api_400)
+                it.isAuthError -> getChatMessagesError.postValue(R.string.error_api_406)
+                it.isInterlocutorNotFoundError -> getChatMessagesError.postValue(R.string.error_api_407)
+                it.isChatNotFoundError -> getChatMessagesError.postValue(R.string.error_api_408)
                 else -> Unit
             }
         }
@@ -78,7 +78,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun search(search: String? = null) {
-        getChatMessagesError.value = 0
+        getChatMessagesError.postValue(0)
         getChatMessagesUseCase(
             params = GetChatMessagesRequest(
                 chatId = chatId ?: return,

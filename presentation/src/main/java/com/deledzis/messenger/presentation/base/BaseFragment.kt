@@ -19,7 +19,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.deledzis.messenger.infrastructure.extensions.hideSoftKeyboard
@@ -83,7 +82,6 @@ abstract class BaseFragment<out T : BaseViewModel, B : ViewDataBinding>(
     @CallSuper
     protected open fun bindObservers() {
         viewModel.connectionError.observe(requireActivity(), {
-            Timber.e("Here")
             startSnackbar(text = R.string.error_connection, retryAction = null)
         })
         viewModel.authError.observe(requireActivity(), {

@@ -10,6 +10,7 @@ import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.domain.model.request.auth.LoginRequest
 import com.deledzis.messenger.domain.model.response.auth.LoginResponse
 import com.deledzis.messenger.domain.usecase.auth.LoginUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -27,9 +28,9 @@ class LoginViewModel @Inject constructor(
     var username = MutableLiveData<String>()
     var password = MutableLiveData<String>()
     val user: MutableLiveData<Auth> = MutableLiveData<Auth>(userData.getAuthUser())
-    val usernameError: MutableLiveData<Int> = MutableLiveData<Int>()
-    val passwordError: MutableLiveData<Int> = MutableLiveData<Int>()
-    val loginError: MutableLiveData<Int> = MutableLiveData<Int>()
+    val usernameError = SingleEventLiveData<Int>()
+    val passwordError = SingleEventLiveData<Int>()
+    val loginError = SingleEventLiveData<Int>()
 
     override suspend fun resolve(value: Response<Entity, Error>) {
         value.handleResult(
@@ -50,19 +51,19 @@ class LoginViewModel @Inject constructor(
         super.handleFailure(error)
         error.exception?.asHttpError?.let {
             when {
-                it.isGeneralError -> loginError.value = R.string.error_api_400
-                it.isMissingLoginError -> loginError.value = R.string.error_api_401
-                it.isMissingPasswordError -> loginError.value = R.string.error_api_402
-                it.isWrongCredentialsError -> loginError.value = R.string.error_api_403
+                it.isGeneralError -> loginError.postValue(R.string.error_api_400)
+                it.isMissingLoginError -> loginError.postValue(R.string.error_api_401)
+                it.isMissingPasswordError -> loginError.postValue(R.string.error_api_402)
+                it.isWrongCredentialsError -> loginError.postValue(R.string.error_api_403)
                 else -> Unit
             }
         }
     }
 
     private fun clearErrors() {
-        usernameError.value = 0
-        passwordError.value = 0
-        loginError.value = 0
+        usernameError.postValue(0)
+        passwordError.postValue(0)
+        loginError.postValue(0)
     }
 
     fun login() {
@@ -73,17 +74,17 @@ class LoginViewModel @Inject constructor(
         val password = password.value
 
         if (username.isNullOrBlank()) {
-            usernameError.value = R.string.error_empty_username
+            usernameError.postValue(R.string.error_empty_username)
             stopLoading()
             return
         }
         if (password.isNullOrBlank()) {
-            passwordError.value = R.string.error_password_invalid_length
+            passwordError.postValue(R.string.error_password_invalid_length)
             stopLoading()
             return
         }
         if (username.length !in (4..100)) {
-            usernameError.value = R.string.error_username_invalid_length
+            usernameError.postValue(R.string.error_username_invalid_length)
             stopLoading()
             return
         }
@@ -92,10 +93,10 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun handleLoginResponse(data: LoginResponse) {
-        if (!data.response.accessToken.isNullOrBlank()) {
+        if (data.response.accessToken.isNotBlank()) {
             handleLoginOkResponse(data.response)
         } else {
-            loginError.value = R.string.error_auth_failed
+            loginError.postValue(R.string.error_auth_failed)
         }
         stopLoading()
     }

@@ -6,7 +6,6 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import com.deledzis.messenger.infrastructure.util.debounce
 import kotlinx.coroutines.MainScope
-import timber.log.Timber
 
 @BindingAdapter("android:onClick")
 fun setDebounceListener(view: View, onClickListener: View.OnClickListener) {

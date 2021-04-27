@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,7 +12,6 @@ import com.deledzis.messenger.infrastructure.extensions.hideSoftKeyboard
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentRegisterBinding
-import com.deledzis.messenger.presentation.features.main.UserViewModel
 import javax.inject.Inject
 
 class RegisterFragment @Inject constructor() :
@@ -36,6 +34,7 @@ class RegisterFragment @Inject constructor() :
 
     override fun bindObservers() {
         super.bindObservers()
+        userViewModel.user.observe(viewLifecycleOwner, ::globalUserObserver)
         viewModel.user.observe(viewLifecycleOwner, ::userObserver)
         viewModel.usernameError.observe(viewLifecycleOwner, ::usernameErrorObserver)
         viewModel.nicknameError.observe(viewLifecycleOwner, ::nicknameErrorObserver)
@@ -43,10 +42,15 @@ class RegisterFragment @Inject constructor() :
         viewModel.registerError.observe(viewLifecycleOwner, ::errorObserver)
     }
 
+    private fun globalUserObserver(auth: Auth?) {
+        if (auth != null) {
+            findNavController().popBackStack()
+        }
+    }
+
     private fun userObserver(auth: Auth?) {
         if (auth != null) {
             userViewModel.saveUser(auth)
-            findNavController().popBackStack()
         }
     }
 

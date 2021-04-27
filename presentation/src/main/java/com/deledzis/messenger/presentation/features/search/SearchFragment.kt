@@ -51,7 +51,9 @@ class SearchFragment @Inject constructor() :
 
     override fun bindObservers() {
         super.bindObservers()
-        viewModel.searchTextDebounced.observe(viewLifecycleOwner, { Timber.v("search: $it") })
+        viewModel.searchTextDebounced.observe(viewLifecycleOwner) {
+            Timber.v("search: $it")
+        }
         viewModel.messages.observe(viewLifecycleOwner, ::messagesObserver)
         viewModel.getChatMessagesError.observe(viewLifecycleOwner, ::errorObserver)
     }

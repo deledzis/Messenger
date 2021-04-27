@@ -5,6 +5,9 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    LoginSuccessLogoutTest::class
+    LoginSuccessLogoutTest::class,
+    LoginFailThenSuccessTest::class,
+    RegisterFailLoginLogoutTest::class,
+    RegisterSuccessDeleteAccountTest::class
 )
 class EndToEndTestsSuite

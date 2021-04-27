@@ -15,6 +15,7 @@ import com.deledzis.messenger.domain.model.response.chats.AddChatResponse
 import com.deledzis.messenger.domain.model.response.user.GetUsersResponse
 import com.deledzis.messenger.domain.usecase.chats.AddChatUseCase
 import com.deledzis.messenger.domain.usecase.user.GetUsersUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.infrastructure.util.debounce
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
@@ -38,8 +39,8 @@ class AddChatViewModel @Inject constructor(
     val users: MutableLiveData<List<User>> = MutableLiveData<List<User>>()
     val addedChat: MutableLiveData<Chat> = MutableLiveData<Chat>()
 
-    val getUsersError = MutableLiveData<Int>()
-    val addChatError = MutableLiveData<Int>()
+    val getUsersError = SingleEventLiveData<Int>()
+    val addChatError = SingleEventLiveData<Int>()
 
     private var lastUser: User? = null
 
@@ -63,11 +64,11 @@ class AddChatViewModel @Inject constructor(
         super.handleFailure(error)
         error.exception?.asHttpError?.let {
             when {
-                it.isGeneralError -> getUsersError.value = R.string.error_api_400
-                it.isAuthError -> getUsersError.value = R.string.error_api_406
-                it.isInterlocutorNotFoundError -> addChatError.value = R.string.error_api_407
-                it.isMissingInterlocutorError -> addChatError.value = R.string.error_api_410
-                it.isDialogAlreadyCreatedError -> addChatError.value = R.string.error_api_416
+                it.isGeneralError -> getUsersError.postValue(R.string.error_api_400)
+                it.isAuthError -> getUsersError.postValue(R.string.error_api_406)
+                it.isInterlocutorNotFoundError -> addChatError.postValue(R.string.error_api_407)
+                it.isMissingInterlocutorError -> addChatError.postValue(R.string.error_api_410)
+                it.isDialogAlreadyCreatedError -> addChatError.postValue(R.string.error_api_416)
                 else -> Unit
             }
         }
@@ -105,8 +106,8 @@ class AddChatViewModel @Inject constructor(
     }
 
     private fun clearErrors() {
-        getUsersError.value = 0
-        addChatError.value = 0
+        getUsersError.postValue(0)
+        addChatError.postValue(0)
     }
 
     private fun handleAddChatResponse(data: AddChatResponse) {

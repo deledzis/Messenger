@@ -10,6 +10,7 @@ import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.domain.model.request.auth.DeleteAccountRequest
 import com.deledzis.messenger.domain.model.response.auth.DeleteAccountResponse
 import com.deledzis.messenger.domain.usecase.auth.DeleteAccountUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -28,7 +29,7 @@ class UserViewModel @Inject constructor(
 
     var user: MutableLiveData<Auth> = MutableLiveData<Auth>(userData.getAuthUser())
 
-    val deleteAccountError = MutableLiveData<Int>()
+    val deleteAccountError = SingleEventLiveData<Int>()
 
     override suspend fun resolve(value: Response<Entity, Error>) {
         value.handleResult(
@@ -49,9 +50,9 @@ class UserViewModel @Inject constructor(
         super.handleFailure(error)
         error.exception?.asHttpError?.let {
             when {
-                it.isGeneralError -> deleteAccountError.value = R.string.error_api_400
-                it.isAuthError -> deleteAccountError.value = R.string.error_api_406
-                it.isDeleteUserError -> deleteAccountError.value = R.string.error_api_419
+                it.isGeneralError -> deleteAccountError.postValue(R.string.error_api_400)
+                it.isAuthError -> deleteAccountError.postValue(R.string.error_api_406)
+                it.isDeleteUserError -> deleteAccountError.postValue(R.string.error_api_419)
                 else -> Unit
             }
         }

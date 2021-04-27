@@ -28,12 +28,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import timber.log.Timber
 import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class LoginSuccessLogoutTest {
+class LoginFailThenSuccessTest {
 
     @Rule
     @JvmField
@@ -70,7 +69,8 @@ class LoginSuccessLogoutTest {
         }
 
         /**
-         * Starting from login screen, entering correct credentials, login succeeds
+         * Starting from login screen, entering wrong credentials, login fails
+         * then entering correct credentials, login succeeds
          **/
         // VERIFY
         onView(withId(R.id.login_button))
@@ -81,20 +81,35 @@ class LoginSuccessLogoutTest {
             .perform(typeText("username"), closeSoftKeyboard())
         Thread.sleep(500)
         onView(withId(R.id.tie_password))
+            .perform(typeText("password_wrong"), closeSoftKeyboard())
+        onView(withId(R.id.login_button))
+            .perform(click())
+        Thread.sleep(7500)
+
+        // VERIFY
+        onView(withId(R.id.fragment_login_root))
+            .check(matches(isDisplayed()))
+
+        // GIVEN
+        onView(withId(R.id.tie_username))
+            .perform(clearText())
+            .perform(typeText("username"), closeSoftKeyboard())
+        Thread.sleep(500)
+        onView(withId(R.id.tie_password))
+            .perform(clearText())
             .perform(typeText("password"), closeSoftKeyboard())
         onView(withId(R.id.login_button))
             .perform(click())
-        Thread.sleep(15000)
+        Thread.sleep(7500)
 
+        /**
+         * Chats screen appears, move to settings, do logout, login screen appears then
+         **/
         // VERIFY
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
         assertThat(navController.currentDestination?.id).isEqualTo(R.id.chatsFragment)
 
-        /**
-         * From the chats screen moving to settings screen, open logout dialog, agreeing to logout
-         * login screen appears
-         **/
         // GIVEN
         onView(withId(R.id.ic_settings))
             .perform(click())
@@ -103,7 +118,6 @@ class LoginSuccessLogoutTest {
         Thread.sleep(1000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
-        Timber.e("Current destination: ${navController.currentDestination?.displayName}")
 
         // GIVEN
         onView(withId(R.id.btn_logout))

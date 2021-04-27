@@ -12,6 +12,7 @@ import com.deledzis.messenger.domain.model.response.chats.DeleteChatResponse
 import com.deledzis.messenger.domain.model.response.chats.GetChatsResponse
 import com.deledzis.messenger.domain.usecase.chats.DeleteChatUseCase
 import com.deledzis.messenger.domain.usecase.chats.GetChatsUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.AssistedSavedStateViewModelFactory
 import com.deledzis.messenger.presentation.base.BaseViewModel
@@ -39,8 +40,8 @@ class ChatsViewModel @AssistedInject constructor(
         )
 
     val chats = MutableLiveData<List<Chat>>()
-    val getChatsError = MutableLiveData<Int>()
-    val deleteChatError = MutableLiveData<Int>()
+    val getChatsError = SingleEventLiveData<Int>()
+    val deleteChatError = SingleEventLiveData<Int>()
 
     override suspend fun resolve(value: Response<Entity, Error>) {
         value.handleResult(
@@ -54,7 +55,7 @@ class ChatsViewModel @AssistedInject constructor(
         Timber.i("Handle Success: $data")
         when (data) {
             is GetChatsResponse -> handleGetChatsResponse(data)
-            is DeleteChatResponse -> handleDeleteChatResponse(data)
+            is DeleteChatResponse -> handleDeleteChatResponse()
         }
     }
 
@@ -62,23 +63,23 @@ class ChatsViewModel @AssistedInject constructor(
         super.handleFailure(error)
         error.exception?.asHttpError?.let {
             when {
-                it.isGeneralError -> getChatsError.value = R.string.error_api_400
-                it.isAuthError -> getChatsError.value = R.string.error_api_406
-                it.isInterlocutorNotFoundError -> getChatsError.value = R.string.error_api_407
-                it.isMissingChatError -> deleteChatError.value = R.string.error_api_411
-                it.isDeleteChatError -> deleteChatError.value = R.string.error_api_420
+                it.isGeneralError -> getChatsError.postValue(R.string.error_api_400)
+                it.isAuthError -> getChatsError.postValue(R.string.error_api_406)
+                it.isInterlocutorNotFoundError -> getChatsError.postValue(R.string.error_api_407)
+                it.isMissingChatError -> deleteChatError.postValue(R.string.error_api_411)
+                it.isDeleteChatError -> deleteChatError.postValue(R.string.error_api_420)
                 else -> Unit
             }
         }
     }
 
     private fun clearErrors() {
-        getChatsError.value = 0
-        deleteChatError.value = 0
+        getChatsError.postValue(0)
+        deleteChatError.postValue(0)
     }
 
     fun getChats(refresh: Boolean = true) {
-        if (refresh || chats.value.isNullOrEmpty()) {
+        if (refresh) {
             clearErrors()
             startLoading()
         }
@@ -95,5 +96,5 @@ class ChatsViewModel @AssistedInject constructor(
         stopLoading()
     }
 
-    private fun handleDeleteChatResponse(data: DeleteChatResponse) = getChats()
+    private fun handleDeleteChatResponse() = getChats(refresh = false)
 }

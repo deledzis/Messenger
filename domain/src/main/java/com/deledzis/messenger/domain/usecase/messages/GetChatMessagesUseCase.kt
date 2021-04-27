@@ -1,6 +1,5 @@
 package com.deledzis.messenger.domain.usecase.messages
 
-import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.domain.model.request.messages.GetChatMessagesRequest
 import com.deledzis.messenger.domain.repository.MessagesRepository
 import com.deledzis.messenger.domain.usecase.BaseUseCase
@@ -11,15 +10,10 @@ class GetChatMessagesUseCase @Inject constructor(
 ) : BaseUseCase<GetChatMessagesRequest>() {
 
     override suspend fun run(params: GetChatMessagesRequest) {
-        // Started loading
-        resultChannel.send(Response.State.Loading())
-
-        // synchronous
         val response = repository.getChatMessages(
             chatId = params.chatId,
             search = params.search ?: ""
         )
         resultChannel.send(response)
-        resultChannel.send(Response.State.Loaded())
     }
 }

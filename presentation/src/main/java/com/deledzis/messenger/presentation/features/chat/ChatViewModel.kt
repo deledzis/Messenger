@@ -16,6 +16,7 @@ import com.deledzis.messenger.domain.model.response.messages.SendMessageResponse
 import com.deledzis.messenger.domain.usecase.messages.DeleteMessageUseCase
 import com.deledzis.messenger.domain.usecase.messages.GetChatMessagesUseCase
 import com.deledzis.messenger.domain.usecase.messages.SendMessageUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.infrastructure.util.UploadRequestBody
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
@@ -57,9 +58,9 @@ class ChatViewModel @Inject constructor(
     val sentError = MutableLiveData<Int>()
     val uploading = MutableLiveData<Boolean>()
 
-    val getChatMessagesError = MutableLiveData<Int>()
-    val deleteMessageError = MutableLiveData<Int>()
-    val createMessageError = MutableLiveData<Int>()
+    val getChatMessagesError = SingleEventLiveData<Int>()
+    val deleteMessageError = SingleEventLiveData<Int>()
+    val createMessageError = SingleEventLiveData<Int>()
 
     private var chatId: Int? = null
     private var uploadTask: UploadTask? = null
@@ -76,7 +77,7 @@ class ChatViewModel @Inject constructor(
         Timber.i("Handle Success: $data")
         when (data) {
             is GetChatMessagesResponse -> handleGetChatMessagesResponse(data)
-            is DeleteMessageResponse -> handleDeleteMessageResponse(data)
+            is DeleteMessageResponse -> handleDeleteMessageResponse()
             is SendMessageResponse -> handleSendMessageResponse(data)
         }
     }
@@ -86,17 +87,16 @@ class ChatViewModel @Inject constructor(
         uploading.value = false
         error.exception?.asHttpError?.let {
             when {
-                it.isGeneralError -> getChatMessagesError.value = R.string.error_api_400
-                it.isAuthError -> getChatMessagesError.value = R.string.error_api_406
-                it.isInterlocutorNotFoundError -> getChatMessagesError.value =
-                    R.string.error_api_407
-                it.isChatNotFoundError -> getChatMessagesError.value = R.string.error_api_408
-                it.isMissingChatError -> createMessageError.value = R.string.error_api_411
-                it.isSendMessageError -> createMessageError.value = R.string.error_api_412
-                it.isMissingMessageTypeError -> createMessageError.value = R.string.error_api_417
-                it.isMissingMessageContentError -> createMessageError.value = R.string.error_api_418
-                it.isMissingMessageIdError -> deleteMessageError.value = R.string.error_api_421
-                it.isDeleteMessageError -> deleteMessageError.value = R.string.error_api_422
+                it.isGeneralError -> getChatMessagesError.postValue(R.string.error_api_400)
+                it.isAuthError -> getChatMessagesError.postValue(R.string.error_api_406)
+                it.isInterlocutorNotFoundError -> getChatMessagesError.postValue(R.string.error_api_407)
+                it.isChatNotFoundError -> getChatMessagesError.postValue(R.string.error_api_408)
+                it.isMissingChatError -> createMessageError.postValue(R.string.error_api_411)
+                it.isSendMessageError -> createMessageError.postValue(R.string.error_api_412)
+                it.isMissingMessageTypeError -> createMessageError.postValue(R.string.error_api_417)
+                it.isMissingMessageContentError -> createMessageError.postValue(R.string.error_api_418)
+                it.isMissingMessageIdError -> deleteMessageError.postValue(R.string.error_api_421)
+                it.isDeleteMessageError -> deleteMessageError.postValue(R.string.error_api_422)
                 else -> Unit
             }
         }
@@ -108,7 +108,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun getChatMessages() {
-        getChatMessagesError.value = 0
+        getChatMessagesError.postValue(0)
         if (messages.value.isNullOrEmpty()) startLoading()
 
         getChatMessagesUseCase(
@@ -120,7 +120,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun sendMessage() {
-        createMessageError.value = 0
+        createMessageError.postValue(0)
         sentError.value = 0
 
         if (text.value.isNullOrBlank()) {
@@ -138,12 +138,12 @@ class ChatViewModel @Inject constructor(
     }
 
     fun deleteMessage(messageId: Int) {
-        deleteMessageError.value = 0
+        deleteMessageError.postValue(0)
         deleteMessageUseCase(DeleteMessageRequest(messageId))
     }
 
     private fun sendImage(uri: Uri) {
-        createMessageError.value = 0
+        createMessageError.postValue(0)
         sentError.value = 0
 
         sendMessageUseCase(
@@ -161,7 +161,7 @@ class ChatViewModel @Inject constructor(
         stopLoading()
     }
 
-    private fun handleDeleteMessageResponse(data: DeleteMessageResponse) = getChatMessages()
+    private fun handleDeleteMessageResponse() = getChatMessages()
 
     private fun handleSendMessageResponse(data: SendMessageResponse) {
         if (data.response.errorCode == 0) {

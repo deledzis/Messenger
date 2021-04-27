@@ -7,14 +7,11 @@ import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.common.usecase.ResponseErrorException
 import com.deledzis.messenger.domain.model.entity.Entity
 import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.logEvent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
 import timber.log.Timber
 import java.io.Serializable
-import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
@@ -27,8 +24,8 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
 
     val loading: MutableLiveData<Boolean> = MutableLiveData(false)
     val loadingError: MutableLiveData<Boolean> = MutableLiveData(false)
-    val connectionError: MutableLiveData<Boolean> = SingleEventLiveData()
-    val authError: MutableLiveData<Boolean> = SingleEventLiveData()
+    val connectionError = SingleEventLiveData<Boolean>()
+    val authError = SingleEventLiveData<Boolean>()
 
     abstract suspend fun resolve(value: Response<Entity, Error>)
 

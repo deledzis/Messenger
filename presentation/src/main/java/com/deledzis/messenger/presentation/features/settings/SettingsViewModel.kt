@@ -11,6 +11,7 @@ import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.domain.model.request.auth.UpdateUserDataRequest
 import com.deledzis.messenger.domain.model.response.auth.UpdateUserDataResponse
 import com.deledzis.messenger.domain.usecase.auth.UpdateUserDataUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -26,19 +27,18 @@ class SettingsViewModel @Inject constructor(
         get() = mergeChannels(updateUserDataUseCase.receiveChannel)
 
     var username = MutableLiveData(userData.getAuthUser()?.username)
-    val usernameError = MutableLiveData<Int>()
+    val usernameError = SingleEventLiveData<Int>()
 
     var nickname = MutableLiveData(userData.getAuthUser()?.nickname)
-    val nicknameError = MutableLiveData<Int>()
+    val nicknameError = SingleEventLiveData<Int>()
 
     var password = MutableLiveData<String>(null)
-    val passwordError = MutableLiveData<Int>()
+    val passwordError = SingleEventLiveData<Int>()
 
     var newPassword = MutableLiveData<String>(null)
-    val newPasswordError = MutableLiveData<Int>()
+    val newPasswordError = SingleEventLiveData<Int>()
 
-    val updateError = MutableLiveData<Int>()
-
+    val updateError = SingleEventLiveData<Int>()
     val userData = MutableLiveData<Auth>()
 
     override suspend fun resolve(value: Response<Entity, Error>) {
@@ -60,22 +60,22 @@ class SettingsViewModel @Inject constructor(
         super.handleFailure(error)
         error.exception?.asHttpError?.let {
             when {
-                it.isGeneralError -> updateError.value = R.string.error_api_400
-                it.isMissingLoginError -> updateError.value = R.string.error_api_401
-                it.isAuthError -> updateError.value = R.string.error_api_406
-                it.isMissingCurrentPasswordError -> updateError.value = R.string.error_api_413
-                it.isWrongPasswordError -> updateError.value = R.string.error_api_414
-                it.isUpdateUserError -> updateError.value = R.string.error_api_415
+                it.isGeneralError -> updateError.postValue(R.string.error_api_400)
+                it.isMissingLoginError -> updateError.postValue(R.string.error_api_401)
+                it.isAuthError -> updateError.postValue(R.string.error_api_406)
+                it.isMissingCurrentPasswordError -> updateError.postValue(R.string.error_api_413)
+                it.isWrongPasswordError -> updateError.postValue(R.string.error_api_414)
+                it.isUpdateUserError -> updateError.postValue(R.string.error_api_415)
                 else -> Unit
             }
         }
     }
 
     private fun clearErrors() {
-        usernameError.value = 0
-        nicknameError.value = 0
-        passwordError.value = 0
-        newPasswordError.value = 0
+        usernameError.postValue(0)
+        nicknameError.postValue(0)
+        passwordError.postValue(0)
+        newPasswordError.postValue(0)
     }
 
     fun updateUserData() {
@@ -92,27 +92,27 @@ class SettingsViewModel @Inject constructor(
         //  so that we can wrap this launch in a try-catch block
         //  and do stopLoading() in a catch section instead of doing it every time
         if (username.isNullOrBlank()) {
-            usernameError.value = R.string.error_empty_username
+            usernameError.postValue(R.string.error_empty_username)
             stopLoading()
             return
         }
         if (password.isNullOrBlank()) {
-            passwordError.value = R.string.error_empty_actual_password
+            passwordError.postValue(R.string.error_empty_actual_password)
             stopLoading()
             return
         }
         if (username.length !in (4..100)) {
-            usernameError.value = R.string.error_username_invalid_length
+            usernameError.postValue(R.string.error_username_invalid_length)
             stopLoading()
             return
         }
         if (nickname?.length.orZero() > 100) {
-            nicknameError.value = R.string.error_nickname_invalid_length
+            nicknameError.postValue(R.string.error_nickname_invalid_length)
             stopLoading()
             return
         }
         if (newPassword != null && newPassword.length !in (8..64)) {
-            newPasswordError.value = R.string.error_password_invalid_length
+            newPasswordError.postValue(R.string.error_password_invalid_length)
             stopLoading()
             return
         }

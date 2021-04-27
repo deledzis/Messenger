@@ -8,8 +8,10 @@ import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.deledzis.messenger.integration.*
 import com.deledzis.messenger.presentation.di.builder.MainActivityBuilder
 import com.deledzis.messenger.presentation.di.module.ViewModelModule
-//import com.deledzis.messenger.ui.LoginFailRegisterTest
+import com.deledzis.messenger.ui.LoginFailThenSuccessTest
 import com.deledzis.messenger.ui.LoginSuccessLogoutTest
+import com.deledzis.messenger.ui.RegisterFailLoginLogoutTest
+import com.deledzis.messenger.ui.RegisterSuccessDeleteAccountTest
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.support.AndroidSupportInjectionModule
@@ -37,6 +39,8 @@ interface TestAppComponent {
     fun into(test: UsersRepositoryIntegrationTest)
     fun into(test: RepositoriesIntegrationTest)
     fun into(test: LoginSuccessLogoutTest)
-//    fun into(test: LoginFailRegisterTest)
+    fun into(test: LoginFailThenSuccessTest)
+    fun into(test: RegisterFailLoginLogoutTest)
+    fun into(test: RegisterSuccessDeleteAccountTest)
 
 }
