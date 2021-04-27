@@ -27,6 +27,7 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
 
     val loading: MutableLiveData<Boolean> = MutableLiveData(false)
     val loadingError: MutableLiveData<Boolean> = MutableLiveData(false)
+    val connectionError: MutableLiveData<Boolean> = SingleEventLiveData()
     val authError: MutableLiveData<Boolean> = SingleEventLiveData()
 
     abstract suspend fun resolve(value: Response<Entity, Error>)
@@ -55,7 +56,12 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
 
     protected open fun handleFailure(error: Error) {
         stopLoading()
-        Timber.e("Handle Failure: ${error.exception}")
+        Timber.e("Handle Failure: $error")
+        error.asNetworkError?.let {
+            GlobalScope.launch {
+                connectionError.postValue(true)
+            }
+        }
         error.exception?.asHttpError?.let {
             if (it.isAuthError) {
                 GlobalScope.launch {
@@ -87,6 +93,9 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
     }
 
     companion object {
+        val Error?.asNetworkError: Error.NetworkError?
+            get() = if (this is Error.NetworkError) this else null
+
         val Exception?.asHttpError: ResponseErrorException?
             get() = if (this is ResponseErrorException) this else null
 
@@ -122,6 +131,18 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
             get() = this.errorCode == 415
         val ResponseErrorException.isDialogAlreadyCreatedError: Boolean
             get() = this.errorCode == 416
+        val ResponseErrorException.isMissingMessageTypeError: Boolean
+            get() = this.errorCode == 417
+        val ResponseErrorException.isMissingMessageContentError: Boolean
+            get() = this.errorCode == 418
+        val ResponseErrorException.isDeleteUserError: Boolean
+            get() = this.errorCode == 419
+        val ResponseErrorException.isDeleteChatError: Boolean
+            get() = this.errorCode == 420
+        val ResponseErrorException.isMissingMessageIdError: Boolean
+            get() = this.errorCode == 421
+        val ResponseErrorException.isDeleteMessageError: Boolean
+            get() = this.errorCode == 422
 
         val ResponseErrorException.isLoginError: Boolean
             get() = this.isMissingLoginError || this.isMissingPasswordError || this.isWrongCredentialsError

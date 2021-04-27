@@ -9,7 +9,7 @@ plugins {
     id(BuildPlugins.kotlinAllOpenPlugin)
 
     id(BuildPlugins.googleServicesPlugin)
-    id(BuildPlugins.crashlyticsPlugin)
+//    id(BuildPlugins.crashlyticsPlugin)
     id(BuildPlugins.navigationSafeArgsPlugin)
 }
 

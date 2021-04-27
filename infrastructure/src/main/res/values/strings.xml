@@ -53,9 +53,11 @@
 
     <!-- Dialogs -->
     <string name="dialog_logout">Подтвердите выход из аккаунта\n\n</string>
+    <string name="dialog_delete_chat">Подтвердите удаление. Все сообщения из переписки будут также удалены и для собеседника\n\n</string>
+    <string name="dialog_delete_message">Подтвердите удаление. Сообщение будет также удалено для собеседника\n\n</string>
+    <string name="dialog_delete_account">Подтвердите удаление. Аккаунт будет удалён без возможности восстановления\n\n</string>
+
     <string name="dialog_btn_cancel">Отмена</string>
     <string name="dialog_btn_exit">Выйти</string>
-
-    <string name="dialog_delete_account">Действительно удалить аккаунт?\n\n</string>
     <string name="dialog_btn_delete">Удалить</string>
 </resources>

@@ -11,7 +11,7 @@ buildscript {
         classpath(AppPlugins.kotlinGradle)
         classpath(AppPlugins.kotlinAllOpen)
         classpath(AppPlugins.googleServices)
-        classpath(AppPlugins.crashlytics)
+//        classpath(AppPlugins.crashlytics)
         classpath(AppPlugins.navigationSafeArgs)
         classpath(AppPlugins.jacoco)
     }

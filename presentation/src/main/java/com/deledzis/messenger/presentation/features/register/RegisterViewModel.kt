@@ -2,6 +2,7 @@ package com.deledzis.messenger.presentation.features.register
 
 import androidx.lifecycle.MutableLiveData
 import com.deledzis.messenger.common.extensions.mergeChannels
+import com.deledzis.messenger.common.extensions.orZero
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.domain.model.entity.Entity
@@ -28,6 +29,9 @@ class RegisterViewModel @Inject constructor(
     val nickname = MutableLiveData<String>()
     val password = MutableLiveData<String>()
     val user: MutableLiveData<Auth> = MutableLiveData<Auth>(userData.getAuthUser())
+    val usernameError: MutableLiveData<Int> = MutableLiveData<Int>()
+    val nicknameError: MutableLiveData<Int> = MutableLiveData<Int>()
+    val passwordError: MutableLiveData<Int> = MutableLiveData<Int>()
     val registerError: MutableLiveData<Int> = MutableLiveData<Int>()
 
     override suspend fun resolve(value: Response<Entity, Error>) {
@@ -49,6 +53,7 @@ class RegisterViewModel @Inject constructor(
         super.handleFailure(error)
         error.exception?.asHttpError?.let {
             when {
+                it.isGeneralError -> registerError.value = R.string.error_api_400
                 it.isMissingLoginError -> registerError.value = R.string.error_api_401
                 it.isMissingPasswordError -> registerError.value = R.string.error_api_402
                 it.isUserAlreadyExistsError -> registerError.value = R.string.error_api_405
@@ -58,6 +63,9 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun clearErrors() {
+        usernameError.value = 0
+        nicknameError.value = 0
+        passwordError.value = 0
         registerError.value = 0
     }
 
@@ -65,22 +73,32 @@ class RegisterViewModel @Inject constructor(
         clearErrors()
         startLoading()
 
-        registerUseCase(
-            params = RegisterRequest(
-                username = username.value ?: kotlin.run {
-                    stopLoading()
-                    return
-                },
-                nickname = nickname.value ?: kotlin.run {
-                    stopLoading()
-                    return
-                },
-                password = password.value ?: kotlin.run {
-                    stopLoading()
-                    return
-                }
-            )
-        )
+        val username = username.value
+        val nickname = nickname.value
+        val password = password.value
+
+        if (username.isNullOrBlank()) {
+            usernameError.value = R.string.error_empty_username
+            stopLoading()
+            return
+        }
+        if (password.isNullOrBlank()) {
+            passwordError.value = R.string.error_password_invalid_length
+            stopLoading()
+            return
+        }
+        if (username.length !in (4..100)) {
+            usernameError.value = R.string.error_username_invalid_length
+            stopLoading()
+            return
+        }
+        if (nickname?.length.orZero() > 100) {
+            nicknameError.value = R.string.error_nickname_invalid_length
+            stopLoading()
+            return
+        }
+
+        registerUseCase(RegisterRequest(username, nickname, password))
     }
 
     private fun handleRegisterResponse(data: RegisterResponse) {

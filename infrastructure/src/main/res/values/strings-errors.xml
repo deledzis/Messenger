@@ -1,4 +1,5 @@
 <resources>
+    <string name="error_connection">Не удалось подключиться к серверу, попробуйте позже</string>
     <string name="error_auth_failed">Не удалось войти с предоставленными учетными данными</string>
     <string name="error_register_failed">Не удалось зарегистрироваться с предоставленными учетными данными</string>
     <string name="error_get_chats">Не удалось обновить список чатов</string>
@@ -33,4 +34,10 @@
     <string name="error_api_414">Указан неверный текущий пароль</string>
     <string name="error_api_415">Не удалось обновить пользователя</string>
     <string name="error_api_416">Диалог уже создан</string>
+    <string name="error_api_417">Не указан тип сообщения</string>
+    <string name="error_api_418">Сообщение пустое</string>
+    <string name="error_api_419">Не удалось удалить аккаунт</string>
+    <string name="error_api_420">Не удалось удалить чат</string>
+    <string name="error_api_421">Не указано сообщение</string>
+    <string name="error_api_422">Не удалось удалить сообщение</string>
 </resources>

@@ -20,9 +20,6 @@ class RegisterFragment @Inject constructor() :
     BaseFragment<RegisterViewModel, FragmentRegisterBinding>(layoutId = R.layout.fragment_register),
     RegisterActionsHandler {
 
-    @Inject
-    lateinit var userViewModel: UserViewModel
-
     override val viewModel: RegisterViewModel by viewModels()
 
     override fun onCreateView(
@@ -38,7 +35,11 @@ class RegisterFragment @Inject constructor() :
     }
 
     override fun bindObservers() {
+        super.bindObservers()
         viewModel.user.observe(viewLifecycleOwner, ::userObserver)
+        viewModel.usernameError.observe(viewLifecycleOwner, ::usernameErrorObserver)
+        viewModel.nicknameError.observe(viewLifecycleOwner, ::nicknameErrorObserver)
+        viewModel.passwordError.observe(viewLifecycleOwner, ::passwordErrorObserver)
         viewModel.registerError.observe(viewLifecycleOwner, ::errorObserver)
     }
 
@@ -49,10 +50,24 @@ class RegisterFragment @Inject constructor() :
         }
     }
 
-    private fun errorObserver(@StringRes error: Int?) {
+    private fun usernameErrorObserver(@StringRes error: Int?) {
+        hideSoftKeyboard(dataBinding.root)
+        dataBinding.tilUsername.error = getErrorString(error)
+    }
+
+    private fun nicknameErrorObserver(@StringRes error: Int?) {
+        hideSoftKeyboard(dataBinding.root)
+        dataBinding.tilNickname.error = getErrorString(error)
+    }
+
+    private fun passwordErrorObserver(@StringRes error: Int?) {
+        hideSoftKeyboard(dataBinding.root)
+        dataBinding.tilPassword.error = getErrorString(error)
+    }
+
+    override fun onRegisterClicked(view: View) {
         hideSoftKeyboard()
-        val errorMessage = getErrorString(error) ?: return
-        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.register()
     }
 
     override fun onLoginClicked(view: View) {

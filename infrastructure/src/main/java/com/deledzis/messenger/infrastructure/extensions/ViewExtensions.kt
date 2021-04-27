@@ -45,8 +45,8 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, false)
 }
 
-fun View.animateShow() {
-    animate().alpha(1.0f).setDuration(250)
+fun View.animateShow(toAlpha: Float = 1.0f) {
+    animate().alpha(toAlpha).setDuration(250)
         .setListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)

@@ -27,6 +27,8 @@ class LoginViewModel @Inject constructor(
     var username = MutableLiveData<String>()
     var password = MutableLiveData<String>()
     val user: MutableLiveData<Auth> = MutableLiveData<Auth>(userData.getAuthUser())
+    val usernameError: MutableLiveData<Int> = MutableLiveData<Int>()
+    val passwordError: MutableLiveData<Int> = MutableLiveData<Int>()
     val loginError: MutableLiveData<Int> = MutableLiveData<Int>()
 
     override suspend fun resolve(value: Response<Entity, Error>) {
@@ -48,6 +50,7 @@ class LoginViewModel @Inject constructor(
         super.handleFailure(error)
         error.exception?.asHttpError?.let {
             when {
+                it.isGeneralError -> loginError.value = R.string.error_api_400
                 it.isMissingLoginError -> loginError.value = R.string.error_api_401
                 it.isMissingPasswordError -> loginError.value = R.string.error_api_402
                 it.isWrongCredentialsError -> loginError.value = R.string.error_api_403
@@ -57,6 +60,8 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun clearErrors() {
+        usernameError.value = 0
+        passwordError.value = 0
         loginError.value = 0
     }
 
@@ -64,29 +69,32 @@ class LoginViewModel @Inject constructor(
         clearErrors()
         startLoading()
 
-        loginUseCase(
-            params = LoginRequest(
-                username = username.value ?: kotlin.run {
-                    stopLoading()
-                    return
-                },
-                password = password.value ?: kotlin.run {
-                    stopLoading()
-                    return
-                }
-            )
-        )
+        val username = username.value
+        val password = password.value
+
+        if (username.isNullOrBlank()) {
+            usernameError.value = R.string.error_empty_username
+            stopLoading()
+            return
+        }
+        if (password.isNullOrBlank()) {
+            passwordError.value = R.string.error_password_invalid_length
+            stopLoading()
+            return
+        }
+        if (username.length !in (4..100)) {
+            usernameError.value = R.string.error_username_invalid_length
+            stopLoading()
+            return
+        }
+
+        loginUseCase(LoginRequest(username, password))
     }
 
     private fun handleLoginResponse(data: LoginResponse) {
         if (!data.response.accessToken.isNullOrBlank()) {
             handleLoginOkResponse(data.response)
         } else {
-            /*logError(
-                errorCode = data.response.errorCode,
-                originMessage = data.response.message,
-                normalizedMessage = "Не удалось войти с предоставленными учетными данными"
-            )*/
             loginError.value = R.string.error_auth_failed
         }
         stopLoading()

@@ -2,6 +2,7 @@ package com.deledzis.messenger.presentation.features.settings
 
 import androidx.lifecycle.MutableLiveData
 import com.deledzis.messenger.common.extensions.mergeChannels
+import com.deledzis.messenger.common.extensions.orZero
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.domain.model.entity.Entity
@@ -36,6 +37,8 @@ class SettingsViewModel @Inject constructor(
     var newPassword = MutableLiveData<String>(null)
     val newPasswordError = MutableLiveData<Int>()
 
+    val updateError = MutableLiveData<Int>()
+
     val userData = MutableLiveData<Auth>()
 
     override suspend fun resolve(value: Response<Entity, Error>) {
@@ -53,6 +56,21 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    override fun handleFailure(error: Error) {
+        super.handleFailure(error)
+        error.exception?.asHttpError?.let {
+            when {
+                it.isGeneralError -> updateError.value = R.string.error_api_400
+                it.isMissingLoginError -> updateError.value = R.string.error_api_401
+                it.isAuthError -> updateError.value = R.string.error_api_406
+                it.isMissingCurrentPasswordError -> updateError.value = R.string.error_api_413
+                it.isWrongPasswordError -> updateError.value = R.string.error_api_414
+                it.isUpdateUserError -> updateError.value = R.string.error_api_415
+                else -> Unit
+            }
+        }
+    }
+
     private fun clearErrors() {
         usernameError.value = 0
         nicknameError.value = 0
@@ -64,48 +82,46 @@ class SettingsViewModel @Inject constructor(
         clearErrors()
         startLoading()
 
+        val username = username.value
+        val nickname = nickname.value
+        val password = password.value
+        val newPassword = newPassword.value
+
         // TODO -- add an extension function-validator for string LiveDatas
         //  that will throw an extension if condition is failed
         //  so that we can wrap this launch in a try-catch block
         //  and do stopLoading() in a catch section instead of doing it every time
-        if (username.value.isNullOrBlank()) {
+        if (username.isNullOrBlank()) {
             usernameError.value = R.string.error_empty_username
             stopLoading()
             return
         }
-        if (password.value.isNullOrBlank()) {
+        if (password.isNullOrBlank()) {
             passwordError.value = R.string.error_empty_actual_password
             stopLoading()
             return
         }
-        if (username.value?.length !in (4..100)) {
+        if (username.length !in (4..100)) {
             usernameError.value = R.string.error_username_invalid_length
             stopLoading()
             return
         }
-        if (nickname.value?.length !in (1..100)) {
+        if (nickname?.length.orZero() > 100) {
             nicknameError.value = R.string.error_nickname_invalid_length
             stopLoading()
             return
         }
-        if (newPassword.value != null && newPassword.value?.length !in (8..64)) {
+        if (newPassword != null && newPassword.length !in (8..64)) {
             newPasswordError.value = R.string.error_password_invalid_length
             stopLoading()
             return
         }
 
-        updateUserDataUseCase(
-            params = UpdateUserDataRequest(
-                username = username.value ?: return,
-                nickname = nickname.value,
-                password = password.value,
-                newPassword = newPassword.value
-            )
-        )
+        updateUserDataUseCase(UpdateUserDataRequest(username, nickname, password, newPassword))
     }
 
     private fun handleUpdateUserDataResponse(data: UpdateUserDataResponse) {
-        if (!data.response.accessToken.isNullOrBlank()) {
+        if (data.response.accessToken.isNotBlank()) {
             handleUpdateUserDataOkResponse(data.response)
         }
         stopLoading()

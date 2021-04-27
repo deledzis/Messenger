@@ -5,7 +5,7 @@ object AppModuleDependencies : ModuleDependencies() {
         add(Libraries.multidexLib)
         add(Libraries.navFragmentLib)
         add(Libraries.navUiKtxLib)
-        add(Libraries.crashlyticsLib)
+//        add(Libraries.crashlyticsLib)
         add(Libraries.analyticsLib)
 //        add(Libraries.performanceLib)
         add(Libraries.timberLib)

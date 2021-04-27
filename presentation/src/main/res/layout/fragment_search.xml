@@ -104,7 +104,8 @@
                             android:drawablePadding="12dp"
                             android:drawableTint="@color/gray_400"
                             android:hint="@string/placeholder_search"
-                            android:inputType="textFilter" />
+                            android:inputType="textFilter"
+                            android:text="@={viewModel.searchText}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
@@ -21,12 +22,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.deledzis.messenger.infrastructure.extensions.hideSoftKeyboard
 import com.deledzis.messenger.infrastructure.view.ErrorSnackbar
+import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.features.main.UserViewModel
 import timber.log.Timber
 import javax.inject.Inject
 
-abstract class BaseFragment<out T : ViewModel, B : ViewDataBinding>(
+abstract class BaseFragment<out T : BaseViewModel, B : ViewDataBinding>(
     @LayoutRes protected val layoutId: Int
 ) : Fragment(), LifecycleOwner, SwipeRefreshLayout.OnRefreshListener {
 
@@ -37,6 +40,9 @@ abstract class BaseFragment<out T : ViewModel, B : ViewDataBinding>(
 
     @Inject
     lateinit var assistedViewModelFactory: dagger.Lazy<InjectingSavedStateViewModelFactory>
+
+    @Inject
+    lateinit var userViewModel: UserViewModel
 
     override fun getDefaultViewModelProviderFactory(): ViewModelProvider.Factory =
         assistedViewModelFactory.get().create(this, arguments)
@@ -74,7 +80,19 @@ abstract class BaseFragment<out T : ViewModel, B : ViewDataBinding>(
         bindObservers()
     }
 
-    protected open fun bindObservers() {}
+    @CallSuper
+    protected open fun bindObservers() {
+        viewModel.connectionError.observe(requireActivity(), {
+            Timber.e("Here")
+            startSnackbar(text = R.string.error_connection, retryAction = null)
+        })
+        viewModel.authError.observe(requireActivity(), {
+            authErrorObserver(
+                authError = it,
+                userViewModel = userViewModel
+            )
+        })
+    }
 
     protected fun authErrorObserver(authError: Boolean?, userViewModel: UserViewModel) {
         if (authError == true) {
@@ -157,15 +175,21 @@ abstract class BaseFragment<out T : ViewModel, B : ViewDataBinding>(
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
     }
 
+    protected open fun errorObserver(@StringRes error: Int?) {
+        hideSoftKeyboard()
+        val errorMessage = getErrorString(error) ?: return
+        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show()
+    }
+
     protected fun startSnackbar(
-        text: String,
+        @StringRes text: Int,
         indefinite: Boolean = true,
         retryAction: (() -> Unit)?
     ) {
         if (snackbar == null) {
             snackbar = ErrorSnackbar.make(
                 view = dataBinding.root,
-                text = text,
+                text = getString(text),
                 indefinite = indefinite,
                 onCloseClick = { stopSnackbar() },
                 onRetryClick = retryAction

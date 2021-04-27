@@ -10,6 +10,7 @@ import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.domain.model.request.auth.DeleteAccountRequest
 import com.deledzis.messenger.domain.model.response.auth.DeleteAccountResponse
 import com.deledzis.messenger.domain.usecase.auth.DeleteAccountUseCase
+import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
 import kotlinx.coroutines.channels.ReceiveChannel
 import timber.log.Timber
@@ -27,6 +28,8 @@ class UserViewModel @Inject constructor(
 
     var user: MutableLiveData<Auth> = MutableLiveData<Auth>(userData.getAuthUser())
 
+    val deleteAccountError = MutableLiveData<Int>()
+
     override suspend fun resolve(value: Response<Entity, Error>) {
         value.handleResult(
             stateBlock = ::handleState,
@@ -39,6 +42,18 @@ class UserViewModel @Inject constructor(
         Timber.i("Handle Success: $data")
         when (data) {
             is DeleteAccountResponse -> handleDeleteAccount(data)
+        }
+    }
+
+    override fun handleFailure(error: Error) {
+        super.handleFailure(error)
+        error.exception?.asHttpError?.let {
+            when {
+                it.isGeneralError -> deleteAccountError.value = R.string.error_api_400
+                it.isAuthError -> deleteAccountError.value = R.string.error_api_406
+                it.isDeleteUserError -> deleteAccountError.value = R.string.error_api_419
+                else -> Unit
+            }
         }
     }
 

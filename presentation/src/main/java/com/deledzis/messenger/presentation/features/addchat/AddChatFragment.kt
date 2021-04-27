@@ -51,9 +51,12 @@ class AddChatFragment @Inject constructor() :
     }
 
     override fun bindObservers() {
+        super.bindObservers()
         viewModel.searchTextDebounced.observe(viewLifecycleOwner, { Timber.v("search: $it") })
         viewModel.users.observe(viewLifecycleOwner, ::usersObserver)
         viewModel.addedChat.observe(viewLifecycleOwner, ::chatObserver)
+        viewModel.getUsersError.observe(viewLifecycleOwner, ::errorObserver)
+        viewModel.addChatError.observe(viewLifecycleOwner, ::errorObserver)
     }
 
     private fun chatObserver(chat: Chat?) {
@@ -62,10 +65,11 @@ class AddChatFragment @Inject constructor() :
                 chatId = chat.id,
                 chatTitle = chat.title
             )
+            findNavController().popBackStack()
             findNavController().navigate(action)
         } else {
             startSnackbar(
-                text = getString(R.string.error_add_chat),
+                text = R.string.error_add_chat,
                 indefinite = true,
                 retryAction = { viewModel.retry() }
             )

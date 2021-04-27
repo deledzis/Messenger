@@ -15,9 +15,7 @@ class DeleteAccountUseCase @Inject constructor(
         resultChannel.send(Response.State.Loading())
 
         // synchronous
-        val response = repository.deleteAccount(
-            username = params.username
-        )
+        val response = repository.deleteAccount(params.username)
         resultChannel.send(response)
         resultChannel.send(Response.State.Loaded())
     }

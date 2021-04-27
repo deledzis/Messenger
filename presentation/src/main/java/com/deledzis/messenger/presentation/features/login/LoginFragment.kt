@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -23,17 +22,7 @@ open class LoginFragment @Inject constructor() :
     BaseFragment<LoginViewModel, FragmentLoginBinding>(layoutId = R.layout.fragment_login),
     LoginActionsHandler {
 
-    @Inject
-    lateinit var userViewModel: UserViewModel
-
     override val viewModel: LoginViewModel by viewModels()
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    var navController: NavController? = null
-        set(value) {
-            Timber.e("Value: $value")
-            field = value
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +30,6 @@ open class LoginFragment @Inject constructor() :
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        Timber.e("ON CREATE VIEW")
         dataBinding.viewModel = viewModel
         dataBinding.controller = this
 
@@ -49,7 +37,10 @@ open class LoginFragment @Inject constructor() :
     }
 
     override fun bindObservers() {
+        super.bindObservers()
         viewModel.user.observe(viewLifecycleOwner, ::userObserver)
+        viewModel.usernameError.observe(viewLifecycleOwner, ::usernameErrorObserver)
+        viewModel.passwordError.observe(viewLifecycleOwner, ::passwordErrorObserver)
         viewModel.loginError.observe(viewLifecycleOwner, ::errorObserver)
     }
 
@@ -60,14 +51,22 @@ open class LoginFragment @Inject constructor() :
         }
     }
 
-    private fun errorObserver(@StringRes error: Int?) {
+    private fun usernameErrorObserver(@StringRes error: Int?) {
+        hideSoftKeyboard(dataBinding.root)
+        dataBinding.tilUsername.error = getErrorString(error)
+    }
+
+    private fun passwordErrorObserver(@StringRes error: Int?) {
+        hideSoftKeyboard(dataBinding.root)
+        dataBinding.tilPassword.error = getErrorString(error)
+    }
+
+    override fun onLoginClicked(view: View) {
         hideSoftKeyboard()
-        val errorMessage = getErrorString(error) ?: return
-        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.login()
     }
 
     override fun onRegisterClicked(view: View) {
-        Timber.e("HEREEE")
         hideSoftKeyboard()
         val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
         findNavController().navigate(action)

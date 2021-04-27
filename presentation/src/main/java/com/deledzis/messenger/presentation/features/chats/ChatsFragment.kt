@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
-import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
@@ -17,6 +16,7 @@ import com.deledzis.messenger.common.Constants.CHATS_PERIODIC_DELAY
 import com.deledzis.messenger.domain.model.entity.auth.Auth
 import com.deledzis.messenger.domain.model.entity.chats.Chat
 import com.deledzis.messenger.domain.model.entity.user.BaseUserData
+import com.deledzis.messenger.infrastructure.extensions.showDialog
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentChatsBinding
@@ -37,17 +37,7 @@ class ChatsFragment @Inject constructor() :
     private var scheduledFuture: ScheduledFuture<*>? = null
 
     @Inject
-    lateinit var userViewModel: UserViewModel
-
-    @Inject
     lateinit var userData: BaseUserData
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    var navController: NavController? = null
-        set(value) {
-            Timber.e("Value: $value")
-            field = value
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,15 +80,11 @@ class ChatsFragment @Inject constructor() :
     }
 
     override fun bindObservers() {
+        super.bindObservers()
         userViewModel.user.observe(viewLifecycleOwner, ::userObserver)
         viewModel.chats.observe(viewLifecycleOwner, ::chatsObserver)
-        viewModel.chatsLoadingError.observe(viewLifecycleOwner, ::errorObserver)
-        viewModel.authError.observe(requireActivity(), {
-            authErrorObserver(
-                authError = it,
-                userViewModel = userViewModel
-            )
-        })
+        viewModel.getChatsError.observe(viewLifecycleOwner, ::errorObserver)
+        viewModel.deleteChatError.observe(viewLifecycleOwner, ::errorObserver)
     }
 
     private fun userObserver(auth: Auth?) {
@@ -117,15 +103,10 @@ class ChatsFragment @Inject constructor() :
         dataBinding.rvChats.setItemViewCacheSize(chats.size)
     }
 
-    private fun errorObserver(@StringRes error: Int?) {
+    override fun errorObserver(@StringRes error: Int?) {
         srl?.isRefreshing = false
         if (error != null && error != 0) {
-            startSnackbar(
-                text = getString(error),
-                indefinite = true
-            ) {
-                viewModel.getChats(refresh = true)
-            }
+            startSnackbar(text = error, indefinite = true) { viewModel.getChats(refresh = true) }
         } else {
             stopSnackbar()
         }
@@ -150,6 +131,17 @@ class ChatsFragment @Inject constructor() :
             chatTitle = chat.title
         )
         findNavController().navigate(action)
+    }
+
+    override fun onLongClick(chat: Chat): Boolean {
+        requireContext().showDialog(
+            messageId = R.string.dialog_delete_chat,
+            positiveBtnId = R.string.dialog_btn_delete,
+            negativeBtnId = R.string.dialog_btn_cancel
+        ) {
+            viewModel.deleteChat(chat.id)
+        }
+        return true
     }
 
     override fun onRefresh() {

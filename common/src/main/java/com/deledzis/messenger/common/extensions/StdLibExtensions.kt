@@ -7,6 +7,14 @@ import kotlin.math.roundToInt
 
 operator fun Boolean.inc(): Boolean = !this
 
+fun Int?.orZero(): Int = this ?: 0
+
+fun Double?.orZero(): Double = this ?: 0.0
+
+fun Float?.orZero(): Float = this ?: 0.0f
+
+fun String?.orEmpty(): String = this ?: ""
+
 fun Double.roundTo(numFractionDigits: Int): Double {
     val factor = 10.0.pow(numFractionDigits.toDouble())
     return (this * factor).roundToInt() / factor

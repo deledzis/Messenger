@@ -7,10 +7,13 @@ import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.domain.model.entity.Entity
 import com.deledzis.messenger.domain.model.entity.messages.Message
+import com.deledzis.messenger.domain.model.request.messages.DeleteMessageRequest
 import com.deledzis.messenger.domain.model.request.messages.GetChatMessagesRequest
 import com.deledzis.messenger.domain.model.request.messages.SendMessageRequest
+import com.deledzis.messenger.domain.model.response.messages.DeleteMessageResponse
 import com.deledzis.messenger.domain.model.response.messages.GetChatMessagesResponse
 import com.deledzis.messenger.domain.model.response.messages.SendMessageResponse
+import com.deledzis.messenger.domain.usecase.messages.DeleteMessageUseCase
 import com.deledzis.messenger.domain.usecase.messages.GetChatMessagesUseCase
 import com.deledzis.messenger.domain.usecase.messages.SendMessageUseCase
 import com.deledzis.messenger.infrastructure.util.UploadRequestBody
@@ -30,28 +33,33 @@ import kotlin.math.roundToInt
 
 class ChatViewModel @Inject constructor(
     private val getChatMessagesUseCase: GetChatMessagesUseCase,
+    private val deleteMessageUseCase: DeleteMessageUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
 ) : BaseViewModel(),
     UploadRequestBody.UploadCallback {
 
     private val storage: FirebaseStorage by lazy { Firebase.storage }
-    val storageRef: StorageReference by lazy { storage.reference }
+    private val storageRef: StorageReference by lazy { storage.reference }
 
     override val receiveChannel: ReceiveChannel<Response<Entity, Error>>
         get() = mergeChannels(
             getChatMessagesUseCase.receiveChannel,
+            deleteMessageUseCase.receiveChannel,
             sendMessageUseCase.receiveChannel
         )
 
     val text = MutableLiveData<String>()
-    val type = MutableLiveData<Int>(Message.TYPE_TEXT)
+    val type = MutableLiveData(Message.TYPE_TEXT)
     val messages = MutableLiveData<List<Message>>()
-    val messagesError = MutableLiveData<Int>()
     val newMessages = MutableLiveData<Boolean>()
     val uploadProgress = MutableLiveData<Int>()
     val sent = MutableLiveData<Boolean>()
     val sentError = MutableLiveData<Int>()
     val uploading = MutableLiveData<Boolean>()
+
+    val getChatMessagesError = MutableLiveData<Int>()
+    val deleteMessageError = MutableLiveData<Int>()
+    val createMessageError = MutableLiveData<Int>()
 
     private var chatId: Int? = null
     private var uploadTask: UploadTask? = null
@@ -68,6 +76,7 @@ class ChatViewModel @Inject constructor(
         Timber.i("Handle Success: $data")
         when (data) {
             is GetChatMessagesResponse -> handleGetChatMessagesResponse(data)
+            is DeleteMessageResponse -> handleDeleteMessageResponse(data)
             is SendMessageResponse -> handleSendMessageResponse(data)
         }
     }
@@ -75,6 +84,22 @@ class ChatViewModel @Inject constructor(
     override fun handleFailure(error: Error) {
         super.handleFailure(error)
         uploading.value = false
+        error.exception?.asHttpError?.let {
+            when {
+                it.isGeneralError -> getChatMessagesError.value = R.string.error_api_400
+                it.isAuthError -> getChatMessagesError.value = R.string.error_api_406
+                it.isInterlocutorNotFoundError -> getChatMessagesError.value =
+                    R.string.error_api_407
+                it.isChatNotFoundError -> getChatMessagesError.value = R.string.error_api_408
+                it.isMissingChatError -> createMessageError.value = R.string.error_api_411
+                it.isSendMessageError -> createMessageError.value = R.string.error_api_412
+                it.isMissingMessageTypeError -> createMessageError.value = R.string.error_api_417
+                it.isMissingMessageContentError -> createMessageError.value = R.string.error_api_418
+                it.isMissingMessageIdError -> deleteMessageError.value = R.string.error_api_421
+                it.isDeleteMessageError -> deleteMessageError.value = R.string.error_api_422
+                else -> Unit
+            }
+        }
     }
 
     fun init(chatId: Int) {
@@ -83,7 +108,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun getChatMessages() {
-        messagesError.value = 0
+        getChatMessagesError.value = 0
         if (messages.value.isNullOrEmpty()) startLoading()
 
         getChatMessagesUseCase(
@@ -95,6 +120,9 @@ class ChatViewModel @Inject constructor(
     }
 
     fun sendMessage() {
+        createMessageError.value = 0
+        sentError.value = 0
+
         if (text.value.isNullOrBlank()) {
             sentError.value = R.string.error_empty_message
             return
@@ -109,7 +137,15 @@ class ChatViewModel @Inject constructor(
         )
     }
 
+    fun deleteMessage(messageId: Int) {
+        deleteMessageError.value = 0
+        deleteMessageUseCase(DeleteMessageRequest(messageId))
+    }
+
     private fun sendImage(uri: Uri) {
+        createMessageError.value = 0
+        sentError.value = 0
+
         sendMessageUseCase(
             params = SendMessageRequest(
                 chatId = chatId ?: return,
@@ -124,6 +160,8 @@ class ChatViewModel @Inject constructor(
         postMessages(messages)
         stopLoading()
     }
+
+    private fun handleDeleteMessageResponse(data: DeleteMessageResponse) = getChatMessages()
 
     private fun handleSendMessageResponse(data: SendMessageResponse) {
         if (data.response.errorCode == 0) {
