@@ -11,15 +11,19 @@ import com.deledzis.messenger.di.module.TestAppModule
 import com.deledzis.messenger.di.module.TestCacheModule
 import com.deledzis.messenger.di.module.TestNetworkModule
 import com.deledzis.messenger.di.module.TestRepositoriesModule
-import com.deledzis.messenger.domain.model.entity.auth.Auth
+import com.deledzis.messenger.domain.model.entity.messages.Message
 import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.deledzis.messenger.remote.ApiService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Before
+import org.junit.FixMethodOrder
 import org.junit.Test
+import org.junit.runners.MethodSorters
 import javax.inject.Inject
 
+@FixMethodOrder(value = MethodSorters.NAME_ASCENDING)
 class MessagesRepositoryIntegrationTest {
 
     @Inject
@@ -48,91 +52,148 @@ class MessagesRepositoryIntegrationTest {
             .testAppModule(TestAppModule(context))
             .build()
         component.into(this)
-    }
 
-    @Test
-    fun sendMessageToChat() {
         runBlocking {
             userData.saveAuthUser(null)
-            val result = authRepository.login(
-                username = "username",
-                password = "password"
+            authRepository.register(
+                username = "test",
+                nickname = null,
+                password = "testtest"
             )
-            assertThat(result is Response.Success).isTrue()
-            val id = (result as Response.Success).successData.response.id
-            val accessToken = result.successData.response.accessToken
-            userData.saveAuthUser(Auth(id, "username", "password", accessToken))
+            authRepository.login(
+                username = "test",
+                password = "testtest"
+            ).handleResult {
+                userData.saveAuthUser(it.response)
+            }
+        }
+    }
 
-            val result1 = chatsRepository.getChats()
-            assertThat(result1 is Response.Success).isTrue()
-            val data1 = (result1 as Response.Success).successData.response
-            assertThat(data1.items).isNotNull()
-            assertThat(data1.items).isNotEmpty()
-
-            val chatId = data1.items[0].id
-
-//            val result4 = usersRepository.getUsers("")
-//            assertThat(result4 is Response.Success).isTrue()
-//            val data4 = (result4 as Response.Success).successData.response
-//            assertThat(data4.items).isNotNull()
-//            assertThat(data4.items).isNotEmpty()
-
-//            val result5 = chatsRepository.addChat(1)
-////            Truth.assertThat(result2 is Response.Success).isTrue()
-//            var chatId : Int = -1
-//            if (result5 is Response.Success){
-//                assertThat(result5.successData.response.interlocutorId).isEqualTo(1)
-//                chatId = result5.successData.response.id
-//            }
-//            if (result5 is Response.Failure){
-//                assertThat(result5.errorData.exception?.asHttpError?.errorCode).isEqualTo(416)
-//            }
-
-            val result2 = messagesRepository.getChatMessages(chatId, "")
-            assertThat(result2 is Response.Success).isTrue()
-            val data = (result2 as Response.Success).successData.response
-            assertThat(data.items).isNotNull()
-            assertThat(data.items).isNotEmpty()
-
-            val result3 = messagesRepository.sendMessageToChat(chatId, 0, "something test")
-            assertThat(result3 is Response.Success).isTrue()
-            val data3 = (result3 as Response.Success).successData.response
-            assertThat(data3.errorCode).isEqualTo(0)
-            val result4 = messagesRepository.sendMessageToChat(-1, 0, "something test")
-            assertThat(result4 is Response.Failure).isTrue()
+    @After
+    fun tearDown() {
+        runBlocking {
+            authRepository.login("test", "testtest").handleResult {
+                userData.saveAuthUser(it.response)
+                authRepository.deleteAccount(username = "test")
+            }
             userData.saveAuthUser(null)
         }
     }
 
     @Test
-    fun getChatMessages() {
+    fun test1_getChatMessages() {
         runBlocking {
-            userData.saveAuthUser(null)
-            val result = authRepository.login(
-                username = "username",
-                password = "password"
-            )
-            assertThat(result is Response.Success).isTrue()
-            val id = (result as Response.Success).successData.response.id
-            val accessToken = result.successData.response.accessToken
-            userData.saveAuthUser(Auth(id, "username", "password", accessToken))
-
             val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
-            val chats = (result1 as Response.Success).successData.response
-            assertThat(chats.items).isNotNull()
-            assertThat(chats.items).isNotEmpty()
-            val chatId = chats.items[0].id
+            val data = (result1 as Response.Success).successData.response
+            assertThat(data.items).isEmpty()
 
-            val result2 = messagesRepository.getChatMessages(chatId, "")
+            val result2 = authRepository.login("username", "password")
             assertThat(result2 is Response.Success).isTrue()
-            val data = (result2 as Response.Success).successData.response
-            assertThat(data.items).isNotNull()
-            assertThat(data.items).isNotEmpty()
+            val data2 = (result2 as Response.Success).successData.response
+            userData.saveAuthUser(data2)
 
-            val result3 = messagesRepository.getChatMessages(-1, "")
-            assertThat(result3 is Response.Failure).isTrue()
-            userData.saveAuthUser(null)
+            val result3 = chatsRepository.getChats()
+            assertThat(result3 is Response.Success).isTrue()
+            val data3 = (result3 as Response.Success).successData.response
+            assertThat(data3.items).isNotEmpty()
+            assertThat(data.items != data3.items).isTrue()
+
+            val result4 =
+                messagesRepository.getChatMessages(chatId = data3.items[0].id, search = "")
+            assertThat(result4 is Response.Success).isTrue()
+            val data4 = (result4 as Response.Success).successData.response
+            assertThat(data4.items).isNotEmpty()
+
+            // rollback
+            authRepository.login("test", "testtest").handleResult {
+                userData.saveAuthUser(it.response)
+            }
+        }
+    }
+
+    @Test
+    fun test2_sendMessageToChat() {
+        runBlocking {
+            val result1 = chatsRepository.getChats()
+            assertThat(result1 is Response.Success).isTrue()
+            val data = (result1 as Response.Success).successData.response
+            assertThat(data.items).isEmpty()
+
+            val result2 = chatsRepository.addChat(interlocutorId = 1)
+            assertThat(result2 is Response.Success).isTrue()
+            val data2 = (result2 as Response.Success).successData.response
+
+            val result3 = messagesRepository.getChatMessages(chatId = data2.id, search = "")
+            assertThat(result3 is Response.Success).isTrue()
+            val data3 = (result3 as Response.Success).successData.response
+            assertThat(data3.items).isEmpty()
+
+            val result4 = messagesRepository.sendMessageToChat(
+                chatId = data2.id,
+                content = "test",
+                type = Message.TYPE_TEXT
+            )
+            assertThat(result4 is Response.Success).isTrue()
+
+            val result5 = messagesRepository.getChatMessages(chatId = data2.id, search = "")
+            assertThat(result5 is Response.Success).isTrue()
+            val data4 = (result5 as Response.Success).successData.response
+            assertThat(data4.items).isNotEmpty()
+            assertThat(data4.items.last().content).isEqualTo("test")
+            assertThat(data4.items.last().type).isEqualTo(Message.TYPE_TEXT)
+
+            val result6 = messagesRepository.getChatMessages(chatId = data2.id, search = "test")
+            assertThat(result6 is Response.Success).isTrue()
+            val data5 = (result6 as Response.Success).successData.response
+            assertThat(data5.items).isNotEmpty()
+            assertThat(data5.items.size).isEqualTo(1)
+
+            val result7 = messagesRepository.getChatMessages(chatId = data2.id, search = "asd")
+            assertThat(result7 is Response.Success).isTrue()
+            val data6 = (result7 as Response.Success).successData.response
+            assertThat(data6.items).isEmpty()
+        }
+    }
+
+    @Test
+    fun test3_deleteMessage() {
+        runBlocking {
+            val result1 = chatsRepository.getChats()
+            assertThat(result1 is Response.Success).isTrue()
+            val data = (result1 as Response.Success).successData.response
+            assertThat(data.items).isEmpty()
+
+            val result2 = chatsRepository.addChat(interlocutorId = 1)
+            assertThat(result2 is Response.Success).isTrue()
+            val data2 = (result2 as Response.Success).successData.response
+
+            val result3 = messagesRepository.getChatMessages(chatId = data2.id, search = "")
+            assertThat(result3 is Response.Success).isTrue()
+            val data3 = (result3 as Response.Success).successData.response
+            assertThat(data3.items).isEmpty()
+
+            val result4 = messagesRepository.sendMessageToChat(
+                chatId = data2.id,
+                content = "test",
+                type = Message.TYPE_TEXT
+            )
+            assertThat(result4 is Response.Success).isTrue()
+
+            val result5 = messagesRepository.getChatMessages(chatId = data2.id, search = "")
+            assertThat(result5 is Response.Success).isTrue()
+            val data4 = (result5 as Response.Success).successData.response
+            assertThat(data4.items).isNotEmpty()
+
+            val result6 = messagesRepository.deleteMessage(messageId = data4.items.last().id)
+            assertThat(result6 is Response.Success).isTrue()
+            val data5 = (result6 as Response.Success).successData.response
+            assertThat(data5.errorCode).isEqualTo(0)
+
+            val result7 = messagesRepository.getChatMessages(chatId = data2.id, search = "")
+            assertThat(result7 is Response.Success).isTrue()
+            val data6 = (result7 as Response.Success).successData.response
+            assertThat(data6.items).isEmpty()
         }
     }
 }

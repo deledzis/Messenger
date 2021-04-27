@@ -5,7 +5,10 @@ import com.deledzis.messenger.di.module.TestCacheModule
 import com.deledzis.messenger.di.module.TestNetworkModule
 import com.deledzis.messenger.di.module.TestRepositoriesModule
 import com.deledzis.messenger.infrastructure.di.UtilsModule
-import com.deledzis.messenger.integration.*
+import com.deledzis.messenger.integration.AuthRepositoryIntegrationTest
+import com.deledzis.messenger.integration.ChatsRepositoryIntegrationTest
+import com.deledzis.messenger.integration.MessagesRepositoryIntegrationTest
+import com.deledzis.messenger.integration.UsersRepositoryIntegrationTest
 import com.deledzis.messenger.presentation.di.builder.MainActivityBuilder
 import com.deledzis.messenger.presentation.di.module.ViewModelModule
 import com.deledzis.messenger.ui.LoginFailThenSuccessTest
@@ -37,7 +40,6 @@ interface TestAppComponent {
     fun into(test: ChatsRepositoryIntegrationTest)
     fun into(test: MessagesRepositoryIntegrationTest)
     fun into(test: UsersRepositoryIntegrationTest)
-    fun into(test: RepositoriesIntegrationTest)
     fun into(test: LoginSuccessLogoutTest)
     fun into(test: LoginFailThenSuccessTest)
     fun into(test: RegisterFailLoginLogoutTest)

@@ -9,15 +9,18 @@ import com.deledzis.messenger.di.module.TestAppModule
 import com.deledzis.messenger.di.module.TestCacheModule
 import com.deledzis.messenger.di.module.TestNetworkModule
 import com.deledzis.messenger.di.module.TestRepositoriesModule
-import com.deledzis.messenger.domain.model.entity.auth.Auth
 import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.deledzis.messenger.remote.ApiService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Before
+import org.junit.FixMethodOrder
 import org.junit.Test
+import org.junit.runners.MethodSorters
 import javax.inject.Inject
 
+@FixMethodOrder(value = MethodSorters.NAME_ASCENDING)
 class AuthRepositoryIntegrationTest {
 
     @Inject
@@ -40,102 +43,169 @@ class AuthRepositoryIntegrationTest {
             .testAppModule(TestAppModule(context))
             .build()
         component.into(this)
-    }
 
-    @Test
-    fun login() {
         runBlocking {
-            val result = repository.login(
-                username = "username",
-                password = "password"
-            )
-            assertThat(result is Response.Success).isTrue()
-            val data = (result as Response.Success).successData.response
-            assertThat(data.username).isEqualTo("username")
-            assertThat(data.nickname).isEqualTo("nickname")
-        }
-    }
-
-    /*@Test
-    fun loginAndDelete() {
-        runBlocking {
-            val loginResult = repository.login(
-                username = "test",
-                password = "testtest"
-            )
-            assertThat(loginResult is Response.Success).isTrue()
-            val data = (loginResult as Response.Success).successData.response
-            assertThat(data.username).isEqualTo("test")
-            userData.saveAuthUser(data)
-
-            val deleteResult = repository.deleteAccount(username = "")
-            assertThat(deleteResult is Response.Success).isTrue()
-            assertThat((deleteResult as Response.Success).successData.response.errorCode).isEqualTo(0)
-            assertThat(deleteResult.successData.response.message).isEqualTo("deleted")
             userData.saveAuthUser(null)
-        }
-    }*/
-
-    @Test
-    fun register() {
-        runBlocking {
-            val registerResult = repository.register(
+            repository.register(
                 username = "test",
                 nickname = null,
                 password = "testtest"
             )
-            assertThat(registerResult is Response.Success).isTrue()
-            val data = (registerResult as Response.Success).successData.response
-            assertThat(data.username).isEqualTo("test")
-            userData.saveAuthUser(data)
+        }
+    }
 
-            val deleteResult = repository.deleteAccount(username = "")
-            assertThat(deleteResult is Response.Success).isTrue()
-            assertThat((deleteResult as Response.Success).successData.response.errorCode).isEqualTo(
-                0
-            )
-            assertThat(deleteResult.successData.response.message).isEqualTo("deleted")
+    @After
+    fun tearDown() {
+        runBlocking {
+            repository.login("test", "testtest").handleResult {
+                userData.saveAuthUser(it.response)
+                repository.deleteAccount(username = "test")
+            }
+            repository.login("test_test", "testtest").handleResult {
+                userData.saveAuthUser(it.response)
+                repository.deleteAccount(username = "test_test")
+            }
+            repository.login("test_test_test", "testtest").handleResult {
+                userData.saveAuthUser(it.response)
+                repository.deleteAccount(username = "test_test_test")
+            }
             userData.saveAuthUser(null)
         }
     }
 
     @Test
-    fun updateUserData() {
+    fun test1_login() {
         runBlocking {
-            userData.saveAuthUser(null)
-            val result = repository.login(
-                username = "username",
-                password = "password"
+            val result1 = repository.login(
+                username = "test1",
+                password = "testtest"
             )
-            assertThat(result is Response.Success).isTrue()
-            val id = (result as Response.Success).successData.response.id
-            val accessToken = result.successData.response.accessToken
-            userData.saveAuthUser(Auth(id, "username", "password", accessToken))
-            val result1 = repository.updateUserData(
-                username = "username",
-                nickname = "nickname",
-                password = "password",
-                newPassword = "newpassword"
+            assertThat(result1 is Response.Failure).isTrue()
+
+            val result2 = repository.login(
+                username = "test",
+                password = "test_test"
             )
-            assertThat(result1 is Response.Success).isTrue()
-            val result2 = repository.updateUserData(
-                username = "username",
-                nickname = "nickname",
-                password = "newpassword",
-                newPassword = "password"
+            assertThat(result2 is Response.Failure).isTrue()
+
+            val result3 = repository.login(
+                username = "test",
+                password = "testtest"
+            )
+            assertThat(result3 is Response.Success).isTrue()
+            val data = (result3 as Response.Success).successData.response
+            assertThat(data.username).isEqualTo("test")
+        }
+    }
+
+    @Test
+    fun test2_register() {
+        runBlocking {
+            val result1 = repository.register(
+                username = "test",
+                nickname = null,
+                password = "testtest"
+            )
+            assertThat(result1 is Response.Failure).isTrue()
+
+            val result2 = repository.register(
+                username = "test_test",
+                nickname = null,
+                password = "testtest"
             )
             assertThat(result2 is Response.Success).isTrue()
             val data = (result2 as Response.Success).successData.response
-            assertThat(data.username).isEqualTo("username")
-            assertThat(data.nickname).isEqualTo("nickname")
-            val result3 = repository.updateUserData(
-                username = "username1",
-                nickname = "nickname1",
-                password = "newpassword1",
-                newPassword = "password1"
+            assertThat(data.username).isEqualTo("test_test")
+        }
+    }
+
+    @Test
+    fun test3_updateUserData() {
+        runBlocking {
+            val result1 = repository.login(
+                username = "test",
+                password = "testtest"
             )
-            assertThat(result3 is Response.Failure).isTrue()
+            assertThat(result1 is Response.Success).isTrue()
+            userData.saveAuthUser((result1 as Response.Success).successData.response)
+
+            // change nickname, wrong password
+            val result2 = repository.updateUserData(
+                username = "test",
+                nickname = "nickname",
+                password = "test_test",
+                newPassword = null
+            )
+            assertThat(result2 is Response.Failure).isTrue()
+
+            // change nickname, correct password
+            val result3 = repository.updateUserData(
+                username = "test",
+                nickname = "nickname",
+                password = "testtest",
+                newPassword = null
+            )
+            assertThat(result3 is Response.Success).isTrue()
+            val data = (result3 as Response.Success).successData.response
+            assertThat(data.username).isEqualTo("test")
+            assertThat(data.nickname).isEqualTo("nickname")
+            userData.saveAuthUser(result3.successData.response)
+
+            // change password, wrong password
+            val result4 = repository.updateUserData(
+                username = "test",
+                nickname = "nickname",
+                password = "password_wrong",
+                newPassword = "password"
+            )
+            assertThat(result4 is Response.Failure).isTrue()
+
+            // change password, correct password
+            val result5 = repository.updateUserData(
+                username = "test",
+                nickname = "nickname",
+                password = "testtest",
+                newPassword = "newpassword"
+            )
+            assertThat(result5 is Response.Success).isTrue()
+            val data2 = (result5 as Response.Success).successData.response
+            assertThat(data2.username).isEqualTo("test")
+            assertThat(data2.nickname).isEqualTo("nickname")
+            userData.saveAuthUser(result5.successData.response)
+
+            // rollback
+            val result6 = repository.updateUserData(
+                username = "test",
+                nickname = null,
+                password = "newpassword",
+                newPassword = "testtest"
+            )
+            assertThat(result6 is Response.Success).isTrue()
+            val data3 = (result6 as Response.Success).successData.response
+            assertThat(data3.username).isEqualTo("test")
+            assertThat(data3.nickname).isEqualTo(null)
+        }
+    }
+
+    @Test
+    fun test4_deleteAccount() {
+        runBlocking {
+            val result1 = repository.register(
+                username = "test_test_test",
+                nickname = null,
+                password = "testtest"
+            )
+            assertThat(result1 is Response.Success).isTrue()
+            val data = (result1 as Response.Success).successData.response
+            assertThat(data.username).isEqualTo("test_test_test")
+            userData.saveAuthUser(data)
+
+            val result2 = repository.deleteAccount("test_test_test")
+            assertThat(result2 is Response.Success).isTrue()
             userData.saveAuthUser(null)
+
+            val result3 = repository.login("test_test_test", "testtest")
+            assertThat(result3 is Response.Failure).isTrue()
         }
     }
 }

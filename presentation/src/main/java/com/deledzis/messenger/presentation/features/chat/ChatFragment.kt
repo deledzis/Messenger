@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,7 +17,6 @@ import com.deledzis.messenger.domain.model.entity.messages.Message
 import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.infrastructure.extensions.animateGone
 import com.deledzis.messenger.infrastructure.extensions.animateShow
-import com.deledzis.messenger.infrastructure.extensions.hideSoftKeyboard
 import com.deledzis.messenger.infrastructure.extensions.showDialog
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment

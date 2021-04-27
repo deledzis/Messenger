@@ -1,7 +1,5 @@
 package com.deledzis.messenger.cache.db.util
 
-import android.util.Log
-import com.google.gson.Gson
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

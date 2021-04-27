@@ -174,9 +174,9 @@ abstract class BaseFragment<out T : BaseViewModel, B : ViewDataBinding>(
     }
 
     protected open fun errorObserver(@StringRes error: Int?) {
-        hideSoftKeyboard()
         val errorMessage = getErrorString(error) ?: return
         Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show()
+        hideSoftKeyboard()
     }
 
     protected fun startSnackbar(

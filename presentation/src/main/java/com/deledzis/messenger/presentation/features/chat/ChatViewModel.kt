@@ -109,14 +109,9 @@ class ChatViewModel @Inject constructor(
 
     fun getChatMessages() {
         getChatMessagesError.postValue(0)
-        if (messages.value.isNullOrEmpty()) startLoading()
+        if (messages.value == null) startLoading()
 
-        getChatMessagesUseCase(
-            params = GetChatMessagesRequest(
-                chatId = chatId ?: return,
-                search = null
-            )
-        )
+        getChatMessagesUseCase(GetChatMessagesRequest(chatId ?: return, search = null))
     }
 
     fun sendMessage() {

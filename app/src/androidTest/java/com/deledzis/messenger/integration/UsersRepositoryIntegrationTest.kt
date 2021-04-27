@@ -11,14 +11,17 @@ import com.deledzis.messenger.di.module.TestAppModule
 import com.deledzis.messenger.di.module.TestCacheModule
 import com.deledzis.messenger.di.module.TestNetworkModule
 import com.deledzis.messenger.di.module.TestRepositoriesModule
-import com.deledzis.messenger.domain.model.entity.auth.Auth
 import com.deledzis.messenger.infrastructure.di.UtilsModule
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Before
+import org.junit.FixMethodOrder
 import org.junit.Test
+import org.junit.runners.MethodSorters
 import javax.inject.Inject
 
+@FixMethodOrder(value = MethodSorters.NAME_ASCENDING)
 class UsersRepositoryIntegrationTest {
 
     @Inject
@@ -44,75 +47,76 @@ class UsersRepositoryIntegrationTest {
             .testAppModule(TestAppModule(context))
             .build()
         component.into(this)
-    }
 
-    @Test
-    fun getUser() {
         runBlocking {
             userData.saveAuthUser(null)
-            val result = authRepository.login(
-                username = "username",
-                password = "password"
+            authRepository.register(
+                username = "test",
+                nickname = null,
+                password = "testtest"
             )
-            assertThat(result is Response.Success).isTrue()
-            val id = (result as Response.Success).successData.response.id
-            val accessToken = result.successData.response.accessToken
-            userData.saveAuthUser(Auth(id, "username", "password", accessToken))
+            authRepository.login(
+                username = "test",
+                password = "testtest"
+            ).handleResult {
+                userData.saveAuthUser(it.response)
+            }
+        }
+    }
 
-            val result1 = chatsRepository.getChats()
-            assertThat(result1 is Response.Success).isTrue()
-            val data1 = (result1 as Response.Success).successData.response
-            assertThat(data1.items).isNotNull()
-            assertThat(data1.items).isNotEmpty()
-
-            val result4 = usersRepository.getUsers("")
-            assertThat(result4 is Response.Success).isTrue()
-            val data4 = (result4 as Response.Success).successData.response
-            assertThat(data4.items).isNotNull()
-            assertThat(data4.items).isNotEmpty()
-
-            val result2 = usersRepository.getUser(1)
-            assertThat(result2 is Response.Success).isTrue()
-            val data2 = (result2 as Response.Success).successData.response
-            assertThat(data2.id).isEqualTo(1)
-
-            val result3 = usersRepository.getUser(999999)
-            assertThat(result3 is Response.Failure).isTrue()
+    @After
+    fun tearDown() {
+        runBlocking {
+            authRepository.login("test", "testtest").handleResult {
+                userData.saveAuthUser(it.response)
+                authRepository.deleteAccount(username = "test")
+            }
             userData.saveAuthUser(null)
         }
     }
 
     @Test
-    fun getUsers() {
+    fun test1_getUser() {
         runBlocking {
-            userData.saveAuthUser(null)
-            val result = authRepository.login(
-                username = "username",
-                password = "password"
-            )
-            assertThat(result is Response.Success).isTrue()
-            val id = (result as Response.Success).successData.response.id
-            val accessToken = result.successData.response.accessToken
-            userData.saveAuthUser(Auth(id, "username", "password", accessToken))
-
-            val result3 = chatsRepository.getChats()
-            assertThat(result3 is Response.Success).isTrue()
-            val data3 = (result3 as Response.Success).successData.response
-            assertThat(data3.items).isNotNull()
-            assertThat(data3.items).isNotEmpty()
-
-            val result1 = usersRepository.getUsers("")
+            val result1 = chatsRepository.getChats()
             assertThat(result1 is Response.Success).isTrue()
             val data1 = (result1 as Response.Success).successData.response
-            assertThat(data1.items).isNotNull()
-            assertThat(data1.items).isNotEmpty()
+            assertThat(data1.items).isEmpty()
 
-            val result2 = usersRepository.getUsers("For Testing Purposes")
+            val result2 = usersRepository.getUsers(search = "sasha")
             assertThat(result2 is Response.Success).isTrue()
             val data2 = (result2 as Response.Success).successData.response
-            assertThat(data2.items).isNotNull()
-            assertThat(data2.items).isEmpty()
-            userData.saveAuthUser(null)
+            assertThat(data2.items).isNotEmpty()
+            assertThat(data2.items[0].id).isNotNull()
+
+            val result3 = usersRepository.getUser(id = data2.items[0].id!!)
+            assertThat(result3 is Response.Success).isTrue()
+            val data3 = (result3 as Response.Success).successData.response
+            assertThat(data3.id).isGreaterThan(0)
+
+            val result4 = usersRepository.getUser(-999999)
+            assertThat(result4 is Response.Failure).isTrue()
+        }
+    }
+
+    @Test
+    fun test2_getUsers() {
+        runBlocking {
+            val result1 = chatsRepository.getChats()
+            assertThat(result1 is Response.Success).isTrue()
+            val data1 = (result1 as Response.Success).successData.response
+            assertThat(data1.items).isEmpty()
+
+            val result2 = usersRepository.getUsers(search = "test")
+            assertThat(result2 is Response.Success).isTrue()
+            val data2 = (result2 as Response.Success).successData.response
+            assertThat(data2.items).isNotEmpty()
+            assertThat(data2.items[0].id).isNotNull()
+
+            val result3 = usersRepository.getUsers(search = "fasvdvfdvfd")
+            assertThat(result3 is Response.Success).isTrue()
+            val data3 = (result3 as Response.Success).successData.response
+            assertThat(data3.items).isEmpty()
         }
     }
 
