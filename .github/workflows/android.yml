@@ -54,6 +54,8 @@ jobs:
 
   jacoco-badge:
 
+    needs: [ tests ]
+
     runs-on: ubuntu-latest
 
     steps:
