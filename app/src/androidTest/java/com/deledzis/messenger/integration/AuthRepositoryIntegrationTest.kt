@@ -2,6 +2,7 @@ package com.deledzis.messenger.integration
 
 import androidx.test.platform.app.InstrumentationRegistry
 import com.deledzis.messenger.cache.preferences.user.UserData
+import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.data.repository.auth.AuthRepositoryImpl
 import com.deledzis.messenger.di.component.DaggerTestAppComponent
@@ -9,10 +10,15 @@ import com.deledzis.messenger.di.module.TestAppModule
 import com.deledzis.messenger.di.module.TestCacheModule
 import com.deledzis.messenger.di.module.TestNetworkModule
 import com.deledzis.messenger.di.module.TestRepositoriesModule
+import com.deledzis.messenger.domain.model.response.auth.DeleteAccountResponse
+import com.deledzis.messenger.domain.model.response.auth.LoginResponse
+import com.deledzis.messenger.domain.model.response.auth.RegisterResponse
+import com.deledzis.messenger.domain.model.response.auth.UpdateUserDataResponse
 import com.deledzis.messenger.infrastructure.di.UtilsModule
+import com.deledzis.messenger.presentation.base.BaseViewModel.Companion.asHttpError
+import com.deledzis.messenger.presentation.base.BaseViewModel.Companion.isServerUnavailableError
 import com.deledzis.messenger.remote.ApiService
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -23,6 +29,12 @@ import javax.inject.Inject
 
 @FixMethodOrder(value = MethodSorters.NAME_ASCENDING)
 class AuthRepositoryIntegrationTest {
+
+    companion object {
+
+        private const val MAX_RETRY_COUNT: Int = 5
+
+    }
 
     @Inject
     lateinit var repository: AuthRepositoryImpl
@@ -47,7 +59,7 @@ class AuthRepositoryIntegrationTest {
 
         runBlocking {
             userData.saveAuthUser(null)
-            repository.register(
+            register(
                 username = "test",
                 nickname = null,
                 password = "testtest"
@@ -58,15 +70,11 @@ class AuthRepositoryIntegrationTest {
     @After
     fun tearDown() {
         runBlocking {
-            repository.login("test", "testtest").handleResult {
-                userData.saveAuthUser(it.response)
-                repository.deleteAccount(username = "test")
-            }
-            repository.login("test_test", "testtest").handleResult {
+            login("test_test", "testtest")?.handleResult {
                 userData.saveAuthUser(it.response)
                 repository.deleteAccount(username = "test_test")
             }
-            repository.login("test_test_test", "testtest").handleResult {
+            login("test_test_test", "testtest")?.handleResult {
                 userData.saveAuthUser(it.response)
                 repository.deleteAccount(username = "test_test_test")
             }
@@ -77,24 +85,13 @@ class AuthRepositoryIntegrationTest {
     @Test
     fun test1_login() {
         runBlocking {
-            delay(1000)
-
-            val result1 = repository.login(
-                username = "test1",
-                password = "testtest"
-            )
+            val result1 = login("test1", "testtest")
             assertThat(result1 is Response.Failure).isTrue()
 
-            val result2 = repository.login(
-                username = "test",
-                password = "test_test"
-            )
+            val result2 = login("test", "test_test")
             assertThat(result2 is Response.Failure).isTrue()
 
-            val result3 = repository.login(
-                username = "test",
-                password = "testtest"
-            )
+            val result3 = login("test", "testtest")
             assertThat(result3 is Response.Success).isTrue()
             val data = (result3 as Response.Success).successData.response
             assertThat(data.username).isEqualTo("test")
@@ -104,18 +101,10 @@ class AuthRepositoryIntegrationTest {
     @Test
     fun test2_register() {
         runBlocking {
-            val result1 = repository.register(
-                username = "test",
-                nickname = null,
-                password = "testtest"
-            )
+            val result1 = register(username = "test", password = "testtest")
             assertThat(result1 is Response.Failure).isTrue()
 
-            val result2 = repository.register(
-                username = "test_test",
-                nickname = null,
-                password = "testtest"
-            )
+            val result2 = register(username = "test_test", password = "testtest")
             assertThat(result2 is Response.Success).isTrue()
             val data = (result2 as Response.Success).successData.response
             assertThat(data.username).isEqualTo("test_test")
@@ -125,17 +114,12 @@ class AuthRepositoryIntegrationTest {
     @Test
     fun test3_updateUserData() {
         runBlocking {
-            delay(1000)
-
-            val result1 = repository.login(
-                username = "test",
-                password = "testtest"
-            )
+            val result1 = login("test", "testtest")
             assertThat(result1 is Response.Success).isTrue()
             userData.saveAuthUser((result1 as Response.Success).successData.response)
 
             // change nickname, wrong password
-            val result2 = repository.updateUserData(
+            val result2 = updateUserData(
                 username = "test",
                 nickname = "nickname",
                 password = "test_test",
@@ -144,7 +128,7 @@ class AuthRepositoryIntegrationTest {
             assertThat(result2 is Response.Failure).isTrue()
 
             // change nickname, correct password
-            val result3 = repository.updateUserData(
+            val result3 = updateUserData(
                 username = "test",
                 nickname = "nickname",
                 password = "testtest",
@@ -157,7 +141,7 @@ class AuthRepositoryIntegrationTest {
             userData.saveAuthUser(result3.successData.response)
 
             // change password, wrong password
-            val result4 = repository.updateUserData(
+            val result4 = updateUserData(
                 username = "test",
                 nickname = "nickname",
                 password = "password_wrong",
@@ -166,7 +150,7 @@ class AuthRepositoryIntegrationTest {
             assertThat(result4 is Response.Failure).isTrue()
 
             // change password, correct password
-            val result5 = repository.updateUserData(
+            val result5 = updateUserData(
                 username = "test",
                 nickname = "nickname",
                 password = "testtest",
@@ -179,7 +163,7 @@ class AuthRepositoryIntegrationTest {
             userData.saveAuthUser(result5.successData.response)
 
             // rollback
-            val result6 = repository.updateUserData(
+            val result6 = updateUserData(
                 username = "test",
                 nickname = null,
                 password = "newpassword",
@@ -195,9 +179,7 @@ class AuthRepositoryIntegrationTest {
     @Test
     fun test4_deleteAccount() {
         runBlocking {
-            delay(1000)
-
-            val result1 = repository.register(
+            val result1 = register(
                 username = "test_test_test",
                 nickname = null,
                 password = "testtest"
@@ -207,12 +189,98 @@ class AuthRepositoryIntegrationTest {
             assertThat(data.username).isEqualTo("test_test_test")
             userData.saveAuthUser(data)
 
-            val result2 = repository.deleteAccount("test_test_test")
+            val result2 = deleteAccount("test_test_test")
             assertThat(result2 is Response.Success).isTrue()
             userData.saveAuthUser(null)
 
-            val result3 = repository.login("test_test_test", "testtest")
+            val result3 = login("test_test_test", "testtest")
             assertThat(result3 is Response.Failure).isTrue()
         }
+    }
+
+    private suspend fun login(
+        username: String,
+        password: String,
+        count: Int = 1
+    ): Response<LoginResponse, Error>? {
+        var response: Response<LoginResponse, Error>? = null
+        if (count <= MAX_RETRY_COUNT) {
+            repository.login(username, password).handleResult(
+                failureBlock = {
+                    if (it.exception?.asHttpError?.isServerUnavailableError == true) {
+                        login(username, password, count + 1)
+                    } else {
+                        response = Response.Failure(it)
+                    }
+                },
+                successBlock = { response = Response.Success(it) }
+            )
+        }
+        return response
+    }
+
+    private suspend fun register(
+        username: String,
+        nickname: String? = null,
+        password: String,
+        count: Int = 1
+    ): Response<RegisterResponse, Error>? {
+        var response: Response<RegisterResponse, Error>? = null
+        if (count <= MAX_RETRY_COUNT) {
+            repository.register(username, nickname, password).handleResult(
+                failureBlock = {
+                    if (it.exception?.asHttpError?.isServerUnavailableError == true) {
+                        register(username, nickname, password, count + 1)
+                    } else {
+                        response = Response.Failure(it)
+                    }
+                },
+                successBlock = { response = Response.Success(it) }
+            )
+        }
+        return response
+    }
+
+    private suspend fun updateUserData(
+        username: String,
+        nickname: String? = null,
+        password: String?,
+        newPassword: String? = null,
+        count: Int = 1
+    ): Response<UpdateUserDataResponse, Error>? {
+        var response: Response<UpdateUserDataResponse, Error>? = null
+        if (count <= MAX_RETRY_COUNT) {
+            repository.updateUserData(username, nickname, password, newPassword).handleResult(
+                failureBlock = {
+                    if (it.exception?.asHttpError?.isServerUnavailableError == true) {
+                        updateUserData(username, nickname, password, newPassword, count + 1)
+                    } else {
+                        response = Response.Failure(it)
+                    }
+                },
+                successBlock = { response = Response.Success(it) }
+            )
+        }
+        return response
+    }
+
+    private suspend fun deleteAccount(
+        username: String,
+        count: Int = 1
+    ): Response<DeleteAccountResponse, Error>? {
+        var response: Response<DeleteAccountResponse, Error>? = null
+        if (count <= MAX_RETRY_COUNT) {
+            repository.deleteAccount(username).handleResult(
+                failureBlock = {
+                    if (it.exception?.asHttpError?.isServerUnavailableError == true) {
+                        deleteAccount(username, count + 1)
+                    } else {
+                        response = Response.Failure(it)
+                    }
+                },
+                successBlock = { response = Response.Success(it) }
+            )
+        }
+        return response
     }
 }

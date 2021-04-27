@@ -57,26 +57,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/ic_settings"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:onClick="@{controller::onSettingsClicked}"
-                        app:cardBackgroundColor="@color/background"
-                        app:cardCornerRadius="24dp"
-                        app:cardElevation="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/ic_add"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_settings" />
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/ic_add"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -85,7 +65,7 @@
                         app:cardCornerRadius="24dp"
                         app:cardElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/ic_settings"
                         app:layout_constraintTop_toTopOf="parent"
                         android:visibilityReverse="@{viewModel.chats == null || viewModel.chats.empty}">
 
@@ -94,6 +74,26 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_add" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/ic_settings"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:onClick="@{controller::onSettingsClicked}"
+                        app:cardBackgroundColor="@color/background"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_settings" />
 
                     </com.google.android.material.card.MaterialCardView>
 

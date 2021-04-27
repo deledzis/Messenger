@@ -82,7 +82,7 @@ class Test1_LoginFailThenSuccessTest {
             .perform(typeText("password_wrong"), closeSoftKeyboard())
         onView(withId(R.id.login_button))
             .perform(click())
-        Thread.sleep(7500)
+        Thread.sleep(10000)
 
         // VERIFY
         onView(withId(R.id.fragment_login_root))
@@ -98,7 +98,7 @@ class Test1_LoginFailThenSuccessTest {
             .perform(typeText("password"), closeSoftKeyboard())
         onView(withId(R.id.login_button))
             .perform(click())
-        Thread.sleep(7500)
+        Thread.sleep(10000)
 
         /**
          * Chats screen appears, move to settings, do logout, login screen appears then

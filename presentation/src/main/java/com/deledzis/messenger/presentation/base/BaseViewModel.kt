@@ -60,10 +60,14 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
             }
         }
         error.exception?.asHttpError?.let {
-            if (it.isAuthError) {
-                GlobalScope.launch {
+            when {
+                it.isAuthError -> GlobalScope.launch {
                     authError.postValue(true)
                 }
+                it.isServerUnavailableError -> GlobalScope.launch {
+                    connectionError.postValue(true)
+                }
+                else -> Unit
             }
         }
         logException(exception = error.exception)
@@ -140,6 +144,9 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
             get() = this.errorCode == 421
         val ResponseErrorException.isDeleteMessageError: Boolean
             get() = this.errorCode == 422
+
+        val ResponseErrorException.isServerUnavailableError: Boolean
+            get() = this.errorCode == 503
 
         val ResponseErrorException.isLoginError: Boolean
             get() = this.isMissingLoginError || this.isMissingPasswordError || this.isWrongCredentialsError

@@ -80,7 +80,7 @@ class Test8_SettingsUpdateUsernameNicknameSuccessTest {
             .perform(typeText("password"), closeSoftKeyboard())
         onView(withId(R.id.login_button))
             .perform(click())
-        Thread.sleep(7500)
+        Thread.sleep(10000)
 
         // VERIFY
         onView(withId(R.id.fragment_chats_root))
@@ -106,10 +106,9 @@ class Test8_SettingsUpdateUsernameNicknameSuccessTest {
         onView(withId(R.id.save_container))
             .check(matches(isEnabled()))
             .perform(click())
-        Thread.sleep(1000)
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(3000)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
 
@@ -138,7 +137,7 @@ class Test8_SettingsUpdateUsernameNicknameSuccessTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(3000)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
 
@@ -164,6 +163,7 @@ class Test8_SettingsUpdateUsernameNicknameSuccessTest {
         //VERIFY
         onView(withId(R.id.fragment_login_root))
             .check(matches(isDisplayed()))
+
     }
 
 }

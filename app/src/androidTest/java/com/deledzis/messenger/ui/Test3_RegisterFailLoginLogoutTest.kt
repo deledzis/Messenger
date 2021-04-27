@@ -90,7 +90,7 @@ class Test3_RegisterFailLoginLogoutTest {
             .perform(typeText("password"), closeSoftKeyboard())
         onView(withId(R.id.register_button))
             .perform(click())
-        Thread.sleep(7500)
+        Thread.sleep(10000)
 
         // VERIFY
         onView(withId(R.id.fragment_register_root))
@@ -115,7 +115,7 @@ class Test3_RegisterFailLoginLogoutTest {
             .perform(typeText("password"), closeSoftKeyboard())
         onView(withId(R.id.login_button))
             .perform(click())
-        Thread.sleep(7500)
+        Thread.sleep(10000)
 
         // VERIFY
         onView(withId(R.id.fragment_chats_root))
