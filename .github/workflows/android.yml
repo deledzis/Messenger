@@ -5,9 +5,9 @@ on:
     branches: [ master, feature/* ]
   pull_request:
     branches: [ master, feature/* ]
-  workflow_dispatch:
 
 jobs:
+
   build:
 
     runs-on: self-hosted
@@ -33,6 +33,8 @@ jobs:
           key: messenger-key
 
   tests:
+
+    needs: [ build ]
 
     runs-on: self-hosted
 
