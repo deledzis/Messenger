@@ -41,10 +41,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run all tests with Jacoco coverage
-        uses: ReactiveCircus/android-emulator-runner@v2.15.0
-        with:
-          api-level: 29
-          script: ./gradlew totalTestCoverage --stacktrace
+        run: ./gradlew totalTestCoverage -i
+      #        uses: ReactiveCircus/android-emulator-runner@v2.15.0
+      #        with:
+      #          api-level: 29
+      #          script: ./gradlew totalTestCoverage --stacktrace
 
       - name: Upload reports
         uses: actions/upload-artifact@v2
