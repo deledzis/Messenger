@@ -42,10 +42,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run all tests with Jacoco coverage
         run: ./gradlew totalTestCoverage --stacktrace
-      #        uses: ReactiveCircus/android-emulator-runner@v2.15.0
-      #        with:
-      #          api-level: 29
-      #          script: ./gradlew totalTestCoverage --stacktrace
 
       - name: Upload reports
         uses: actions/upload-artifact@v2
@@ -54,12 +50,14 @@ jobs:
           path: |
             ./build/jacocoHtml/
             ./app/build/reports/jacoco/totalTestCoverage/
+      - name: Save totalTestCoverage.csv
+        run: cp ./app/build/reports/jacoco/totalTestCoverage/totalTestCoverage.csv ./app/
 
   jacoco-badge:
 
     needs: [ tests ]
 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -68,7 +66,7 @@ jobs:
         uses: cicirello/jacoco-badge-generator@v2.1.0
         with:
           generate-branches-badge: true
-          jacoco-csv-file: ./app/build/reports/jacoco/totalTestCoverage/totalTestCoverage.csv
+          jacoco-csv-file: ./app/totalTestCoverage.csv
           coverage-badge-filename: jacoco.svg
           branches-badge-filename: branches.svg
 
