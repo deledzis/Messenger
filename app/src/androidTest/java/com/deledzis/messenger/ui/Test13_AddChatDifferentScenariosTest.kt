@@ -5,7 +5,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -20,7 +19,6 @@ import com.deledzis.messenger.di.module.TestCacheModule
 import com.deledzis.messenger.di.module.TestNetworkModule
 import com.deledzis.messenger.di.module.TestRepositoriesModule
 import com.deledzis.messenger.infrastructure.di.UtilsModule
-import com.deledzis.messenger.presentation.features.chats.ChatsAdapter
 import com.deledzis.messenger.presentation.features.main.MainActivity
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
@@ -32,7 +30,7 @@ import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class Test5_GetChatsOpenChatSendMessageTest {
+class Test13_AddChatDifferentScenariosTest {
 
     @Rule
     @JvmField
@@ -61,7 +59,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
     }
 
     @Test
-    fun getChatsOpenChatSendMessageTest() {
+    fun addChatAndSendMessageTest() {
         // GIVEN
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         UiThreadStatement.runOnUiThread {
@@ -90,86 +88,57 @@ class Test5_GetChatsOpenChatSendMessageTest {
             .check(matches(isDisplayed()))
         assertThat(navController.currentDestination?.id).isEqualTo(R.id.chatsFragment)
 
-        /**
-         * From the chats screen open first chat, sending new message,
-         * then returning back to chats screen
-         **/
-        // GIVEN
-        onView(withId(R.id.rv_chats))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<ChatsAdapter.ViewHolder>(
-                    0,
-                    click()
-                )
-            )
-
-        // VERIFY
-        Thread.sleep(5000)
-        onView(withId(R.id.fragment_chat_root))
-            .check(matches(isDisplayed()))
 
         // GIVEN
-        onView(withId(R.id.tie_message))
-            .perform(typeText("from ui test"), closeSoftKeyboard())
-        onView(withId(R.id.send_container))
+        onView(withId(R.id.ic_add))
             .check(matches(isDisplayed()))
             .perform(click())
-        Thread.sleep(1500)
+
+        // VERIFY
+        Thread.sleep(2000)
+        onView(withId(R.id.fragment_add_chat_root))
+            .check(matches(isDisplayed()))
+        onView(withText(R.string.add_chat_init_title))
+            .check(matches(isDisplayed()))
+
+        // GIVEN
+        onView(withId(R.id.tie_search))
+            .perform(typeText("test2"), closeSoftKeyboard())
+
+        // VERIFY
+        Thread.sleep(3000)
+        onView(withText("dog so low"))
+            .check(matches(isDisplayed()))
+
+        // GIVEN
+        onView(withId(R.id.tie_search))
+            .perform(clearText(), typeText("test100500"), closeSoftKeyboard())
+
+        // VERIFY
+        Thread.sleep(3000)
+        onView(withText(R.string.add_chat_empty_title))
+            .check(matches(isDisplayed()))
+
+        // GIVEN
+        onView(withId(R.id.tie_search))
+            .perform(clearText(), typeText("testing"), closeSoftKeyboard())
+
+        // VERIFY
+        Thread.sleep(3000)
+        onView(withText(R.string.add_chat_empty_title))
+            .check(matches(isDisplayed()))
+
+        // GIVEN
         onView(withId(R.id.ic_back))
             .check(matches(isEnabled()))
             .perform(click())
 
-        /**
-         * From the chats screen open first chat, find new message,
-         * long click and delete it, then return to chats screen
-         **/
         // VERIFY
         Thread.sleep(500)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
         Thread.sleep(2500)
 
-        // GIVEN
-        onView(withText("Вы: from ui test"))
-            .check(matches(isDisplayed()))
-        onView(withId(R.id.rv_chats))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<ChatsAdapter.ViewHolder>(
-                    0,
-                    click()
-                )
-            )
-
-        // VERIFY
-        Thread.sleep(5000)
-        onView(withId(R.id.fragment_chat_root))
-            .check(matches(isDisplayed()))
-
-        // GIVEN
-        onView(withText("from ui test"))
-            .check(matches(isDisplayed()))
-            .perform(longClick())
-        Thread.sleep(500)
-        onView(withText(R.string.dialog_btn_delete))
-            .perform(click())
-        Thread.sleep(1500)
-        onView(withId(R.id.ic_back))
-            .check(matches(isEnabled()))
-            .perform(click())
-
-        /**
-         * From the chats screen open first chat, sending new message,
-         * then returning back to chats screen
-         **/
-        // VERIFY
-        Thread.sleep(500)
-        onView(withId(R.id.fragment_chats_root))
-            .check(matches(isDisplayed()))
-        Thread.sleep(2500)
-
-        /**
-         * From the chats screen go to settings screen and logout
-         **/
         // GIVEN
         onView(withId(R.id.ic_settings))
             .perform(click())
@@ -192,7 +161,6 @@ class Test5_GetChatsOpenChatSendMessageTest {
         //VERIFY
         onView(withId(R.id.fragment_login_root))
             .check(matches(isDisplayed()))
-
     }
 
 }

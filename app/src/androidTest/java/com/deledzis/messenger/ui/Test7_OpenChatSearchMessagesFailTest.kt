@@ -119,7 +119,7 @@ class Test7_OpenChatSearchMessagesFailTest {
         Thread.sleep(500)
         onView(withId(R.id.fragment_search_root))
             .check(matches(isDisplayed()))
-        onView(withText("Начните вводить запрос"))
+        onView(withText(R.string.search_init_title))
             .check(matches(isDisplayed()))
 
         // GIVEN
@@ -128,7 +128,7 @@ class Test7_OpenChatSearchMessagesFailTest {
 
         // VERIFY
         Thread.sleep(3000)
-        onView(withText("Ничего не найдено \uD83D\uDE14"))
+        onView(withText(R.string.add_chat_empty_title))
             .check(matches(isDisplayed()))
 
         // GIVEN
@@ -171,7 +171,7 @@ class Test7_OpenChatSearchMessagesFailTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(withText("Выйти"))
+        onView(withText(R.string.dialog_btn_exit))
             .perform(click())
         Thread.sleep(500)
 

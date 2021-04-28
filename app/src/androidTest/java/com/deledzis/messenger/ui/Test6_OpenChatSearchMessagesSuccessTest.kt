@@ -119,7 +119,7 @@ class Test6_OpenChatSearchMessagesSuccessTest {
         Thread.sleep(500)
         onView(withId(R.id.fragment_search_root))
             .check(matches(isDisplayed()))
-        onView(withText("Начните вводить запрос"))
+        onView(withText(R.string.search_init_title))
             .check(matches(isDisplayed()))
 
         // GIVEN
@@ -171,7 +171,7 @@ class Test6_OpenChatSearchMessagesSuccessTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(withText("Выйти"))
+        onView(withText(R.string.dialog_btn_exit))
             .perform(click())
         Thread.sleep(500)
 

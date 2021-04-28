@@ -4,6 +4,7 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -32,7 +33,7 @@ import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class Test5_GetChatsOpenChatSendMessageTest {
+class Test12_OpenChatDeleteMessageTest {
 
     @Rule
     @JvmField
@@ -61,7 +62,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
     }
 
     @Test
-    fun getChatsOpenChatSendMessageTest() {
+    fun openChatDeleteMessageTest() {
         // GIVEN
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         UiThreadStatement.runOnUiThread {
@@ -91,8 +92,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
         assertThat(navController.currentDestination?.id).isEqualTo(R.id.chatsFragment)
 
         /**
-         * From the chats screen open first chat, sending new message,
-         * then returning back to chats screen
+         * From the chats screen open first chat, sending new message, then delete it
          **/
         // GIVEN
         onView(withId(R.id.rv_chats))
@@ -104,7 +104,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
             )
 
         // VERIFY
-        Thread.sleep(5000)
+        Thread.sleep(1000)
         onView(withId(R.id.fragment_chat_root))
             .check(matches(isDisplayed()))
 
@@ -114,24 +114,27 @@ class Test5_GetChatsOpenChatSendMessageTest {
         onView(withId(R.id.send_container))
             .check(matches(isDisplayed()))
             .perform(click())
-        Thread.sleep(1500)
+        Thread.sleep(3000)
+
+        // VERIFY, GIVEN
+        onView(withText("from ui test"))
+            .check(matches(isDisplayed()))
+            .perform(longClick())
+        Thread.sleep(500)
+        onView(withText(R.string.dialog_btn_delete))
+            .perform(click())
+        Thread.sleep(2000)
         onView(withId(R.id.ic_back))
             .check(matches(isEnabled()))
             .perform(click())
 
-        /**
-         * From the chats screen open first chat, find new message,
-         * long click and delete it, then return to chats screen
-         **/
         // VERIFY
         Thread.sleep(500)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
-        Thread.sleep(2500)
+        Thread.sleep(3000)
 
         // GIVEN
-        onView(withText("Вы: from ui test"))
-            .check(matches(isDisplayed()))
         onView(withId(R.id.rv_chats))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition<ChatsAdapter.ViewHolder>(
@@ -141,26 +144,17 @@ class Test5_GetChatsOpenChatSendMessageTest {
             )
 
         // VERIFY
-        Thread.sleep(5000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_chat_root))
             .check(matches(isDisplayed()))
+        onView(withText("from ui test"))
+            .check(doesNotExist())
 
         // GIVEN
-        onView(withText("from ui test"))
-            .check(matches(isDisplayed()))
-            .perform(longClick())
-        Thread.sleep(500)
-        onView(withText(R.string.dialog_btn_delete))
-            .perform(click())
-        Thread.sleep(1500)
         onView(withId(R.id.ic_back))
             .check(matches(isEnabled()))
             .perform(click())
 
-        /**
-         * From the chats screen open first chat, sending new message,
-         * then returning back to chats screen
-         **/
         // VERIFY
         Thread.sleep(500)
         onView(withId(R.id.fragment_chats_root))
@@ -187,7 +181,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(1000)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))

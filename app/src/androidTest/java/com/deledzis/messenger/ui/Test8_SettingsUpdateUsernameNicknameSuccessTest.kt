@@ -156,7 +156,7 @@ class Test8_SettingsUpdateUsernameNicknameSuccessTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(withText("Выйти"))
+        onView(withText(R.string.dialog_btn_exit))
             .perform(click())
         Thread.sleep(500)
 

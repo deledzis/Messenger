@@ -140,7 +140,7 @@ class Test3_RegisterFailLoginLogoutTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(withText("Выйти"))
+        onView(withText(R.string.dialog_btn_exit))
             .perform(click())
         Thread.sleep(500)
 

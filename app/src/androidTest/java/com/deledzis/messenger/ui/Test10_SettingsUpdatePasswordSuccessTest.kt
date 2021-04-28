@@ -58,7 +58,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
     }
 
     @Test
-    fun settingsUpdateUsernameNicknameSuccessTest() {
+    fun settingsUpdatePasswordSuccessTest() {
         // GIVEN
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         UiThreadStatement.runOnUiThread {
@@ -125,7 +125,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(withText("Выйти"))
+        onView(withText(R.string.dialog_btn_exit))
             .perform(click())
         Thread.sleep(500)
 
@@ -199,7 +199,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(withText("Выйти"))
+        onView(withText(R.string.dialog_btn_exit))
             .perform(click())
         Thread.sleep(500)
 

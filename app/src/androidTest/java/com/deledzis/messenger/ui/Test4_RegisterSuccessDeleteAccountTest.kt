@@ -131,7 +131,7 @@ class Test4_RegisterSuccessDeleteAccountTest {
             .check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(500)
-        onView(withText("Удалить"))
+        onView(withText(R.string.dialog_btn_delete))
             .perform(click())
         Thread.sleep(500)
 
