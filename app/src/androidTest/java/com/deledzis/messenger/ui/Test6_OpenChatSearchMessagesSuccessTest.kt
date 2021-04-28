@@ -128,7 +128,7 @@ class Test6_OpenChatSearchMessagesSuccessTest {
 
         // VERIFY
         Thread.sleep(3000)
-        onView(withText("Вы: test"))
+        onView(withText("Вы: for test"))
             .check(matches(isDisplayed()))
 
         // GIVEN
