@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,7 +17,7 @@ import com.deledzis.messenger.domain.model.entity.messages.Message
 import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.infrastructure.extensions.animateGone
 import com.deledzis.messenger.infrastructure.extensions.animateShow
-import com.deledzis.messenger.infrastructure.extensions.hideSoftKeyboard
+import com.deledzis.messenger.infrastructure.extensions.showDialog
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentChatBinding
@@ -31,7 +29,8 @@ import javax.inject.Inject
 
 class ChatFragment @Inject constructor() :
     BaseFragment<ChatViewModel, FragmentChatBinding>(layoutId = R.layout.fragment_chat),
-    ChatActionsHandler {
+    ChatActionsHandler,
+    MessageItemActionsHandler {
 
     override val viewModel: ChatViewModel by viewModels()
     private val args: ChatFragmentArgs by navArgs()
@@ -64,7 +63,7 @@ class ChatFragment @Inject constructor() :
 
         adapter = MessagesAdapter(
             userId = userData.getAuthUser()?.id ?: throw Exception(),
-            controller = ::onSelected
+            controller = this
         )
         dataBinding.rvMessages.layoutManager = LinearLayoutManager(
             requireActivity(),
@@ -89,13 +88,16 @@ class ChatFragment @Inject constructor() :
     }
 
     override fun bindObservers() {
+        super.bindObservers()
         viewModel.getChatMessages()
         viewModel.messages.observe(viewLifecycleOwner, ::messagesObserver)
         viewModel.newMessages.observe(viewLifecycleOwner, ::newMessagesObserver)
         viewModel.uploading.observe(viewLifecycleOwner, ::uploadingObserver)
         viewModel.sent.observe(viewLifecycleOwner, ::sentObserver)
-        viewModel.messagesError.observe(viewLifecycleOwner, ::errorObserver)
         viewModel.sentError.observe(viewLifecycleOwner, ::errorObserver)
+        viewModel.getChatMessagesError.observe(viewLifecycleOwner, ::errorObserver)
+        viewModel.deleteMessageError.observe(viewLifecycleOwner, ::errorObserver)
+        viewModel.createMessageError.observe(viewLifecycleOwner, ::errorObserver)
     }
 
     private fun messagesObserver(list: List<Message>?) {
@@ -112,12 +114,6 @@ class ChatFragment @Inject constructor() :
     private fun uploadingObserver(uploading: Boolean?) {
         toggleSendProgress(uploading ?: false)
         toggleUploadProgress(uploading ?: false)
-    }
-
-    private fun errorObserver(@StringRes error: Int?) {
-        hideSoftKeyboard()
-        val errorMessage = getErrorString(error) ?: return
-        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show()
     }
 
     private fun sentObserver(sent: Boolean?) {
@@ -145,8 +141,19 @@ class ChatFragment @Inject constructor() :
         viewModel.sendMessage()
     }
 
-    fun onSelected(message: Message) {
+    override fun onSelected(message: Message) {
         // TODO
+    }
+
+    override fun onLongClicked(message: Message): Boolean {
+        requireContext().showDialog(
+            messageId = R.string.dialog_delete_message,
+            positiveBtnId = R.string.dialog_btn_delete,
+            negativeBtnId = R.string.dialog_btn_cancel
+        ) {
+            viewModel.deleteMessage(message.id)
+        }
+        return true
     }
 
     private fun toggleSendProgress(progress: Boolean) {
@@ -179,7 +186,7 @@ class ChatFragment @Inject constructor() :
             startFilePicker()
         } else {
             startSnackbar(
-                getString(R.string.error_storage_permissions),
+                text = R.string.error_storage_permissions,
                 indefinite = true,
                 retryAction = { startFilePicker() }
             )

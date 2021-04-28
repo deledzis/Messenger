@@ -7,20 +7,14 @@ import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.common.usecase.ResponseErrorException
 import com.deledzis.messenger.domain.model.entity.Entity
 import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.logEvent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
 import timber.log.Timber
 import java.io.Serializable
-import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
-
-    @Inject
-    lateinit var analytics: FirebaseAnalytics
 
     private val job = Job()
     protected abstract val receiveChannel: ReceiveChannel<Response<Entity, Error>>
@@ -30,7 +24,8 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
 
     val loading: MutableLiveData<Boolean> = MutableLiveData(false)
     val loadingError: MutableLiveData<Boolean> = MutableLiveData(false)
-    val authError: MutableLiveData<Boolean> = SingleEventLiveData()
+    val connectionError = SingleEventLiveData<Boolean>()
+    val authError = SingleEventLiveData<Boolean>()
 
     abstract suspend fun resolve(value: Response<Entity, Error>)
 
@@ -58,12 +53,21 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
 
     protected open fun handleFailure(error: Error) {
         stopLoading()
-        Timber.e("Handle Failure: ${error.exception}")
+        Timber.e("Handle Failure: $error")
+        error.asNetworkError?.let {
+            GlobalScope.launch {
+                connectionError.postValue(true)
+            }
+        }
         error.exception?.asHttpError?.let {
-            if (it.isAuthError) {
-                GlobalScope.launch {
+            when {
+                it.isAuthError -> GlobalScope.launch {
                     authError.postValue(true)
                 }
+                it.isServerUnavailableError -> GlobalScope.launch {
+                    connectionError.postValue(true)
+                }
+                else -> Unit
             }
         }
         logException(exception = error.exception)
@@ -80,15 +84,6 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
         Timber.e("Error $exception")
     }
 
-    protected fun logEvent(name: String, params: Array<Pair<String, String>>) {
-        Timber.i("[Analytics::$name] $params")
-        analytics.logEvent(name) {
-            params.forEach {
-                param(it.first, it.second)
-
-            }
-        }
-    }
 
     override fun onCleared() {
         Timber.d("onCleared: $this")
@@ -99,6 +94,9 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
     }
 
     companion object {
+        val Error?.asNetworkError: Error.NetworkError?
+            get() = if (this is Error.NetworkError) this else null
+
         val Exception?.asHttpError: ResponseErrorException?
             get() = if (this is ResponseErrorException) this else null
 
@@ -134,6 +132,21 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope, Serializable {
             get() = this.errorCode == 415
         val ResponseErrorException.isDialogAlreadyCreatedError: Boolean
             get() = this.errorCode == 416
+        val ResponseErrorException.isMissingMessageTypeError: Boolean
+            get() = this.errorCode == 417
+        val ResponseErrorException.isMissingMessageContentError: Boolean
+            get() = this.errorCode == 418
+        val ResponseErrorException.isDeleteUserError: Boolean
+            get() = this.errorCode == 419
+        val ResponseErrorException.isDeleteChatError: Boolean
+            get() = this.errorCode == 420
+        val ResponseErrorException.isMissingMessageIdError: Boolean
+            get() = this.errorCode == 421
+        val ResponseErrorException.isDeleteMessageError: Boolean
+            get() = this.errorCode == 422
+
+        val ResponseErrorException.isServerUnavailableError: Boolean
+            get() = this.errorCode == 503
 
         val ResponseErrorException.isLoginError: Boolean
             get() = this.isMissingLoginError || this.isMissingPasswordError || this.isWrongCredentialsError

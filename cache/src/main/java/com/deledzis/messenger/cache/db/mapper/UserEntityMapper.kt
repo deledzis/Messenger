@@ -4,8 +4,8 @@ import com.deledzis.messenger.cache.db.model.CachedUser
 import com.deledzis.messenger.data.model.users.UserEntity
 import javax.inject.Inject
 
-class UserEntityMapper @Inject constructor() :
-    EntityMapper<CachedUser, UserEntity> {
+class UserEntityMapper @Inject constructor() : EntityMapper<CachedUser, UserEntity> {
+
     override fun mapFromCached(type: CachedUser): UserEntity {
         return UserEntity(
             id = type.id,

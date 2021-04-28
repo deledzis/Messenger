@@ -1,7 +1,7 @@
 object InfrastructureModuleDependencies : ModuleDependencies() {
     override val implementationLibs: List<String> = arrayListOf<String>().apply {
         add(Libraries.kotlinStdLib)
-        add(Libraries.coroutinesCore)
+        add(Libraries.coroutinesCoreLib)
         add(Libraries.coreKtxLib)
         add(Libraries.materialLib)
         add(Libraries.glideLib)
@@ -18,20 +18,5 @@ object InfrastructureModuleDependencies : ModuleDependencies() {
         add(Libraries.daggerCompilerKapt)
         add(Libraries.daggerAndroidKapt)
         add(Libraries.glideCompilerKapt)
-    }
-
-    override val testLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.jUnitTest)
-        add(TestLibraries.assertJTest)
-    }
-
-    override val androidTestLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.androidCoreTest)
-        add(TestLibraries.androidRunnerTest)
-        add(TestLibraries.androidRulesTest)
-        add(TestLibraries.androidJunitTest)
-        add(TestLibraries.espressoCoreTest)
-        add(TestLibraries.robolectricTest)
-        add(TestLibraries.mockitoTest)
     }
 }

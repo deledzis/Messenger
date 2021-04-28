@@ -16,12 +16,10 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/fragment_add_chat_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:background="@color/background">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/toolbar"
@@ -104,7 +102,9 @@
                             android:drawablePadding="12dp"
                             android:drawableTint="@color/gray_400"
                             android:hint="@string/placeholder_search"
-                            android:inputType="textEmailAddress" />
+                            android:importantForAutofill="no"
+                            android:inputType="textEmailAddress"
+                            android:text="@={viewModel.searchText}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

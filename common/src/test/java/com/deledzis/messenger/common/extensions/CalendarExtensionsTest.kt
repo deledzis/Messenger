@@ -9,9 +9,8 @@ class CalendarExtensionsTest {
     @Test
     fun `calendar fromDate returns the same date`() {
         val calendar: Calendar = Calendar.getInstance()
-        val date: Date = Date()
+        val date = Date()
         val calendarFromDate = calendar.from(date)
-
         Assertions.assertEquals(date, calendarFromDate.time)
         Assertions.assertEquals(date.time, calendarFromDate.time.time)
     }
@@ -20,8 +19,7 @@ class CalendarExtensionsTest {
     fun `calendar get year returns correct value`() {
         val calendar: Calendar = Calendar.getInstance()
         Assertions.assertEquals(2021, calendar.year)
-
-        calendar.run { add(Calendar.YEAR, 3) }
+        calendar.year = 2024
         Assertions.assertEquals(2024, calendar.year)
     }
 
@@ -32,8 +30,7 @@ class CalendarExtensionsTest {
             this
         }
         Assertions.assertEquals(Calendar.MARCH, calendar.month)
-
-        calendar.run { add(Calendar.MONTH, 3) }
+        calendar.month = Calendar.JUNE
         Assertions.assertEquals(Calendar.JUNE, calendar.month)
     }
 
@@ -44,8 +41,7 @@ class CalendarExtensionsTest {
             this
         }
         Assertions.assertEquals(10, calendar.day)
-
-        calendar.run { add(Calendar.DAY_OF_MONTH, 5) }
+        calendar.day = 15
         Assertions.assertEquals(15, calendar.day)
     }
 
@@ -56,8 +52,7 @@ class CalendarExtensionsTest {
             this
         }
         Assertions.assertEquals(10, calendar.hour)
-
-        calendar.run { add(Calendar.HOUR_OF_DAY, 5) }
+        calendar.hour = 15
         Assertions.assertEquals(15, calendar.hour)
     }
 
@@ -68,8 +63,7 @@ class CalendarExtensionsTest {
             this
         }
         Assertions.assertEquals(10, calendar.minute)
-
-        calendar.run { add(Calendar.MINUTE, 5) }
+        calendar.minute = 15
         Assertions.assertEquals(15, calendar.minute)
     }
 
@@ -80,8 +74,7 @@ class CalendarExtensionsTest {
             this
         }
         Assertions.assertEquals(10, calendar.second)
-
-        calendar.run { add(Calendar.SECOND, 5) }
+        calendar.second = 15
         Assertions.assertEquals(15, calendar.second)
     }
 
@@ -92,8 +85,7 @@ class CalendarExtensionsTest {
             this
         }
         Assertions.assertEquals(10, calendar.millisecond)
-
-        calendar.run { add(Calendar.MILLISECOND, 5) }
+        calendar.millisecond = 15
         Assertions.assertEquals(15, calendar.millisecond)
     }
 }

@@ -20,11 +20,14 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clickable_root"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@color/background"
         android:foreground="?selectableItemBackground"
-        android:onClick="@{() -> controller.onSelected(chat)}">
+        android:longClickable="true"
+        android:onClick="@{() -> controller.onSelected(chat)}"
+        android:onLongClick="@{() -> controller.onLongClick(chat)}">
 
         <TextView
             android:id="@+id/tv_username"
@@ -50,11 +53,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:message_datePreview="@{chat.lastMessage.date}"
             android:textColor="@color/text"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:message_datePreview="@{chat.lastMessage.date}"
             tools:text="вчера" />
 
         <TextView
@@ -65,16 +68,16 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
+            android:chat_previewContent="@{chat.lastMessage}"
             android:ellipsize="end"
             android:maxLines="1"
-            android:chat_previewContent="@{chat.lastMessage}"
+            android:message_textPreview="@{chat.lastMessage}"
+            android:userId="@{userId}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_username"
             app:layout_constraintVertical_bias="0.0"
-            android:message_textPreview="@{chat.lastMessage}"
-            android:userId="@{userId}"
             tools:text="Вы: хорошо)" />
 
         <View
@@ -82,9 +85,9 @@
             android:layout_height="0.5dp"
             android:layout_gravity="top"
             android:background="@color/divider"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

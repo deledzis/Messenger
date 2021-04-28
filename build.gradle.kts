@@ -9,16 +9,18 @@ buildscript {
     dependencies {
         classpath(AppPlugins.buildGradle)
         classpath(AppPlugins.kotlinGradle)
+        classpath(AppPlugins.kotlinAllOpen)
         classpath(AppPlugins.googleServices)
-        classpath(AppPlugins.crashlytics)
-        classpath(AppPlugins.perfMonitor)
+//        classpath(AppPlugins.crashlytics)
         classpath(AppPlugins.navigationSafeArgs)
+        classpath(AppPlugins.jacoco)
     }
 }
 
 allprojects {
     repositories {
         google()
+        jcenter()
         mavenCentral()
     }
 }
@@ -26,3 +28,5 @@ allprojects {
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
+
+apply(plugin = BuildPlugins.androidReportingPlugin)

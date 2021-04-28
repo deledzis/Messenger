@@ -5,7 +5,7 @@ import com.google.gson.Gson
 data class AuthenticatedUser(
     val id: Int,
     val username: String,
-    val nickname: String,
+    val nickname: String?,
     val accessToken: String
 ) {
     fun save(userStore: UserStore) {

@@ -2,6 +2,7 @@ package com.deledzis.messenger.presentation.features.register
 
 import androidx.lifecycle.MutableLiveData
 import com.deledzis.messenger.common.extensions.mergeChannels
+import com.deledzis.messenger.common.extensions.orZero
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.domain.model.entity.Entity
@@ -10,6 +11,7 @@ import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.domain.model.request.auth.RegisterRequest
 import com.deledzis.messenger.domain.model.response.auth.RegisterResponse
 import com.deledzis.messenger.domain.usecase.auth.RegisterUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -27,8 +29,11 @@ class RegisterViewModel @Inject constructor(
     val username = MutableLiveData<String>()
     val nickname = MutableLiveData<String>()
     val password = MutableLiveData<String>()
-    val user: MutableLiveData<Auth> = MutableLiveData<Auth>(userData.getAuthUser())
-    val registerError: MutableLiveData<Int> = MutableLiveData<Int>()
+    val user = MutableLiveData<Auth>(userData.getAuthUser())
+    val usernameError = SingleEventLiveData<Int>()
+    val nicknameError = SingleEventLiveData<Int>()
+    val passwordError = SingleEventLiveData<Int>()
+    val registerError = SingleEventLiveData<Int>()
 
     override suspend fun resolve(value: Response<Entity, Error>) {
         value.handleResult(
@@ -49,45 +54,59 @@ class RegisterViewModel @Inject constructor(
         super.handleFailure(error)
         error.exception?.asHttpError?.let {
             when {
-                it.isMissingLoginError -> registerError.value = R.string.error_api_401
-                it.isMissingPasswordError -> registerError.value = R.string.error_api_402
-                it.isUserAlreadyExistsError -> registerError.value = R.string.error_api_405
+                it.isGeneralError -> registerError.postValue(R.string.error_api_400)
+                it.isMissingLoginError -> registerError.postValue(R.string.error_api_401)
+                it.isMissingPasswordError -> registerError.postValue(R.string.error_api_402)
+                it.isUserAlreadyExistsError -> registerError.postValue(R.string.error_api_405)
                 else -> Unit
             }
         }
     }
 
     private fun clearErrors() {
-        registerError.value = 0
+        usernameError.postValue(0)
+        nicknameError.postValue(0)
+        passwordError.postValue(0)
+        registerError.postValue(0)
     }
 
     fun register() {
         clearErrors()
         startLoading()
 
-        registerUseCase(
-            params = RegisterRequest(
-                username = username.value ?: kotlin.run {
-                    stopLoading()
-                    return
-                },
-                nickname = nickname.value ?: kotlin.run {
-                    stopLoading()
-                    return
-                },
-                password = password.value ?: kotlin.run {
-                    stopLoading()
-                    return
-                }
-            )
-        )
+        val username = username.value
+        val nickname = nickname.value
+        val password = password.value
+
+        if (username.isNullOrBlank()) {
+            usernameError.postValue(R.string.error_empty_username)
+            stopLoading()
+            return
+        }
+        if (password.isNullOrBlank()) {
+            passwordError.postValue(R.string.error_password_invalid_length)
+            stopLoading()
+            return
+        }
+        if (username.length !in (4..100)) {
+            usernameError.postValue(R.string.error_username_invalid_length)
+            stopLoading()
+            return
+        }
+        if (nickname?.length.orZero() > 100) {
+            nicknameError.postValue(R.string.error_nickname_invalid_length)
+            stopLoading()
+            return
+        }
+
+        registerUseCase(RegisterRequest(username, nickname, password))
     }
 
     private fun handleRegisterResponse(data: RegisterResponse) {
         if (data.response.accessToken.isNotBlank()) {
             handleRegisterOkResponse(data.response)
         } else {
-            registerError.value = R.string.error_register_failed
+            registerError.postValue(R.string.error_register_failed)
         }
         stopLoading()
     }

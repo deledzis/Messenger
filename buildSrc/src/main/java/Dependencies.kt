@@ -5,37 +5,42 @@ object BuildPlugins {
     const val kotlin: String = "kotlin"
     const val kotlinAndroidPlugin: String = "kotlin-android"
     const val kotlinKaptPlugin: String = "kotlin-kapt"
+    const val kotlinAllOpenPlugin: String = "kotlin-allopen"
     const val jacocoPlugin: String = "jacoco"
 
     const val googleServicesPlugin: String = "com.google.gms.google-services"
     const val crashlyticsPlugin: String = "com.google.firebase.crashlytics"
     const val perfMonitorPlugin: String = "com.google.firebase.firebase-perf"
     const val navigationSafeArgsPlugin: String = "androidx.navigation.safeargs.kotlin"
+    const val androidReportingPlugin: String = "android-reporting"
 }
 
 object AppPlugins {
     const val buildGradle: String = "com.android.tools.build:gradle:${Versions.gradle}"
     const val kotlinGradle: String = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+    const val kotlinAllOpen: String = "org.jetbrains.kotlin:kotlin-allopen:${Versions.kotlin}"
     const val googleServices: String = "com.google.gms:google-services:${Versions.googleServices}"
     const val crashlytics: String =
         "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlytics}"
     const val perfMonitor: String = "com.google.firebase:perf-plugin:${Versions.perfMonitor}"
     const val navigationSafeArgs: String =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigationSafeArgsPlugin}"
+    const val jacoco: String = "org.jacoco:org.jacoco.core:${Versions.jacoco}"
 }
 
 object Libraries {
     /* Kotlin dependencies */
     const val kotlinStdLib: String =
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
-    const val coroutinesCore: String =
+    const val coroutinesCoreLib: String =
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutine}"
-    const val coroutinesAndroid: String =
+    const val coroutinesAndroidLib: String =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutineAndroid}"
 
     /* AndroidX dependencies */
     const val multidexLib: String = "androidx.multidex:multidex:${Versions.multidex}"
     const val coreKtxLib: String = "androidx.core:core-ktx:${Versions.coreKtx}"
+    const val activityKtxLib: String = "androidx.activity:activity-ktx:${Versions.activityKtx}"
     const val materialLib: String = "com.google.android.material:material:${Versions.material}"
     const val archLifecycleLib: String =
         "android.arch.lifecycle:extensions:${Versions.archLifecycle}"
@@ -44,6 +49,8 @@ object Libraries {
         "androidx.constraintlayout:constraintlayout:${Versions.constraint}"
     const val lifecycleExtLib: String =
         "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleExt}"
+    const val lifecycleRuntimeLib: String =
+        "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleRuntimeData}"
     const val lifecycleLiveDataLib: String =
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycleLiveData}"
     const val lifecycleVmLib: String =
@@ -105,6 +112,9 @@ object Libraries {
 
     /* Logging dependencies */
     const val timberLib: String = "com.jakewharton.timber:timber:${Versions.timber}"
+
+    const val espressoContribLib: String =
+        "androidx.test.espresso:espresso-contrib:${Versions.espressoTest}"
 }
 
 object TestLibraries {
@@ -112,18 +122,26 @@ object TestLibraries {
     const val jUnitTest: String = "org.junit.jupiter:junit-jupiter"
     const val assertJTest: String = "org.assertj:assertj-core:${Versions.assertj}"
     const val testNgTest: String = "org.testng:testng:${Versions.testNg}"
+    const val mockKTest: String = "io.mockk:mockk:${Versions.mockK}"
+    const val mockitoTest: String = "org.mockito:mockito-core:${Versions.mockitoTest}"
+    const val coroutinesTest: String =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinCoroutineTest}"
 
     /* Android test implementations */
     // Core
-    const val androidCoreTest: String = "androidx.test:core:${Versions.androidTestCore}"
-
-    // AndroidJUnitRunner and JUnit Rules
+    const val androidCoreTest: String =
+        "androidx.arch.core:core-testing:${Versions.androidTestCore}"
     const val androidRunnerTest: String = "androidx.test:runner:${Versions.androidTestRunner}"
     const val androidRulesTest: String = "androidx.test:rules:${Versions.androidTestRules}"
+    const val mockKAndroidTest: String = "io.mockk:mockk-android:${Versions.mockK}"
+    const val robolectricTest: String = "org.robolectric:robolectric:${Versions.robolectricTest}"
+    const val fragmentTest: String = "androidx.fragment:fragment-testing:${Versions.fragment}"
+    const val androidxOrchestrator: String =
+        "androidx.test:orchestrator:${Versions.androidTestOrchestrator}"
 
     // Assertions
-    const val androidJunitTest: String = "androidx.test.ext:junit:${Versions.androidTestExt}"
-    const val androidTruthTest: String = "androidx.test.ext:truth:${Versions.androidTestExt}"
+    const val androidJUnitTest: String = "androidx.test.ext:junit:${Versions.androidTestJUnitExt}"
+    const val androidTruthTest: String = "androidx.test.ext:truth:${Versions.androidTestTruthExt}"
     const val googleTruthTest: String = "com.google.truth:truth:${Versions.googleTruth}"
 
     // Espresso dependencies
@@ -140,11 +158,8 @@ object TestLibraries {
     const val espressoIdlingResourceTest: String =
         "androidx.test.espresso:espresso-idling-resource:${Versions.espressoTest}"
 
-    // Robolectric
-    const val robolectricTest: String = "org.robolectric:robolectric:${Versions.robolectricTest}"
-
-    // Mockito
-    const val mockitoTest: String = "org.mockito:mockito-core:${Versions.mockitoTest}"
+    const val navTestLib: String =
+        "androidx.navigation:navigation-testing:${Versions.navigation}"
 }
 
 object BomLibraries {

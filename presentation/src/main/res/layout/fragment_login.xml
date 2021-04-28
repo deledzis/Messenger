@@ -15,6 +15,7 @@
     </data>
 
     <ScrollView
+        android:id="@+id/fragment_login_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
@@ -58,6 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
+                    android:importantForAutofill="no"
                     android:text="@={viewModel.username}" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,6 +81,7 @@
                     android:id="@+id/tie_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
                     android:inputType="textPassword"
                     android:text="@={viewModel.password}" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -91,7 +94,7 @@
                 android:layout_marginTop="64dp"
                 android:clickable="@{!viewModel.loading &amp;&amp; viewModel.username != null &amp;&amp; !viewModel.username.empty &amp;&amp; viewModel.password != null &amp;&amp; !viewModel.password.empty}"
                 android:enabled="@{!viewModel.loading &amp;&amp; viewModel.username != null &amp;&amp; !viewModel.username.empty &amp;&amp; viewModel.password != null &amp;&amp; !viewModel.password.empty}"
-                android:onClick="@{() -> viewModel.login()}"
+                android:onClick="@{controller::onLoginClicked}"
                 android:text="@string/action_login" />
 
             <com.google.android.material.button.MaterialButton

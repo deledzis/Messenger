@@ -79,8 +79,6 @@ fun setLayoutMarginEnd(view: View, dimen: Float) {
 }
 
 @BindingAdapter("android:reduceAlpha")
-fun setAlpha(view: View, value: Boolean?) {
-    value?.let {
-        view.alpha = if (it) 1.0f else 0.5f
-    }
+fun setAlpha(view: View, reduceAlpha: Boolean?) {
+    view.alpha = if (reduceAlpha == true) 0.5f else 1.0f
 }

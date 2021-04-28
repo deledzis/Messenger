@@ -2,11 +2,13 @@ package com.deledzis.messenger.data.repository.chats
 
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
+import com.deledzis.messenger.data.mapper.ServerMessageResponseMapper
 import com.deledzis.messenger.data.mapper.chats.ChatMapper
 import com.deledzis.messenger.data.mapper.chats.ChatsMapper
 import com.deledzis.messenger.data.source.chats.ChatsDataStoreFactory
 import com.deledzis.messenger.domain.model.BaseNetworkManager
 import com.deledzis.messenger.domain.model.response.chats.AddChatResponse
+import com.deledzis.messenger.domain.model.response.chats.DeleteChatResponse
 import com.deledzis.messenger.domain.model.response.chats.GetChatsResponse
 import com.deledzis.messenger.domain.repository.ChatsRepository
 
@@ -18,6 +20,7 @@ class ChatsRepositoryImpl(
     private val factory: ChatsDataStoreFactory,
     private val itemMapper: ChatMapper,
     private val itemsMapper: ChatsMapper,
+    private val serverMessageResponseMapper: ServerMessageResponseMapper,
     private val networkManager: BaseNetworkManager
 ) : ChatsRepository {
 
@@ -60,4 +63,24 @@ class ChatsRepositoryImpl(
             Response.Failure(Error.NetworkConnectionError())
         }
     }
+
+    override suspend fun deleteChat(chatId: Int): Response<DeleteChatResponse, Error> {
+        return if (networkManager.isConnectedToInternet()) {
+            val result = factory.retrieveDataStore().deleteChat(chatId)
+            var response: Response<DeleteChatResponse, Error> = Response.Failure(Error.NetworkError())
+            result.handleResult(
+                stateBlock = { response = it },
+                successBlock = {
+                    response = Response.Success(
+                        DeleteChatResponse(response = it.let { serverMessageResponseMapper.mapFromEntity(it) })
+                    )
+                },
+                failureBlock = { response = Response.Failure(it) }
+            )
+            response
+        } else {
+            Response.Failure(Error.NetworkConnectionError())
+        }
+    }
+
 }

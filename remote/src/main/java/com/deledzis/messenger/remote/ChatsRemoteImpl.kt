@@ -1,5 +1,6 @@
 package com.deledzis.messenger.remote
 
+import com.deledzis.messenger.data.model.ServerMessageResponseEntity
 import com.deledzis.messenger.data.model.chats.ChatEntity
 import com.deledzis.messenger.data.model.chats.ChatsEntity
 import com.deledzis.messenger.data.repository.chats.ChatsRemote
@@ -11,4 +12,8 @@ class ChatsRemoteImpl(private val apiService: ApiService) : ChatsRemote {
 
     override suspend fun addChat(interlocutorId: Int): ChatEntity =
         apiService.addChat(request = AddChatRequest(interlocutorId = interlocutorId))
+
+    override suspend fun deleteChat(chatId: Int): ServerMessageResponseEntity =
+        apiService.deleteChat(chatId = chatId)
+
 }

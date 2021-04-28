@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,15 +12,11 @@ import com.deledzis.messenger.infrastructure.extensions.hideSoftKeyboard
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentLoginBinding
-import com.deledzis.messenger.presentation.features.main.UserViewModel
 import javax.inject.Inject
 
-class LoginFragment @Inject constructor() :
+open class LoginFragment @Inject constructor() :
     BaseFragment<LoginViewModel, FragmentLoginBinding>(layoutId = R.layout.fragment_login),
     LoginActionsHandler {
-
-    @Inject
-    lateinit var userViewModel: UserViewModel
 
     override val viewModel: LoginViewModel by viewModels()
 
@@ -32,26 +27,45 @@ class LoginFragment @Inject constructor() :
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         dataBinding.viewModel = viewModel
+        dataBinding.controller = this
 
         return dataBinding.root
     }
 
     override fun bindObservers() {
+        super.bindObservers()
+        userViewModel.user.observe(viewLifecycleOwner, ::globalUserObserver)
         viewModel.user.observe(viewLifecycleOwner, ::userObserver)
+        viewModel.usernameError.observe(viewLifecycleOwner, ::usernameErrorObserver)
+        viewModel.passwordError.observe(viewLifecycleOwner, ::passwordErrorObserver)
         viewModel.loginError.observe(viewLifecycleOwner, ::errorObserver)
+    }
+
+    private fun globalUserObserver(auth: Auth?) {
+        if (auth != null) {
+            findNavController().popBackStack()
+        }
     }
 
     private fun userObserver(auth: Auth?) {
         if (auth != null) {
             userViewModel.saveUser(auth)
-            findNavController().popBackStack()
         }
     }
 
-    private fun errorObserver(@StringRes error: Int?) {
+    private fun usernameErrorObserver(@StringRes error: Int?) {
+        hideSoftKeyboard(dataBinding.root)
+        dataBinding.tilUsername.error = getErrorString(error)
+    }
+
+    private fun passwordErrorObserver(@StringRes error: Int?) {
+        hideSoftKeyboard(dataBinding.root)
+        dataBinding.tilPassword.error = getErrorString(error)
+    }
+
+    override fun onLoginClicked(view: View) {
         hideSoftKeyboard()
-        val errorMessage = getErrorString(error) ?: return
-        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.login()
     }
 
     override fun onRegisterClicked(view: View) {

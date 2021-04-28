@@ -10,6 +10,7 @@ import com.deledzis.messenger.domain.model.entity.user.BaseUserData
 import com.deledzis.messenger.domain.model.request.auth.LoginRequest
 import com.deledzis.messenger.domain.model.response.auth.LoginResponse
 import com.deledzis.messenger.domain.usecase.auth.LoginUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -27,7 +28,9 @@ class LoginViewModel @Inject constructor(
     var username = MutableLiveData<String>()
     var password = MutableLiveData<String>()
     val user: MutableLiveData<Auth> = MutableLiveData<Auth>(userData.getAuthUser())
-    val loginError: MutableLiveData<Int> = MutableLiveData<Int>()
+    val usernameError = SingleEventLiveData<Int>()
+    val passwordError = SingleEventLiveData<Int>()
+    val loginError = SingleEventLiveData<Int>()
 
     override suspend fun resolve(value: Response<Entity, Error>) {
         value.handleResult(
@@ -48,46 +51,52 @@ class LoginViewModel @Inject constructor(
         super.handleFailure(error)
         error.exception?.asHttpError?.let {
             when {
-                it.isMissingLoginError -> loginError.value = R.string.error_api_401
-                it.isMissingPasswordError -> loginError.value = R.string.error_api_402
-                it.isWrongCredentialsError -> loginError.value = R.string.error_api_403
+                it.isGeneralError -> loginError.postValue(R.string.error_api_400)
+                it.isMissingLoginError -> loginError.postValue(R.string.error_api_401)
+                it.isMissingPasswordError -> loginError.postValue(R.string.error_api_402)
+                it.isWrongCredentialsError -> loginError.postValue(R.string.error_api_403)
                 else -> Unit
             }
         }
     }
 
     private fun clearErrors() {
-        loginError.value = 0
+        usernameError.postValue(0)
+        passwordError.postValue(0)
+        loginError.postValue(0)
     }
 
     fun login() {
         clearErrors()
         startLoading()
 
-        loginUseCase(
-            params = LoginRequest(
-                username = username.value ?: kotlin.run {
-                    stopLoading()
-                    return
-                },
-                password = password.value ?: kotlin.run {
-                    stopLoading()
-                    return
-                }
-            )
-        )
+        val username = username.value
+        val password = password.value
+
+        if (username.isNullOrBlank()) {
+            usernameError.postValue(R.string.error_empty_username)
+            stopLoading()
+            return
+        }
+        if (password.isNullOrBlank()) {
+            passwordError.postValue(R.string.error_password_invalid_length)
+            stopLoading()
+            return
+        }
+        if (username.length !in (4..100)) {
+            usernameError.postValue(R.string.error_username_invalid_length)
+            stopLoading()
+            return
+        }
+
+        loginUseCase(LoginRequest(username, password))
     }
 
     private fun handleLoginResponse(data: LoginResponse) {
-        if (!data.response.accessToken.isNullOrBlank()) {
+        if (data.response.accessToken.isNotBlank()) {
             handleLoginOkResponse(data.response)
         } else {
-            /*logError(
-                errorCode = data.response.errorCode,
-                originMessage = data.response.message,
-                normalizedMessage = "Не удалось войти с предоставленными учетными данными"
-            )*/
-            loginError.value = R.string.error_auth_failed
+            loginError.postValue(R.string.error_auth_failed)
         }
         stopLoading()
     }

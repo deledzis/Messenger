@@ -26,6 +26,11 @@
         <item name="android:textColor">@color/color_text_button_red_text</item>
     </style>
 
+    <style name="TextButton.Red.Filled" parent="PrimaryButton">
+        <item name="backgroundTint">@color/color_red_button_background</item>
+        <item name="android:textColor">@color/color_filled_red_button_text</item>
+    </style>
+
     <style name="InputText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxBackgroundColor">@color/edit_text_background</item>
         <item name="boxStrokeColor">@color/color_box_stroke</item>

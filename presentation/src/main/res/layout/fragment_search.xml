@@ -16,6 +16,7 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/fragment_search_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
@@ -104,7 +105,9 @@
                             android:drawablePadding="12dp"
                             android:drawableTint="@color/gray_400"
                             android:hint="@string/placeholder_search"
-                            android:inputType="textFilter" />
+                            android:importantForAutofill="no"
+                            android:inputType="textFilter"
+                            android:text="@={viewModel.searchText}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

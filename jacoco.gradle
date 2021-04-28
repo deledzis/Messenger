@@ -1,0 +1,78 @@
+apply plugin: 'jacoco'
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+}
+
+project.afterEvaluate {
+
+    def unitTestTask = "testDebugUnitTest"
+    def uiTestCoverageTask = "createDebugCoverageReport"
+
+    tasks.create(name: "totalTestCoverage", type: JacocoReport, dependsOn: [
+            "$unitTestTask",
+            "$uiTestCoverageTask",
+            ":app:test",
+            ":app:connectedAndroidTest",
+            ":cache:test",
+            ":common:test",
+            ":data:test",
+            ":remote:test"
+    ]) {
+        group = "Reporting"
+        description = "Generate Jacoco coverage reports for the debug build"
+
+        reports {
+            html.enabled = true
+            xml.enabled = true
+            csv.enabled = true
+            html.destination = file("${project.rootDir}/build/jacocoHtml")
+        }
+
+        def commonFileFilter = [
+                "**/di/**",
+                "**/usecase/**",
+                "**/extensions/Coroutine**",
+                "**/extensions/RegexPatterns**",
+                "**/util/ToastType**",
+                "**/Constants**"
+        ]
+
+        def dataFileFilter = [
+                "**/di/**",
+                "**/model/**",
+                "**/utils/**",
+                "**/repository/**",
+                "**/source/**",
+        ]
+
+        def remoteFileFilter = [
+                "**/di/**",
+                "**/model/**",
+                "**/ApiService**"
+        ]
+
+        classDirectories.setFrom(files([
+                fileTree(dir: "$project.rootDir/common/build/classes/kotlin", excludes: commonFileFilter),
+                fileTree(dir: "$project.rootDir/data/build/classes/kotlin", excludes: dataFileFilter),
+                fileTree(dir: "$project.rootDir/remote/build/classes/kotlin", excludes: remoteFileFilter)
+        ]))
+
+        def coverageSourceDirs = [
+                "$project.rootDir/app/src/main/java",
+                "$project.rootDir/common/src/main/java",
+                "$project.rootDir/data/src/main/java",
+                "$project.rootDir/domain/src/main/java",
+                "$project.rootDir/remote/src/main/java"
+        ]
+        sourceDirectories.setFrom(files(coverageSourceDirs))
+        additionalSourceDirs.setFrom(files(coverageSourceDirs))
+
+        executionData(files([
+                "$project.rootDir/common/build/jacoco/test.exec",
+                "$project.rootDir/data/build/jacoco/test.exec",
+                "$project.rootDir/remote/build/jacoco/test.exec"
+        ]))
+    }
+}

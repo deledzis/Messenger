@@ -30,11 +30,13 @@ class RepositoriesModule {
     internal fun provideAuthRepository(
         factory: AuthDataStoreFactory,
         authMapper: AuthMapper,
+        serverMessageResponseMapper: ServerMessageResponseMapper,
         networkManager: BaseNetworkManager
     ): AuthRepository {
         return AuthRepositoryImpl(
             factory = factory,
             authMapper = authMapper,
+            serverMessageResponseMapper = serverMessageResponseMapper,
             networkManager = networkManager
         )
     }
@@ -59,13 +61,15 @@ class RepositoriesModule {
         factory: ChatsDataStoreFactory,
         itemMapper: ChatMapper,
         itemsMapper: ChatsMapper,
+        serverMessageResponseMapper: ServerMessageResponseMapper,
         networkManager: BaseNetworkManager
     ): ChatsRepository {
         return ChatsRepositoryImpl(
-            factory = factory,
-            itemMapper = itemMapper,
-            itemsMapper = itemsMapper,
-            networkManager = networkManager
+            factory,
+            itemMapper,
+            itemsMapper,
+            serverMessageResponseMapper,
+            networkManager
         )
     }
 

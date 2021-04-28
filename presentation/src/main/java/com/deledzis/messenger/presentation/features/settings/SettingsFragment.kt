@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,7 +15,6 @@ import com.deledzis.messenger.infrastructure.extensions.showDialog
 import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseFragment
 import com.deledzis.messenger.presentation.databinding.FragmentSettingsBinding
-import com.deledzis.messenger.presentation.features.main.UserViewModel
 import javax.inject.Inject
 
 class SettingsFragment @Inject constructor() :
@@ -25,8 +23,7 @@ class SettingsFragment @Inject constructor() :
 
     override val viewModel: SettingsViewModel by viewModels()
 
-    @Inject
-    lateinit var userViewModel: UserViewModel
+    private var passwordInput: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,13 +38,17 @@ class SettingsFragment @Inject constructor() :
     }
 
     override fun bindObservers() {
+        super.bindObservers()
         userViewModel.user.observe(viewLifecycleOwner, ::userObserver)
         viewModel.userData.observe(viewLifecycleOwner, ::updateStatusObserver)
+        viewModel.password.observe(viewLifecycleOwner, ::passwordObserver)
         viewModel.loading.observe(viewLifecycleOwner, ::loadingObserver)
         viewModel.usernameError.observe(viewLifecycleOwner, ::usernameErrorObserver)
         viewModel.nicknameError.observe(viewLifecycleOwner, ::nicknameErrorObserver)
         viewModel.passwordError.observe(viewLifecycleOwner, ::passwordErrorObserver)
         viewModel.newPasswordError.observe(viewLifecycleOwner, ::newPasswordErrorObserver)
+        viewModel.updateError.observe(viewLifecycleOwner, ::errorObserver)
+        userViewModel.deleteAccountError.observe(viewLifecycleOwner, ::errorObserver)
     }
 
     private fun userObserver(auth: Auth?) {
@@ -58,18 +59,18 @@ class SettingsFragment @Inject constructor() :
 
     private fun updateStatusObserver(auth: Auth?) {
         userViewModel.saveUser(auth)
-        if (auth == null) {
+        if (auth != null) {
             findNavController().popBackStack()
         }
     }
 
-    private fun loadingObserver(loading: Boolean?) {
-        loading?.let { toggleUpdateProgress(progress = it) }
+    private fun passwordObserver(password: String?) {
+        passwordInput = password
+        dataBinding.icSave.alpha = if (password.isNullOrBlank()) 0.5f else 1.0f
     }
 
-    private fun errorObserver(error: String?) {
-        hideSoftKeyboard(dataBinding.root)
-        error?.let { Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show() }
+    private fun loadingObserver(loading: Boolean?) {
+        loading?.let { toggleUpdateProgress(progress = it) }
     }
 
     private fun usernameErrorObserver(@StringRes error: Int?) {
@@ -97,7 +98,9 @@ class SettingsFragment @Inject constructor() :
             dataBinding.icSave.animateGone()
             dataBinding.saveProgress.animateShow()
         } else {
-            dataBinding.icSave.animateShow()
+            dataBinding.icSave.animateShow(
+                toAlpha = if (passwordInput.isNullOrBlank()) 0.5f else 1.0f
+            )
             dataBinding.saveProgress.animateGone()
         }
     }
@@ -113,6 +116,16 @@ class SettingsFragment @Inject constructor() :
             negativeBtnId = R.string.dialog_btn_cancel
         ) {
             userViewModel.handleLogout()
+        }
+    }
+
+    override fun onDeleteAccountClicked(view: View) {
+        requireContext().showDialog(
+            messageId = R.string.dialog_delete_account,
+            positiveBtnId = R.string.dialog_btn_delete,
+            negativeBtnId = R.string.dialog_btn_cancel
+        ) {
+            userViewModel.deleteAccount()
         }
     }
 }

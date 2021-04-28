@@ -1,6 +1,12 @@
 object DataModuleDependencies : ModuleDependencies() {
     override val implementationLibs: List<String> = arrayListOf<String>().apply {
         add(Libraries.kotlinStdLib)
+        add(Libraries.coroutinesCoreLib)
+        add(Libraries.lifecycleExtLib)
+        add(Libraries.lifecycleRuntimeLib)
+        add(Libraries.lifecycleLiveDataLib)
+        add(Libraries.lifecycleVmLib)
+        add(Libraries.vmSavedStateLib)
     }
 
     override val apiLibs: List<String> = arrayListOf<String>().apply {
@@ -14,11 +20,4 @@ object DataModuleDependencies : ModuleDependencies() {
     override val kaptLibs: List<String> = arrayListOf<String>().apply {
         add(Libraries.daggerCompilerKapt)
     }
-
-    override val testLibs: List<String> = arrayListOf<String>().apply {
-        add(TestLibraries.jUnitTest)
-        add(TestLibraries.assertJTest)
-    }
-
-    override val androidTestLibs: List<String> = emptyList()
 }

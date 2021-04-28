@@ -20,4 +20,6 @@ interface MessagesDataStore {
         content: String
     ): Response<ServerMessageResponseEntity, Error>
 
+    suspend fun deleteMessage(messageId: Int): Response<ServerMessageResponseEntity, Error>
+
 }

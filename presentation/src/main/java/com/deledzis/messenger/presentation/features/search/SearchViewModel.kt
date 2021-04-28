@@ -11,7 +11,9 @@ import com.deledzis.messenger.domain.model.entity.messages.Message
 import com.deledzis.messenger.domain.model.request.messages.GetChatMessagesRequest
 import com.deledzis.messenger.domain.model.response.messages.GetChatMessagesResponse
 import com.deledzis.messenger.domain.usecase.messages.GetChatMessagesUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.infrastructure.util.debounce
+import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
 import kotlinx.coroutines.channels.ReceiveChannel
 import timber.log.Timber
@@ -29,6 +31,8 @@ class SearchViewModel @Inject constructor(
     val searchText = MutableLiveData<String>()
     val searchTextDebounced: MediatorLiveData<String> = MediatorLiveData<String>()
     val messages = MutableLiveData<List<Message>>()
+    val getChatMessagesError = SingleEventLiveData<Int>()
+
     private var chatId: Int? = null
 
     override suspend fun resolve(value: Response<Entity, Error>) {
@@ -43,6 +47,19 @@ class SearchViewModel @Inject constructor(
         Timber.i("Handle Success: $data")
         when (data) {
             is GetChatMessagesResponse -> handleGetChatMessagesResponse(data)
+        }
+    }
+
+    override fun handleFailure(error: Error) {
+        super.handleFailure(error)
+        error.exception?.asHttpError?.let {
+            when {
+                it.isGeneralError -> getChatMessagesError.postValue(R.string.error_api_400)
+                it.isAuthError -> getChatMessagesError.postValue(R.string.error_api_406)
+                it.isInterlocutorNotFoundError -> getChatMessagesError.postValue(R.string.error_api_407)
+                it.isChatNotFoundError -> getChatMessagesError.postValue(R.string.error_api_408)
+                else -> Unit
+            }
         }
     }
 
@@ -61,6 +78,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun search(search: String? = null) {
+        getChatMessagesError.postValue(0)
         getChatMessagesUseCase(
             params = GetChatMessagesRequest(
                 chatId = chatId ?: return,

@@ -2,6 +2,7 @@ package com.deledzis.messenger.data.source.auth
 
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
+import com.deledzis.messenger.data.model.ServerMessageResponseEntity
 import com.deledzis.messenger.data.model.auth.AuthEntity
 import com.deledzis.messenger.data.repository.auth.AuthRemote
 import retrofit2.HttpException
@@ -58,6 +59,18 @@ class AuthRemoteDataStore @Inject constructor(private val remote: AuthRemote) :
                 password = password,
                 newPassword = newPassword
             )
+            Response.Success(successData = response)
+        } catch (e: Exception) {
+            if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))
+            else Response.Failure(Error.NetworkError())
+        }
+    }
+
+    override suspend fun deleteAccount(
+        username: String
+    ): Response<ServerMessageResponseEntity, Error> {
+        return try {
+            val response = remote.deleteAccount(username = username)
             Response.Success(successData = response)
         } catch (e: Exception) {
             if (e is HttpException) Response.Failure(Error.ResponseError(errorCode = e.code()))

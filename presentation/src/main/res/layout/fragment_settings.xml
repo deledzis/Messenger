@@ -15,6 +15,7 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/fragment_settings_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
@@ -61,8 +62,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_close_blue"
-                            android:reduceAlpha="@{!viewModel.loading}" />
+                            android:src="@drawable/ic_close_blue" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -109,8 +109,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_done"
-                            android:reduceAlpha="@{viewModel.password != null &amp;&amp; !viewModel.password.empty}" />
+                            android:src="@drawable/ic_done" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -120,7 +119,8 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
+            android:id="@+id/settings_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
@@ -136,7 +136,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
+                    android:layout_marginTop="@dimen/size_32dp"
                     android:text="@string/login"
                     android:textColor="@color/text_label" />
 
@@ -152,6 +152,7 @@
                         android:id="@+id/tie_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
                         android:inputType="textEmailAddress"
                         android:text="@={viewModel.username}" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -175,6 +176,7 @@
                         android:id="@+id/tie_nickname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
                         android:inputType="textEmailAddress"
                         android:text="@={viewModel.nickname}" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -198,6 +200,7 @@
                         android:id="@+id/tie_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
                         android:inputType="textPassword"
                         android:text="@={viewModel.password}" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -221,6 +224,7 @@
                         android:id="@+id/tie_new_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
                         android:inputType="textPassword"
                         android:text="@={viewModel.newPassword}" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -238,6 +242,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:layout_marginBottom="@dimen/size_32dp"
                     android:enabled="@{!viewModel.loading}"
                     android:onClick="@{controller::onLogoutClicked}"
                     android:text="@string/action_logout"
@@ -246,9 +251,24 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:rippleColor="@color/red" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_delete_account"
+                    style="@style/TextButton.Red.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="@dimen/size_32dp"
+                    android:enabled="@{!viewModel.loading}"
+                    android:onClick="@{controller::onDeleteAccountClicked}"
+                    android:text="@string/action_delete_account"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="@color/red" />
+
             </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

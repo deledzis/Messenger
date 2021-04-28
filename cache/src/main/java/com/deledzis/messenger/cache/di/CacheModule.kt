@@ -14,7 +14,6 @@ import com.deledzis.messenger.cache.preferences.user.UserStore
 import com.deledzis.messenger.data.model.users.UserEntity
 import com.deledzis.messenger.data.repository.CrudCache
 import com.deledzis.messenger.domain.model.entity.user.BaseUserData
-import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -56,15 +55,13 @@ class CacheModule {
 
     @Singleton
     @Provides
-    fun provideUserStore(
+    fun provideUserData(
         userStore: UserStore,
-        userMapper: UserMapper,
-        analytics: FirebaseAnalytics
+        userMapper: UserMapper
     ): BaseUserData {
         return UserData(
             userStore = userStore,
-            userMapper = userMapper,
-            analytics = analytics
+            userMapper = userMapper
         )
     }
 

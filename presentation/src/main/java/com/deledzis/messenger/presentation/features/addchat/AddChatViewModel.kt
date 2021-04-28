@@ -15,7 +15,9 @@ import com.deledzis.messenger.domain.model.response.chats.AddChatResponse
 import com.deledzis.messenger.domain.model.response.user.GetUsersResponse
 import com.deledzis.messenger.domain.usecase.chats.AddChatUseCase
 import com.deledzis.messenger.domain.usecase.user.GetUsersUseCase
+import com.deledzis.messenger.infrastructure.util.SingleEventLiveData
 import com.deledzis.messenger.infrastructure.util.debounce
+import com.deledzis.messenger.presentation.R
 import com.deledzis.messenger.presentation.base.BaseViewModel
 import kotlinx.coroutines.channels.ReceiveChannel
 import timber.log.Timber
@@ -37,6 +39,9 @@ class AddChatViewModel @Inject constructor(
     val users: MutableLiveData<List<User>> = MutableLiveData<List<User>>()
     val addedChat: MutableLiveData<Chat> = MutableLiveData<Chat>()
 
+    val getUsersError = SingleEventLiveData<Int>()
+    val addChatError = SingleEventLiveData<Int>()
+
     private var lastUser: User? = null
 
     override suspend fun resolve(value: Response<Entity, Error>) {
@@ -55,6 +60,20 @@ class AddChatViewModel @Inject constructor(
         }
     }
 
+    override fun handleFailure(error: Error) {
+        super.handleFailure(error)
+        error.exception?.asHttpError?.let {
+            when {
+                it.isGeneralError -> getUsersError.postValue(R.string.error_api_400)
+                it.isAuthError -> getUsersError.postValue(R.string.error_api_406)
+                it.isInterlocutorNotFoundError -> addChatError.postValue(R.string.error_api_407)
+                it.isMissingInterlocutorError -> addChatError.postValue(R.string.error_api_410)
+                it.isDialogAlreadyCreatedError -> addChatError.postValue(R.string.error_api_416)
+                else -> Unit
+            }
+        }
+    }
+
     fun init() {
         searchTextDebounced.addSource(
             searchText.distinctUntilChanged().debounce(500L)
@@ -69,10 +88,12 @@ class AddChatViewModel @Inject constructor(
     }
 
     fun search(search: String? = null) {
+        clearErrors()
         getUsersUseCase(params = GetUsersRequest(search = search))
     }
 
     fun addChat(user: User) {
+        clearErrors()
         lastUser = user
         startLoading()
         addChatUseCase(params = AddChatRequest(interlocutorId = user.id ?: return))
@@ -82,6 +103,11 @@ class AddChatViewModel @Inject constructor(
         lastUser?.run {
             addChat(this)
         }
+    }
+
+    private fun clearErrors() {
+        getUsersError.postValue(0)
+        addChatError.postValue(0)
     }
 
     private fun handleAddChatResponse(data: AddChatResponse) {

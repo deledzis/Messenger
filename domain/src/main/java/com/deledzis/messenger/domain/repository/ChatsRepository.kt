@@ -3,6 +3,7 @@ package com.deledzis.messenger.domain.repository
 import com.deledzis.messenger.common.usecase.Error
 import com.deledzis.messenger.common.usecase.Response
 import com.deledzis.messenger.domain.model.response.chats.AddChatResponse
+import com.deledzis.messenger.domain.model.response.chats.DeleteChatResponse
 import com.deledzis.messenger.domain.model.response.chats.GetChatsResponse
 
 /**
@@ -11,6 +12,11 @@ import com.deledzis.messenger.domain.model.response.chats.GetChatsResponse
  * operations that need to be implemented
  */
 interface ChatsRepository {
+
     suspend fun getChats(): Response<GetChatsResponse, Error>
+
     suspend fun addChat(interlocutorId: Int): Response<AddChatResponse, Error>
+
+    suspend fun deleteChat(chatId: Int): Response<DeleteChatResponse, Error>
+
 }

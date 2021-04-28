@@ -110,4 +110,5 @@ class NetworkModule {
     companion object {
         private const val REQUEST_TIMEOUT = 60
     }
+
 }

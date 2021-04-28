@@ -6,22 +6,26 @@ object Versions {
     const val crashlytics = "2.5.0"
     const val perfMonitor = "1.3.4"
     const val navigationSafeArgsPlugin = "2.3.2"
+    const val jacoco = "0.8.6"
 
     /* Libraries */
     // Kotlin
     const val kotlinCoroutineAndroid = "1.4.1"
     const val kotlinCoroutine = "1.4.1"
+    const val kotlinCoroutineTest = "1.4.3"
 
     // Android
     const val multidex = "2.0.1"
     const val appCompat = "1.2.0"
-    const val fragment = "1.3.0"
+    const val fragment = "1.3.2"
     const val archLifecycle = "1.1.1"
-    const val lifecycle = "2.3.0"
+    const val lifecycle = "2.2.0"
     const val lifecycleExt = "2.2.0"
-    const val lifecycleLiveData = "2.3.0"
-    const val lifecycleViewModel = "2.3.0"
+    const val lifecycleRuntimeData = "2.2.0"
+    const val lifecycleLiveData = "2.2.0"
+    const val lifecycleViewModel = "2.2.0"
     const val coreKtx = "1.3.2"
+    const val activityKtx = "1.2.2"
     const val constraint = "2.0.4"
     const val recyclerView = "1.1.0"
     const val swipeRefresh = "1.1.0"
@@ -53,15 +57,19 @@ object Versions {
     /* Testing */
     // java test
     const val jUnitBom = "5.7.1"
+    const val jUnitExt = "1.1.1"
     const val assertj = "3.19.0"
     const val testNg = "6.9.6"
+    const val mockK = "1.10.6"
 
     // android test
-    const val androidTestCore = "1.0.0"
-    const val androidTestRunner = "1.1.0"
-    const val androidTestRules = "1.1.0"
-    const val androidTestExt = "1.0.0"
-    const val googleTruth = "0.42"
+    const val androidTestCore = "2.1.0"
+    const val androidTestRunner = "1.3.0"
+    const val androidTestOrchestrator = "1.3.0"
+    const val androidTestRules = "1.3.0"
+    const val androidTestTruthExt = "1.3.0"
+    const val androidTestJUnitExt = "1.1.2"
+    const val googleTruth = "1.1.2"
     const val espressoTest = "3.3.0"
     const val robolectricTest = "4.4"
     const val mockitoTest = "3.8.0"
