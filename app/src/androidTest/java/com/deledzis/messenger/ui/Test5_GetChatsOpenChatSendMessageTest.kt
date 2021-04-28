@@ -104,7 +104,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
             )
 
         // VERIFY
-        Thread.sleep(5000)
+        Thread.sleep(7500)
         onView(withId(R.id.fragment_chat_root))
             .check(matches(isDisplayed()))
 
@@ -114,7 +114,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
         onView(withId(R.id.send_container))
             .check(matches(isDisplayed()))
             .perform(click())
-        Thread.sleep(1500)
+        Thread.sleep(3000)
         onView(withId(R.id.ic_back))
             .check(matches(isEnabled()))
             .perform(click())
@@ -127,7 +127,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
         Thread.sleep(500)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
-        Thread.sleep(2500)
+        Thread.sleep(5000)
 
         // GIVEN
         onView(withText("Вы: from ui test"))
@@ -152,7 +152,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_delete))
             .perform(click())
-        Thread.sleep(1500)
+        Thread.sleep(5000)
         onView(withId(R.id.ic_back))
             .check(matches(isEnabled()))
             .perform(click())
@@ -165,7 +165,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
         Thread.sleep(500)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
-        Thread.sleep(2500)
+        Thread.sleep(5000)
 
         /**
          * From the chats screen go to settings screen and logout
@@ -175,7 +175,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -187,7 +187,7 @@ class Test5_GetChatsOpenChatSendMessageTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))

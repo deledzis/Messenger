@@ -116,7 +116,7 @@ class Test6_OpenChatSearchMessagesSuccessTest {
          * then return back to chats screen
          **/
         // VERIFY
-        Thread.sleep(500)
+        Thread.sleep(2500)
         onView(withId(R.id.fragment_search_root))
             .check(matches(isDisplayed()))
         onView(withText(R.string.search_init_title))
@@ -127,7 +127,7 @@ class Test6_OpenChatSearchMessagesSuccessTest {
             .perform(typeText("test"), closeSoftKeyboard())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withText("Вы: for test"))
             .check(matches(isDisplayed()))
 
@@ -140,7 +140,7 @@ class Test6_OpenChatSearchMessagesSuccessTest {
         Thread.sleep(500)
         onView(withId(R.id.fragment_chat_root))
             .check(matches(isDisplayed()))
-        Thread.sleep(2500)
+        Thread.sleep(5000)
 
         // GIVEN
         onView(withId(R.id.ic_back))
@@ -154,14 +154,14 @@ class Test6_OpenChatSearchMessagesSuccessTest {
         Thread.sleep(500)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
-        Thread.sleep(2500)
+        Thread.sleep(5000)
 
         // GIVEN
         onView(withId(R.id.ic_settings))
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -173,7 +173,7 @@ class Test6_OpenChatSearchMessagesSuccessTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))

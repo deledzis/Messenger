@@ -92,7 +92,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -106,7 +106,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
 
@@ -127,7 +127,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))
@@ -141,7 +141,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
             .perform(typeText("password"), closeSoftKeyboard())
         onView(withId(R.id.login_button))
             .perform(click())
-        Thread.sleep(5000)
+        Thread.sleep(7500)
 
         // VERIFY
         onView(withId(R.id.fragment_login_root))
@@ -166,7 +166,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -180,7 +180,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
 
@@ -189,7 +189,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -201,7 +201,7 @@ class Test10_SettingsUpdatePasswordSuccessTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))

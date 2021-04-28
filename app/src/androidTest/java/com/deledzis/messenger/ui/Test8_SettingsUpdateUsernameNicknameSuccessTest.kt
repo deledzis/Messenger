@@ -92,7 +92,7 @@ class Test8_SettingsUpdateUsernameNicknameSuccessTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -108,7 +108,7 @@ class Test8_SettingsUpdateUsernameNicknameSuccessTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
 
@@ -117,7 +117,7 @@ class Test8_SettingsUpdateUsernameNicknameSuccessTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
         onView(withText("username_1"))
@@ -137,7 +137,7 @@ class Test8_SettingsUpdateUsernameNicknameSuccessTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
 
@@ -158,7 +158,7 @@ class Test8_SettingsUpdateUsernameNicknameSuccessTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))

@@ -104,7 +104,7 @@ class Test12_OpenChatDeleteMessageTest {
             )
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_chat_root))
             .check(matches(isDisplayed()))
 
@@ -114,16 +114,16 @@ class Test12_OpenChatDeleteMessageTest {
         onView(withId(R.id.send_container))
             .check(matches(isDisplayed()))
             .perform(click())
-        Thread.sleep(3000)
 
         // VERIFY, GIVEN
+        Thread.sleep(5000)
         onView(withText("from ui test"))
             .check(matches(isDisplayed()))
             .perform(longClick())
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_delete))
             .perform(click())
-        Thread.sleep(2000)
+        Thread.sleep(5000)
         onView(withId(R.id.ic_back))
             .check(matches(isEnabled()))
             .perform(click())
@@ -132,7 +132,7 @@ class Test12_OpenChatDeleteMessageTest {
         Thread.sleep(500)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
-        Thread.sleep(3000)
+        Thread.sleep(5000)
 
         // GIVEN
         onView(withId(R.id.rv_chats))
@@ -144,7 +144,7 @@ class Test12_OpenChatDeleteMessageTest {
             )
 
         // VERIFY
-        Thread.sleep(2000)
+        Thread.sleep(5000)
         onView(withId(R.id.fragment_chat_root))
             .check(matches(isDisplayed()))
         onView(withText("from ui test"))
@@ -169,7 +169,7 @@ class Test12_OpenChatDeleteMessageTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -181,7 +181,7 @@ class Test12_OpenChatDeleteMessageTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(1000)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))

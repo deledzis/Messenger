@@ -88,14 +88,13 @@ class Test13_AddChatDifferentScenariosTest {
             .check(matches(isDisplayed()))
         assertThat(navController.currentDestination?.id).isEqualTo(R.id.chatsFragment)
 
-
         // GIVEN
         onView(withId(R.id.ic_add))
             .check(matches(isDisplayed()))
             .perform(click())
 
         // VERIFY
-        Thread.sleep(2000)
+        Thread.sleep(5000)
         onView(withId(R.id.fragment_add_chat_root))
             .check(matches(isDisplayed()))
         onView(withText(R.string.add_chat_init_title))
@@ -106,7 +105,7 @@ class Test13_AddChatDifferentScenariosTest {
             .perform(typeText("test2"), closeSoftKeyboard())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withText("dog so low"))
             .check(matches(isDisplayed()))
 
@@ -115,7 +114,7 @@ class Test13_AddChatDifferentScenariosTest {
             .perform(clearText(), typeText("test100500"), closeSoftKeyboard())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withText(R.string.add_chat_empty_title))
             .check(matches(isDisplayed()))
 
@@ -124,7 +123,7 @@ class Test13_AddChatDifferentScenariosTest {
             .perform(clearText(), typeText("testing"), closeSoftKeyboard())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withText(R.string.add_chat_empty_title))
             .check(matches(isDisplayed()))
 
@@ -137,14 +136,14 @@ class Test13_AddChatDifferentScenariosTest {
         Thread.sleep(500)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
-        Thread.sleep(2500)
+        Thread.sleep(5000)
 
         // GIVEN
         onView(withId(R.id.ic_settings))
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -156,7 +155,7 @@ class Test13_AddChatDifferentScenariosTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))

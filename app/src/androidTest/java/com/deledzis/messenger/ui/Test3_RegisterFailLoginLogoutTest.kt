@@ -104,6 +104,7 @@ class Test3_RegisterFailLoginLogoutTest {
          * Moving back to login screen, do login, login succeed, chats screen appears
          **/
         // VERIFY
+        Thread.sleep(1000)
         onView(withId(R.id.fragment_login_root))
             .check(matches(isDisplayed()))
 
@@ -130,7 +131,7 @@ class Test3_RegisterFailLoginLogoutTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -142,7 +143,7 @@ class Test3_RegisterFailLoginLogoutTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))

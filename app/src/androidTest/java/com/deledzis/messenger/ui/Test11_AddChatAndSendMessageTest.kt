@@ -98,7 +98,7 @@ class Test11_AddChatAndSendMessageTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(2000)
+        Thread.sleep(3000)
         onView(withId(R.id.fragment_add_chat_root))
             .check(matches(isDisplayed()))
         onView(withText(R.string.add_chat_init_title))
@@ -109,7 +109,7 @@ class Test11_AddChatAndSendMessageTest {
             .perform(typeText("test2"), closeSoftKeyboard())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withText("dog so low"))
             .check(matches(isDisplayed()))
 
@@ -133,13 +133,13 @@ class Test11_AddChatAndSendMessageTest {
         onView(withId(R.id.send_container))
             .check(matches(isDisplayed()))
             .perform(click())
-        Thread.sleep(1500)
+        Thread.sleep(5000)
         onView(withId(R.id.ic_back))
             .check(matches(isEnabled()))
             .perform(click())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withId(R.id.fragment_chats_root))
             .check(matches(isDisplayed()))
 
@@ -156,7 +156,7 @@ class Test11_AddChatAndSendMessageTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withText("Диалог не начат"))
             .check(ViewAssertions.doesNotExist())
 
@@ -165,7 +165,7 @@ class Test11_AddChatAndSendMessageTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -177,7 +177,7 @@ class Test11_AddChatAndSendMessageTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))

@@ -98,7 +98,7 @@ class Test2_LoginSuccessLogoutTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
         Timber.e("Current destination: ${navController.currentDestination?.displayName}")
@@ -111,7 +111,7 @@ class Test2_LoginSuccessLogoutTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))

@@ -92,7 +92,7 @@ class Test9_SettingsUpdatePasswordFailTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
 
@@ -106,7 +106,7 @@ class Test9_SettingsUpdatePasswordFailTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withText(R.string.error_password_invalid_length))
             .check(matches(isDisplayed()))
 
@@ -121,7 +121,7 @@ class Test9_SettingsUpdatePasswordFailTest {
             .perform(click())
 
         // VERIFY
-        Thread.sleep(3000)
+        Thread.sleep(5000)
         onView(withId(R.id.fragment_settings_root))
             .check(matches(isDisplayed()))
         /*onView(withText(R.string.error_api_414))
@@ -136,7 +136,7 @@ class Test9_SettingsUpdatePasswordFailTest {
         Thread.sleep(500)
         onView(withText(R.string.dialog_btn_exit))
             .perform(click())
-        Thread.sleep(500)
+        Thread.sleep(2500)
 
         //VERIFY
         onView(withId(R.id.fragment_login_root))
